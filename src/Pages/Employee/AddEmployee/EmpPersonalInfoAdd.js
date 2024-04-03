@@ -39,6 +39,7 @@ const EmpPersonalInfoAdd = forwardRef(
 
     useEffect(() => {
       fetchData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const formik = useFormik({
@@ -157,7 +158,8 @@ const EmpPersonalInfoAdd = forwardRef(
                       )}
                     </div>
                     <div className="text-start mt-4">
-                      <lable>Photo</lable><span className="text-danger">*</span>
+                      <lable>Photo</lable>
+                      <span className="text-danger">*</span>
                       <input
                         type="file"
                         name="file"

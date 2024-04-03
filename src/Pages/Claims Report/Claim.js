@@ -70,7 +70,7 @@ const Claim = () => {
       <table ref={tableRef} className="display">
         <thead>
           <tr>
-            <td scope="col">S No</td>
+            <td>S No</td>
             {/* <th scope="col">Applied Date</th> */}
             <th scope="col">Claim Date</th>
             <th scope="col">Claim Type</th>

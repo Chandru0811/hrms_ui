@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/Logo.png";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 function Login({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // console.log(email, password);
   const handleLoginClick = () => {
-    onLogin();
+    onLogin(email, password);
   };
   const [showPassword, setShowPassword] = React.useState(false);
   const togglePasswordVisibility = () => {
@@ -14,7 +17,7 @@ function Login({ onLogin }) {
 
   return (
     <div
-      className="d-flex flex-column justify-content-center align-items-center vh-100"
+      className="d-flex flex-column justify-content-center align-items-center"
       style={{ minHeight: "100vh", backgroundColor: "#f7f7f7" }}
     >
       <div className="d-flex">
@@ -41,7 +44,11 @@ function Login({ onLogin }) {
           <h4 className="card-title text-center mb-5">Login</h4>
           <div className="mb-2">
             <label className="form-label fw-medium">Username</label>
-            <input type="text" className={`form-control form-control-sm`} />
+            <input
+              type="text"
+              onChange={(e) => setEmail(e.target.value)}
+              className={`form-control form-control-sm`}
+            />
           </div>
           {/* <div className='mb-2'>
                         <div className='d-flex justify-content-between'>
@@ -65,6 +72,7 @@ function Login({ onLogin }) {
                 //     ? "is-invalid"
                 //     : ""
                 // }`}
+                onChange={(e) => setPassword(e.target.value)}
                 className="form-control"
                 style={{
                   borderRadius: "3px",

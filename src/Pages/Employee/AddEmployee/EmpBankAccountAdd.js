@@ -30,6 +30,7 @@ const EmpBankAccountAdd = forwardRef(
 
     useEffect(() => {
       fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const formik = useFormik({
@@ -42,12 +43,12 @@ const EmpBankAccountAdd = forwardRef(
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         try {
-          let queryParams = new URLSearchParams({
-            branchName: values.branchName,
-            ifscCode: values.ifscCode,
-            bankName: values.bankName,
-            accountNumber: values.accountNumber,
-          });
+          // let queryParams = new URLSearchParams({
+          //   branchName: values.branchName,
+          //   ifscCode: values.ifscCode,
+          //   bankName: values.bankName,
+          //   accountNumber: values.accountNumber,
+          // });
           setFormData((prv) => ({ ...prv, ...values }));
           handleNext();
           navigate("/employee/view");

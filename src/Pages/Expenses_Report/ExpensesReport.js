@@ -6,9 +6,7 @@ import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import DeleteModel from "../../components/common/Delete";
 
-
 export default function ExpensesReport() {
-
   const tableRef = useRef(null);
   const datas = [
     {
@@ -31,12 +29,13 @@ export default function ExpensesReport() {
       type: "Training",
       amount: "$1500",
       status: "Rejected",
-    },]
-  let statusColor = {
-    Rejected: "badge badges-Red",
-    Pending: "badge badges-Blue",
-    Approved: "badge badges-Green"
-  }
+    },
+  ];
+  // let statusColor = {
+  //   Rejected: "badge badges-Red",
+  //   Pending: "badge badges-Blue",
+  //   Approved: "badge badges-Green"
+  // }
   useEffect(() => {
     const table = $(tableRef.current).DataTable({
       responsive: true,
@@ -51,54 +50,57 @@ export default function ExpensesReport() {
     <div className="container">
       <div className="col-12 text-end my-3">
         <Link to="/expensesreport/add">
-          <button type="button" className="btn btn-button btn-sm">Add  <i class="bx bx-plus"></i></button>
+          <button type="button" className="btn btn-button btn-sm">
+            Add <i class="bx bx-plus"></i>
+          </button>
         </Link>
       </div>
-        <table ref={tableRef} className="display">
-          <thead>
-            <tr>
-              <th scope="col">S.No</th>
-              <th scope="col">Date</th>
-              <th scope="col">Type</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
+      <table ref={tableRef} className="display">
+        <thead>
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Date</th>
+            <th scope="col">Type</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {datas.map((data, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{data.date}</td>
+              <td>{data.type}</td>
+              <td>{data.amount}</td>
+              <td>
+                {data.status === "Approved" ? (
+                  <span className="badge badges-Green">Approved</span>
+                ) : data.status === "Pending" ? (
+                  <span className="badge badges-Yellow">Pending</span>
+                ) : (
+                  <span className="badge badges-Red">Rejected</span>
+                )}{" "}
+              </td>
+              <td>
+                <div className="d-flex">
+                  <Link to={`/expensesreport/view`}>
+                    <button className="btn btn-sm">
+                      <FaEye />
+                    </button>
+                  </Link>
+                  <Link to={`/expensesreport/edit`}>
+                    <button className="btn btn-sm">
+                      <FaEdit />
+                    </button>
+                  </Link>
+                  <DeleteModel />
+                </div>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {datas.map((data, index) => (
-              <tr key={index}>
-                <td scope="row">{index + 1}</td>
-                <td>{data.date}</td>
-                <td>{data.type}</td>
-                <td>{data.amount}</td>
-                <td >
-                  {data.status === "Approved" ? (
-                    <span className="badge badges-Green">Approved</span>
-                  ) : data.status === "Pending" ? (
-                    <span className="badge badges-Yellow">Pending</span>
-                  ) : (
-                    <span className="badge badges-Red">Rejected</span>
-                  )}                </td>
-                <td>
-                  <div className="d-flex">
-                    <Link to={`/expensesreport/view`}>
-                      <button className="btn btn-sm">
-                        <FaEye />
-                      </button>
-                    </Link>
-                    <Link to={`/expensesreport/edit`}>
-                      <button className="btn btn-sm">
-                        <FaEdit />
-                      </button>
-                    </Link>
-                    <DeleteModel />
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

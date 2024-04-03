@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Header({ onLogout }) {
+  const userName = sessionStorage.getItem("userName");
+  // console.log(userName);
   const handelLogOutClick = () => {
     onLogout();
   };
@@ -19,12 +21,25 @@ function Header({ onLogout }) {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Admin
+              {userName}
             </button>
             <ul class="dropdown-menu px-2">
-              <li style={{ cursor: 'pointer' }} className="text-center"><Link to='/employee/view' style={{textDecoration: 'none', color: '#424242'}}>Account</Link></li>
-              <hr className="my-1"/>
-              <li style={{ cursor: 'pointer' }} className="text-center" onClick={handelLogOutClick}>Log out</li>
+              <li style={{ cursor: "pointer" }} className="text-center">
+                <Link
+                  to="/employee/view"
+                  style={{ textDecoration: "none", color: "#424242" }}
+                >
+                  Account
+                </Link>
+              </li>
+              <hr className="my-1" />
+              <li
+                style={{ cursor: "pointer" }}
+                className="text-center"
+                onClick={handelLogOutClick}
+              >
+                Log out
+              </li>
             </ul>
           </div>
         </div>

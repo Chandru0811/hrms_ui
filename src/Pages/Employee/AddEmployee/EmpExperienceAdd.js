@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -45,14 +40,14 @@ const EmpExperienceAdd = forwardRef(
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         try {
-          let queryParams = new URLSearchParams({
-            previousCompanyAddress: values.previousCompanyAddress,
-            designation: values.designation,
-            startDate1: values.startDate1,
-            endDate1: values.endDate1,
-            previousCompanyName: values.previousCompanyName,
-            experienceDescription: values.experienceDescription,
-          });
+          // let queryParams = new URLSearchParams({
+          //   previousCompanyAddress: values.previousCompanyAddress,
+          //   designation: values.designation,
+          //   startDate1: values.startDate1,
+          //   endDate1: values.endDate1,
+          //   previousCompanyName: values.previousCompanyName,
+          //   experienceDescription: values.experienceDescription,
+          // });
           setFormData((prv) => ({ ...prv, ...values }));
           handleNext();
         } catch (error) {

@@ -1,6 +1,5 @@
 import React, {
   forwardRef,
-  useEffect,
   useImperativeHandle,
   useState,
 } from "react";
@@ -54,14 +53,14 @@ const EmpEmergencyContactAdd = forwardRef(
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         try {
-          let queryParams = new URLSearchParams({
-            emergencyContactNo: values.emergencyContactNo,
-            familyReferenceName: values.familyReferenceName,
-            familyReferencePhoneNo: values.familyReferencePhoneNo,
-            relationshipToEmployee: values.relationshipToEmployee,
-            emergencyContactName: values.emergencyContactName,
-            emergencyContactAddress: values.emergencyContactAddress,
-          });
+          // let queryParams = new URLSearchParams({
+          //   emergencyContactNo: values.emergencyContactNo,
+          //   familyReferenceName: values.familyReferenceName,
+          //   familyReferencePhoneNo: values.familyReferencePhoneNo,
+          //   relationshipToEmployee: values.relationshipToEmployee,
+          //   emergencyContactName: values.emergencyContactName,
+          //   emergencyContactAddress: values.emergencyContactAddress,
+          // });
           setFormData((prv) => ({ ...prv, ...values }));
           handleNext();
         } catch (error) {

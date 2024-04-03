@@ -12,8 +12,8 @@ const ClaimAdmin = () => {
   const datas = [
     {
       id: 1,
-      employeeID:"12",
-      employeeName:"Vijayashree",
+      employeeID: "12",
+      employeeName: "Vijayashree",
       AppliedDate: "25/01/2024",
       ClaimDate: "22/01/2024",
       ClaimType: "Telephone",
@@ -23,8 +23,8 @@ const ClaimAdmin = () => {
     },
     {
       id: 2,
-      employeeID:"15",
-      employeeName:"Vijay",
+      employeeID: "15",
+      employeeName: "Vijay",
       AppliedDate: "25/01/2024",
       ClaimDate: "22/01/2024",
       ClaimType: "Taxi",
@@ -34,8 +34,8 @@ const ClaimAdmin = () => {
     },
     {
       id: 3,
-      employeeID:"20",
-      employeeName:"Raguvaran",
+      employeeID: "20",
+      employeeName: "Raguvaran",
       AppliedDate: "18/01/2024",
       ClaimDate: "10/01/2024",
       ClaimType: "Hotel and Acc",
@@ -45,8 +45,8 @@ const ClaimAdmin = () => {
     },
     {
       id: 4,
-      employeeID:"2",
-      employeeName:"Nalini Sri",
+      employeeID: "2",
+      employeeName: "Nalini Sri",
       AppliedDate: "16/01/2024",
       ClaimDate: "12/01/2024",
       ClaimAmount: "$80",
@@ -93,7 +93,7 @@ const ClaimAdmin = () => {
         <tbody>
           {datas.map((data, index) => (
             <tr key={index}>
-              <td scope="row">{index + 1}</td>
+              <td>{index + 1}</td>
               <td>{data.employeeID}</td>
               <td>{data.employeeName}</td>
               {/* <td>{data.AppliedDate}</td> */}
