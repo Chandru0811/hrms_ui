@@ -12,6 +12,7 @@ function Sidebar() {
       icon: "bx bx-buildings",
       isOpen: false,
       subMenus: [
+        { title: "Company Registration", path: "/compantregisteration" },
         { title: "HR Policy", path: "/policy" },
         { title: "Departments", path: "/departments" },
         { title: "Exit Management Employee", path: "/exitmanagementadmin" },
