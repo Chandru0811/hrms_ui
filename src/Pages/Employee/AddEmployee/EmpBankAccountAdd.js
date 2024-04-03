@@ -10,10 +10,10 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
-  bankName: Yup.string().required("*Bank name is required!"),
-  branchName: Yup.string().required("*Branch name is required!"),
-  ifscCode: Yup.string().required("*IFSC code is required!"),
-  accountNumber: Yup.string().required("*Account number is required!"),
+  bankName: Yup.string().required("*Bank name is required"),
+  branchName: Yup.string().required("*Branch name is required"),
+  ifscCode: Yup.string().required("*IFSC code is required"),
+  accountNumber: Yup.string().required("*Account number is required"),
 });
 
 const EmpBankAccountAdd = forwardRef(

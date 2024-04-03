@@ -74,6 +74,11 @@ import ClaimAdmin from "../Pages/ClaimAdmin/ClaimAdmin";
 import ClaimAdminAdd from "../Pages/ClaimAdmin/ClaimAdminAdd";
 import ClaimAdminEdit from "../Pages/ClaimAdmin/ClaimAdminEdit";
 import ClaimAdminView from "../Pages/ClaimAdmin/ClaimAdminView";
+import CompanyRegistration from "../Pages/Company_Registration/CompanyRegistration";
+import AddCompanyRegistration from "../Pages/Company_Registration/AddCompanyRegistration";
+import EditCompanyRegistration from "../Pages/Company_Registration/EditCompanyRegistration";
+import ViewCompanyRegistration from "../Pages/Company_Registration/ViewCompanyRegistration";
+import { ToastContainer } from "react-toastify";
 
 function Admin({ handleLogout }) {
   useEffect(() => {
@@ -90,6 +95,7 @@ function Admin({ handleLogout }) {
   return (
     <div>
       <BrowserRouter>
+      <ToastContainer position="top-center" />
         <Sidebar />
         <section className="home-section">
           <Header onLogout={handleLogout} />
@@ -133,6 +139,12 @@ function Admin({ handleLogout }) {
                 path="/employeeadmin/view"
                 element={<EmployeeAdminView />}
               />
+
+               {/* Company Registration */}
+               <Route path="/compantregisteration" element={<CompanyRegistration />} />
+              <Route path="/compantregisteration/add" element={<AddCompanyRegistration />} />
+              <Route path="/compantregisteration/edit" element={<EditCompanyRegistration />} />
+              <Route path="/compantregisteration/view" element={<ViewCompanyRegistration />} />
 
               {/* Hrms Policy */}
               <Route path="/policy" element={<Policy />} />

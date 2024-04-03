@@ -45,26 +45,6 @@ function EmployeeView() {
             </div>
           </div>
           <div className="col-md-6 col-12">
-            <div className="row  mb-2  ">
-              <div className="col-6  ">
-                <p className="fw-medium">Primary Phone No</p>
-              </div>
-              <div className="col-6">
-                <p className="text-muted text-sm">: 1234567890</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 col-12">
-            <div className="row    mb-2">
-              <div className="col-6 ">
-                <p className="fw-medium">Address</p>
-              </div>
-              <div className="col-6">
-                <p className="text-muted text-sm">: Singapore</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 col-12">
             <div className="row    mb-2">
               <div className="col-6 ">
                 <p className="fw-medium">Primary Email ID</p>
@@ -85,22 +65,12 @@ function EmployeeView() {
             </div>
           </div>
           <div className="col-md-6 col-12">
-            <div className="row    mb-2">
-              <div className="col-6 ">
-                <p className="fw-medium">NRIC Fin</p>
+            <div className="row  mb-2  ">
+              <div className="col-6  ">
+                <p className="fw-medium">Primary Phone No</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: </p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 col-12">
-            <div className="row    mb-2">
-              <div className="col-6 ">
-                <p className="fw-medium">NRIC Type</p>
-              </div>
-              <div className="col-6">
-                <p className="text-muted text-sm">: </p>
+                <p className="text-muted text-sm">: 9876543210</p>
               </div>
             </div>
           </div>
@@ -111,16 +81,6 @@ function EmployeeView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">: ECS01</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 col-12">
-            <div className="row    mb-2">
-              <div className="col-6 ">
-                <p className="fw-medium">Employee Referral ID</p>
-              </div>
-              <div className="col-6">
-                <p className="text-muted text-sm">: ECS845</p>
               </div>
             </div>
           </div>
@@ -140,7 +100,27 @@ function EmployeeView() {
                 <p className="fw-medium">Department ID</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: TechECS57</p>
+                <p className="text-muted text-sm">: React_01</p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-12">
+            <div className="row    mb-2">
+              <div className="col-6 ">
+                <p className="fw-medium">NRIC Fin</p>
+              </div>
+              <div className="col-6">
+                <p className="text-muted text-sm">: 5678</p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-12">
+            <div className="row    mb-2">
+              <div className="col-6 ">
+                <p className="fw-medium">NRIC Type</p>
+              </div>
+              <div className="col-6">
+                <p className="text-muted text-sm">: Singapore PR</p>
               </div>
             </div>
           </div>
@@ -161,6 +141,16 @@ function EmployeeView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">: 2024-03-13</p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-12">
+            <div className="row    mb-2">
+              <div className="col-6 ">
+                <p className="fw-medium">Employee Type</p>
+              </div>
+              <div className="col-6">
+                <p className="text-muted text-sm">: Full Time</p>
               </div>
             </div>
           </div>

@@ -9,25 +9,16 @@ import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   emergencyContactName: Yup.string().required(
-    "*Emergency contact name is required!"
+    "*Emergency contact name is required"
   ),
-  emergencyContactNo: Yup.string().required(
-    "*Emergency contact no is required!"
-  ),
-  familyReferenceName: Yup.string().required(
-    "*Family reference name is required!"
-  ),
+  emergencyContactNo: Yup.number().required(
+    "*Emergency contact no is required"
+  ) .typeError("*Must be a number"),
   emergencyContactAddress: Yup.string().required(
-    "*Emergency contact no is required!"
+    "*Emergency contact address is required"
   ),
-  familyReferencePhoneNo: Yup.string()
-  .matches(
-    /^(?:\+?65)?\s?(?:\d{4}\s?\d{4}|\d{3}\s?\d{3}\s?\d{4})$/,
-    "*Invalid Phone Number"
-  )
-  .required("*Mobile Number is required"),
   relationshipToEmployee: Yup.string().required(
-    "*Relationship to employee is required!"
+    "*Relationship to employee is required"
   ),
 });
 
@@ -45,9 +36,7 @@ const EmpEmergencyContactAdd = forwardRef(
       initialValues: {
         emergencyContactName: formData.emergencyContactName || "",
         emergencyContactNo: formData.emergencyContactNo || "",
-        familyReferenceName: formData.familyReferenceName || "",
         emergencyContactAddress: formData.emergencyContactAddress || "",
-        familyReferencePhoneNo: formData.familyReferencePhoneNo || "",
         relationshipToEmployee: formData.relationshipToEmployee || "",
       },
       validationSchema: validationSchema,
@@ -89,7 +78,7 @@ const EmpEmergencyContactAdd = forwardRef(
                             Emergency Contact Name
                             <span className="text-danger">*</span>
                           </lable>
-                          <br />
+                          
                           <input
                             className="form-control "
                             type="text"
@@ -109,46 +98,20 @@ const EmpEmergencyContactAdd = forwardRef(
                         </div>
                         <div className="text-start mt-4">
                           <lable className="form-label">
-                            Family reference Name
+                            Emergency Contact Address
                             <span className="text-danger">*</span>
                           </lable>
-                          <br />
-                          <input
-                            className="form-control "
-                            type="text"
-                            name="familyReferenceName"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.familyReferenceName}
-                          />
-                          {formik.touched.familyReferenceName &&
-                            formik.errors.familyReferenceName && (
+                          <textarea rows="5"
+                          className="form-control "
+                          name="emergencyContactAddress"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.emergencyContactAddress}></textarea>
+                          {formik.touched.emergencyContactAddress &&
+                            formik.errors.emergencyContactAddress && (
                               <div className="text-danger">
                                 <small>
-                                  {formik.errors.familyReferenceName}
-                                </small>
-                              </div>
-                            )}
-                        </div>
-                        <div className="text-start mt-4">
-                          <lable className="form-label">
-                            Family Reference Phone No
-                            <span className="text-danger">*</span>
-                          </lable>
-                          <br />
-                          <input
-                            className="form-control "
-                            type="text"
-                            name="familyReferencePhoneNo"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.familyReferencePhoneNo}
-                          />
-                          {formik.touched.familyReferencePhoneNo &&
-                            formik.errors.familyReferencePhoneNo && (
-                              <div className="text-danger">
-                                <small>
-                                  {formik.errors.familyReferencePhoneNo}
+                                  {formik.errors.emergencyContactAddress}
                                 </small>
                               </div>
                             )}
@@ -160,10 +123,10 @@ const EmpEmergencyContactAdd = forwardRef(
                             Emergency Contact No
                             <span className="text-danger">*</span>
                           </lable>
-                          <br />
+                          
                           <input
                             className="form-control "
-                            type="number"
+                            type="text"
                             name="emergencyContactNo"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -180,33 +143,10 @@ const EmpEmergencyContactAdd = forwardRef(
                         </div>
                         <div className="text-start mt-4">
                           <lable className="form-label">
-                            Emergency Contact Address
-                            <span className="text-danger">*</span>
-                          </lable>
-                          <br />
-                          <input
-                            className="form-control "
-                            type="text"
-                            name="emergencyContactAddress"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.emergencyContactAddress}
-                          />
-                          {formik.touched.emergencyContactAddress &&
-                            formik.errors.emergencyContactAddress && (
-                              <div className="text-danger">
-                                <small>
-                                  {formik.errors.emergencyContactAddress}
-                                </small>
-                              </div>
-                            )}
-                        </div>
-                        <div className="text-start mt-4">
-                          <lable className="form-label">
                             Relationship to Employee
                             <span className="text-danger">*</span>
                           </lable>
-                          <br />
+                          
                           <input
                             className="form-control "
                             type="text"
