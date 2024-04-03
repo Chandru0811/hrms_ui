@@ -9,6 +9,7 @@ function AddNewBublicHoliday() {
     companyID: Yup.string().required('*Company ID is required'),
     companyName: Yup.string().required('*Company name is required'),
     holidayName: Yup.string().required('*Holiday name is required'),
+    holidayType: Yup.string().required('*Select the holiday is required'),
     startDate: Yup.string().required('*Select the start date'),
     endDate: Yup.string().required('*Select the end date'),
     countryCode: Yup.string().required(),
@@ -22,6 +23,7 @@ function AddNewBublicHoliday() {
       companyID: "",
       companyName: "",
       holidayName: "",
+      holidayType:"",
       startDate: "",
       endDate: "",
       countryCode: "",
@@ -83,6 +85,31 @@ function AddNewBublicHoliday() {
                   <div className="invalid-feedback">{formik.errors.holidayName}</div>
                 )}
               </div>
+            </div>
+            <div className="col-md-6 col-12 mb-4">
+              <lable className="">Holiday Type</lable>
+              <span className="text-danger">*</span>
+              <select
+                {...formik.getFieldProps("holidayType")}
+                className={`form-select    ${
+                  formik.touched.holidayType && formik.errors.holidayType
+                    ? "is-invalid"
+                    : ""
+                }`}
+                aria-label="Default select example"
+              >
+                <option selected></option>
+                <option value="Government Holiday">Government Holiday</option>
+                <option value="Bank Holiday">Bank Holiday</option>
+                <option value="Public Holiday">Public Holiday</option>
+                <option value="Religious Holiday">Religious Holiday</option>
+                <option value="International Holiday">National Holiday</option>
+              </select>
+              {formik.touched.holidayType && formik.errors.holidayType && (
+                <div className="invalid-feedback">
+                  {formik.errors.holidayType}
+                </div>
+              )}
             </div>
             <div className="col-lg-6 col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
