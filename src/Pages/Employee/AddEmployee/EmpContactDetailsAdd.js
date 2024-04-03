@@ -40,6 +40,7 @@ const EmpContactDetailsAdd = forwardRef(
 
         useEffect(() => {
             fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
         const formik = useFormik({

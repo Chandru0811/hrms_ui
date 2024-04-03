@@ -32,9 +32,9 @@ const EmpExperienceAdd = forwardRef(
       console.log("Add Experience detail");
     };
 
-    const removeExperience = (index) => {
-      setRows((prevRows) => prevRows.filter((_, i) => i !== index));
-    };
+    // const removeExperience = (index) => {
+    //   setRows((prevRows) => prevRows.filter((_, i) => i !== index));
+    // };
 
     const formik = useFormik({
       initialValues: {
