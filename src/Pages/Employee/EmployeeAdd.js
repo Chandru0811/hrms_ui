@@ -11,9 +11,11 @@ import EmpEmergencyContactAdd from "./AddEmployee/EmpEmergencyContactAdd";
 import EmpBankAccountAdd from "./AddEmployee/EmpBankAccountAdd";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import EmpContactDetailsAdd from "./AddEmployee/EmpContactDetailsAdd";
 
 const steps = [
   { tooltip: "Personal Information" },
+  { tooltip: "Contact Details" },
   { tooltip: "Qualification Details" },
   { tooltip: "Experience" },
   { tooltip: "Previous Company" },
@@ -57,27 +59,32 @@ function EmployeeAdd() {
           childRef.current.personalInfoAdd();
         }
         break;
-      case "1":
+        case "1":
+          if (childRef.current) {
+            childRef.current.contactDetailsAdd();
+          }
+          break;
+      case "2":
         if (childRef.current) {
           childRef.current.qualificationDetailsAdd();
         }
         break;
-      case "2":
+      case "3":
         if (childRef.current) {
           childRef.current.experienceAdd();
         }
         break;
-      case "3":
+      case "4":
         if (childRef.current) {
           childRef.current.previousCompanyAdd();
         }
         break;
-      case "4":
+      case "5":
         if (childRef.current) {
           childRef.current.emergencyContactAdd();
         }
         break;
-      case "5":
+      case "6":
         if (childRef.current) {
           childRef.current.bankAccountAdd();
         }
@@ -115,8 +122,8 @@ function EmployeeAdd() {
               handleNext={handleNext}
             />
           )}
-          {activeStep === 1 && (
-            <EmpQualificationDetailsAdd
+           {activeStep === 1 && (
+            <EmpContactDetailsAdd
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -124,7 +131,7 @@ function EmployeeAdd() {
             />
           )}
           {activeStep === 2 && (
-            <EmpExperienceAdd
+            <EmpQualificationDetailsAdd
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -132,7 +139,7 @@ function EmployeeAdd() {
             />
           )}
           {activeStep === 3 && (
-            <EmpPreviousCompanyAdd
+            <EmpExperienceAdd
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -140,7 +147,7 @@ function EmployeeAdd() {
             />
           )}
           {activeStep === 4 && (
-            <EmpEmergencyContactAdd
+            <EmpPreviousCompanyAdd
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -148,6 +155,14 @@ function EmployeeAdd() {
             />
           )}
           {activeStep === 5 && (
+            <EmpEmergencyContactAdd
+              formData={formData}
+              ref={childRef}
+              setFormData={setFormData}
+              handleNext={handleNext}
+            />
+          )}
+          {activeStep === 6 && (
             <EmpBankAccountAdd
               formData={formData}
               ref={childRef}
