@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
@@ -7,6 +7,13 @@ import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
 
 const Holiday = () => {
+  const [viewAction, setViewAction] = useState(false);
+  const userName = sessionStorage.getItem("userName");
+  useEffect(() => {
+    if (userName === "Employee") {
+      setViewAction(true);
+    }
+  }, [userName, setViewAction]);
   const tableRef = useRef(null);
 
   const datas = [
@@ -57,8 +64,6 @@ const Holiday = () => {
             <th scope="col">Company Name</th>
             <th scope="col">Holiday Name</th>
             <th scope="col">Start Date</th>
-            {/* <th scope="col">End Date</th> */}
-            {/* <th scope="col">Day</th> */}
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -70,21 +75,31 @@ const Holiday = () => {
               <td>{data.companyName}</td>
               <td>{data.holidayName}</td>
               <td>{data.startDate}</td>
-              {/* <td>{data.endDate}</td> */}
-              {/* <td>{data.day}</td> */}
               <td>
                 <div className="d-flex">
-                  <Link to={`/Holiday/view`}>
-                    <button className="btn btn-sm">
-                      <FaEye />
-                    </button>
-                  </Link>
-                  <Link to={`/Holiday/edit`}>
-                    <button className="btn btn-sm">
-                      <FaEdit />
-                    </button>
-                  </Link>
-                  <Delete />
+                  {viewAction ? (
+                    <span>
+                      <Link to={`/Holiday/view`}>
+                        <button className="btn btn-sm">
+                          <FaEye />
+                        </button>
+                      </Link>
+                    </span>
+                  ) : (
+                    <span>
+                      <Link to={`/Holiday/view`}>
+                        <button className="btn btn-sm">
+                          <FaEye />
+                        </button>
+                      </Link>
+                      <Link to={`/Holiday/edit`}>
+                        <button className="btn btn-sm">
+                          <FaEdit />
+                        </button>
+                      </Link>
+                      <Delete />
+                    </span>
+                  )}
                 </div>
               </td>
             </tr>
