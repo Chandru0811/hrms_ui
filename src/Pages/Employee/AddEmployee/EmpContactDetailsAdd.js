@@ -7,6 +7,7 @@ import React, {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const validationSchema = Yup.object().shape({
     dob: Yup.string().required("*Date of birth is required"),
@@ -18,7 +19,7 @@ const validationSchema = Yup.object().shape({
     pincode: Yup.number()
         .required("*Pincode is required")
         .typeError("*Must be a number"),
-    secondaryEmail: Yup.string().required("*Secondary email is required "),
+    secondaryEmail: Yup.string().required("*Secondary email id is required "),
     secondaryEmailPassword: Yup.string().required(
         "*Secondary email password is required "
     ),
@@ -40,6 +41,7 @@ const EmpContactDetailsAdd = forwardRef(
 
         useEffect(() => {
             fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
         const formik = useFormik({
@@ -69,6 +71,12 @@ const EmpContactDetailsAdd = forwardRef(
         useImperativeHandle(ref, () => ({
             contactDetailsAdd: formik.handleSubmit,
         }));
+
+        const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = React.useState(false);
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
         return (
             <div className="container-fluid">
@@ -239,7 +247,7 @@ const EmpContactDetailsAdd = forwardRef(
                                     </div>
                                     <div className="col-md-6 col-12 mb-3">
                                         <lable className="form-lable">
-                                            Secondary Email
+                                            Secondary Email ID
                                             <span className="text-danger">*</span>
                                         </lable>
                                         <input
@@ -262,20 +270,38 @@ const EmpContactDetailsAdd = forwardRef(
                                             Secondary Email Password
                                             <span className="text-danger">*</span>
                                         </lable>
-                                        <input
-                                            className="form-control "
-                                            type="password"
-                                            name="secondaryEmailPassword"
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            value={formik.values.secondaryEmailPassword}
-                                        />
-                                        {formik.touched.secondaryEmailPassword &&
-                                            formik.errors.secondaryEmailPassword && (
-                                                <div className="text-danger">
-                                                    <small>{formik.errors.secondaryEmailPassword}</small>
-                                                </div>
-                                            )}
+                                        <div className={`input-group mb-3`}>
+              <input
+                type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`form-control  ${formik.touched.secondaryEmailPassword && formik.errors.secondaryEmailPassword
+                  ? "is-invalid"
+                  : ""
+                  }`}
+                  {...formik.getFieldProps("secondaryEmailPassword")}
+                style={{
+                  borderRight: "none",
+                  borderTopRightRadius: "0px",
+                  borderBottomRightRadius: "0px",
+                }}
+                name="secondaryEmailPassword"
+              />
+              <span
+                className={`input-group-text bg-white`}
+                id="basic-addon1"
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer", borderRadius: "5px", borderLeft: "none" , borderTopLeftRadius: "0px",
+                borderBottomLeftRadius: "0px"  }}
+              >
+                {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+              </span>
+              {formik.touched.secondaryEmailPassword &&
+                  formik.errors.secondaryEmailPassword && (
+                    <div className="invalid-feedback">
+                      {formik.errors.secondaryEmailPassword}
+                    </div>
+                  )}
+            </div>
                                     </div>
                                     <div className="col-md-6 col-12 mb-3">
                                         <lable className="form-lable">
