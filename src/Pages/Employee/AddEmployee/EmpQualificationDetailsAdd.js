@@ -2,19 +2,20 @@ import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const validationSchema = Yup.object().shape({
   empQualification: Yup.array().of(
     Yup.object().shape({
-      qualificationName: Yup.string().required("*Qualification name is required!"),
-      qualificationType: Yup.string().required("*Qualification type is required!"),
-      fieldOfStudy: Yup.string().required("*Field of study is required!"),
-      modeOfStudy: Yup.string().required("*Mode of study is required!"),
-      startDate: Yup.string().required("*Start date is required!"),
-      endDate: Yup.string().required("*End date is required!"),
-      institution: Yup.string().required("*Institution is required!"),
-      employeeSkill: Yup.string().required("*Employee skill is required!"),
-      skillDescription: Yup.string().required("*Skill description is required!"),
+      qualificationName: Yup.string().required("*Qualification name is required"),
+      qualificationType: Yup.string().required("*Qualification type is required"),
+      fieldOfStudy: Yup.string().required("*Field of study is required"),
+      modeOfStudy: Yup.string().required("*Mode of study is required"),
+      startDate: Yup.string().required("*Start date is required"),
+      endDate: Yup.string().required("*End date is required"),
+      institution: Yup.string().required("*Institution is required"),
+      employeeSkill: Yup.string().required("*Employee skill is required"),
+      skillDescription: Yup.string().required("*Skill description is required"),
     })
   ),
 });
@@ -62,8 +63,7 @@ const EmpQualificationDetailsAdd = forwardRef(
           {rows.map((row, index) => (
             <div className="border-0 mb-5" key={index}>
               <div>
-                <div className=" border-0 my-2">
-
+                <div className="border-0 my-2">
                   <p className="headColor">Qualification Details</p>
                   <div className="container pt-3">
                     <div className="row mt-3">
@@ -102,18 +102,21 @@ const EmpQualificationDetailsAdd = forwardRef(
                           Qualification Type
                           <span className="text-danger">*</span>
                         </lable>
-                        <input
-                          className="form-control  form-contorl-sm"
-                          type="text"
-                          name={`empQualification[${index}].qualificationType`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={
-                            formik.values.empQualification[index]
-                              ?.qualificationType || ""
-                          }
-                        />
-
+                        <select
+                        className="form-select"
+                        name={`empQualification[${index}].qualificationType`}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={
+                          formik.values.empQualification[index]
+                            ?.qualificationType || ""
+                        }>
+                        <option selected></option>
+                          <option value="Masters" >Masters</option>
+                          <option value="Bachelor" >Bachelor</option>
+                          <option value="Diploma" >Diploma</option>
+                          <option value="PG Diploma" >PG Diploma</option>
+                        </select>
                         {formik.touched.empQualification?.[index]
                           ?.qualificationType &&
                           formik.errors.empQualification?.[index]
@@ -133,17 +136,24 @@ const EmpQualificationDetailsAdd = forwardRef(
                           Field of Study
                           <span className="text-danger">*</span>
                         </lable>
-                        <input
-                          className="form-control "
-                          type="text"
-                          name={`empQualification[${index}].fieldOfStudy`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={
-                            formik.values.empQualification[index]
-                              ?.fieldOfStudy || ""
-                          }
-                        />
+                        <select
+                        className="form-select"
+                        name={`empQualification[${index}].fieldOfStudy`}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={
+                          formik.values.empQualification[index]
+                            ?.fieldOfStudy || ""
+                        }>
+                        <option selected></option>
+                          <option value="Information Technology" >Information Technology</option>
+                          <option value="Business" >Business</option>
+                          <option value="Engineering" >Engineering</option>
+                          <option value="Accounting" >Accounting</option>
+                          <option value="Banking" >Banking</option>
+                          <option value="Finance" >Finance</option>
+
+                        </select>
                         {formik.touched.empQualification?.[index]
                           ?.fieldOfStudy &&
                           formik.errors.empQualification?.[index]
@@ -163,18 +173,20 @@ const EmpQualificationDetailsAdd = forwardRef(
                           Mode of Study
                           <span className="text-danger">*</span>
                         </lable>
-                        <input
-                          className="form-control  form-contorl-sm"
-                          type="text"
-                          name={`empQualification[${index}].modeOfStudy`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={
-                            formik.values.empQualification[index]
-                              ?.modeOfStudy || ""
-                          }
-                        />
-
+                        <select
+                        className="form-select"
+                        name={`empQualification[${index}].modeOfStudy`}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={
+                          formik.values.empQualification[index]
+                            ?.modeOfStudy || ""
+                        }>
+                        <option selected></option>
+                          <option value="Full time" >Full time</option>
+                          <option value="Part time" >Part time</option>
+                          <option value="Distance Education" >Distance Education</option>
+                        </select>
                         {formik.touched.empQualification?.[index]
                           ?.modeOfStudy &&
                           formik.errors.empQualification?.[index]
@@ -305,7 +317,7 @@ const EmpQualificationDetailsAdd = forwardRef(
                   onClick={() => setRows((prev) => prev.slice(0, -1))}
                   className="btn btn-outline-danger"
                 >
-                  Delete
+                  <FaRegTrashAlt />
                 </button>
               )}
             </div>
@@ -358,7 +370,7 @@ const EmpQualificationDetailsAdd = forwardRef(
                         <textarea
                           className="form-control  form-contorl-sm"
                           type="text"
-                          rows={3}
+                          rows={5}
                           name={`empQualification[${index}].skillDescription`}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -407,7 +419,7 @@ const EmpQualificationDetailsAdd = forwardRef(
                   onClick={() => setRows1((prev) => prev.slice(0, -1))}
                   className="btn btn-outline-danger"
                 >
-                  Delete
+                  <FaRegTrashAlt />
                 </button>
               )}
             </div>

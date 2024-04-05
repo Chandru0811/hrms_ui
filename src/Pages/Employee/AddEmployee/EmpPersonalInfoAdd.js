@@ -7,6 +7,7 @@ import React, {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const EmpPersonalInfoAdd = forwardRef(
   ({ formData, setFormData, handleNext }, ref) => {
@@ -30,7 +31,7 @@ const EmpPersonalInfoAdd = forwardRef(
       lastName: Yup.string().required("*Last name is required "),
       primaryEmailID: Yup.string()
         .email("Enter valid email")
-        .required("*Email is required "),
+        .required("*Primary email id is required "),
       primaryEmailPassword: Yup.string().required(
         "*Primary email password is required "
       ),
@@ -74,6 +75,12 @@ const EmpPersonalInfoAdd = forwardRef(
     useImperativeHandle(ref, () => ({
       personalInfoAdd: formik.handleSubmit,
     }));
+
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = React.useState(false);
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
     return (
       <div className="container-fluid">
@@ -143,20 +150,40 @@ const EmpPersonalInfoAdd = forwardRef(
                       Primary Email Password
                       <span className="text-danger">*</span>
                     </lable>
-                    <input
-                      className="form-control "
-                      type="password"
-                      name="primaryEmailPassword"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.primaryEmailPassword}
-                    />
-                    {formik.touched.primaryEmailPassword &&
-                      formik.errors.primaryEmailPassword && (
-                        <div className="text-danger">
-                          <small>{formik.errors.primaryEmailPassword}</small>
-                        </div>
-                      )}
+                    <div className={`input-group mb-3`}>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={`form-control  ${formik.touched.primaryEmailPassword && formik.errors.primaryEmailPassword
+                          ? "is-invalid"
+                          : ""
+                          }`}
+                        {...formik.getFieldProps("primaryEmailPassword")}
+                        style={{
+                          borderRight: "none",
+                          borderTopRightRadius: "0px",
+                          borderBottomRightRadius: "0px",
+                        }}
+                        name="primaryEmailPassword"
+                      />
+                      <span
+                        className={`input-group-text bg-white`}
+                        id="basic-addon1"
+                        onClick={togglePasswordVisibility}
+                        style={{
+                          cursor: "pointer", borderRadius: "5px", borderLeft: "none", borderTopLeftRadius: "0px",
+                          borderBottomLeftRadius: "0px"
+                        }}
+                      >
+                        {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                      </span>
+                      {formik.touched.primaryEmailPassword &&
+                        formik.errors.primaryEmailPassword && (
+                          <div className="invalid-feedback">
+                            {formik.errors.primaryEmailPassword}
+                          </div>
+                        )}
+                    </div>
                   </div>
                   <div className="col-md-6 col-12 mb-3">
                     <lable className="form-lable">
