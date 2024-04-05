@@ -60,7 +60,7 @@ function EmployeeView() {
                 <p className="fw-medium">Primary Email Password</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: </p>
+                <p className="text-muted text-sm">: 12345678</p>
               </div>
             </div>
           </div>

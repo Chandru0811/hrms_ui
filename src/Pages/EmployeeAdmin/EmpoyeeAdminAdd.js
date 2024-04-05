@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 function EmployeeAdminAdd() {
 
@@ -12,7 +13,7 @@ function EmployeeAdminAdd() {
     lastName: Yup.string().required("*Last name is required"),
     primaryPhoneNumber: Yup.number().required(
       "*Primary phone number is required"
-    ) .typeError("*Must be a number"),
+    ).typeError("*Must be a number"),
     primaryEmailID: Yup.string()
       .email("*Enter valid email")
       .required("*Primary email id is required"),
@@ -74,6 +75,12 @@ function EmployeeAdminAdd() {
 
   const handleIdTypeChange = (event) => {
     setSelectedIdType(event.target.value);
+  };
+
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -163,29 +170,45 @@ function EmployeeAdminAdd() {
                   )}
               </div>
             </div>
-            <div className="col-md-6 col-12 mb-3 ">
+            <div className="col-md-6 col-12 mb-3">
               <div className="mb-2">
                 <lable for="exampleFormControlInput1" className="form-label">
                   Primary Email Password<span className="text-danger">*</span>
                 </lable>
-                <input
-                  type="password"
-                  name="primaryEmailPassword"
-                  className={`form-control  ${formik.touched.primaryEmailPassword &&
-                    formik.errors.primaryEmailPassword
-                    ? "is-invalid"
-                    : ""
-                    }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("primaryEmailPassword")}
-                />
-                {formik.touched.primaryEmailPassword &&
-                  formik.errors.primaryEmailPassword && (
-                    <div className="invalid-feedback">
-                      {formik.errors.primaryEmailPassword}
-                    </div>
-                  )}
+                <div className={`input-group mb-3`}>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={`form-control  ${formik.touched.primaryEmailPassword && formik.errors.primaryEmailPassword
+                      ? "is-invalid"
+                      : ""
+                      }`}
+                    {...formik.getFieldProps("primaryEmailPassword")}
+                    style={{
+                      borderRight: "none",
+                      borderTopRightRadius: "0px",
+                      borderBottomRightRadius: "0px",
+                    }}
+                    name="primaryEmailPassword"
+                  />
+                  <span
+                    className={`input-group-text bg-white`}
+                    id="basic-addon1"
+                    onClick={togglePasswordVisibility}
+                    style={{
+                      cursor: "pointer", borderRadius: "5px", borderLeft: "none", borderTopLeftRadius: "0px",
+                      borderBottomLeftRadius: "0px"
+                    }}
+                  >
+                    {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                  </span>
+                  {formik.touched.primaryEmailPassword &&
+                    formik.errors.primaryEmailPassword && (
+                      <div className="invalid-feedback">
+                        {formik.errors.primaryEmailPassword}
+                      </div>
+                    )}
+                </div>
               </div>
             </div>
             <div className="col-md-6 col-12 mb-3 ">
