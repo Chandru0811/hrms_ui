@@ -49,11 +49,9 @@ const ExitManagement = () => {
   return (
     <div className="container">
       <div className="my-3 d-flex align-items-end justify-content-end">
-       
-          {/* <button type="button" className="btn btn-button btn-sm">
+        {/* <button type="button" className="btn btn-button btn-sm">
             Add <i class="bx bx-plus"></i>
           </button> */}
-        
       </div>
       <table ref={tableRef} className="display">
         <thead>
@@ -76,7 +74,7 @@ const ExitManagement = () => {
               <td>{data.employeeid}</td>
               <td>{data.employeename}</td>
               <td>{data.reasonforrelieving}</td>
-             <td>{data.approvalstatus}</td>
+              <td>{data.approvalstatus}</td>
               {/* <td>{data.assetsreturned}</td> */}
               <td>
                 <div className="d-flex">

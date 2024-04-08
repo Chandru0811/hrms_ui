@@ -1,37 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Collapse, Nav } from "react-bootstrap";
 import "../../styles/sidebar.css";
 import Logo from "../../assets/images/Logo.png";
 
 function Sidebar() {
-  const [adminSelectedList, setAdminSelectedList] = useState(false);
-  const userName = sessionStorage.getItem("userName");
-  useEffect(() => {
-    if (userName === "Admin") {
-      setAdminSelectedList(true);
-    }
-  }, [userName, setAdminSelectedList]);
-  console.log("slidebar", adminSelectedList);
   const [activeMenu, setActiveMenu] = useState(null);
-
   const [menuItems, setMenuItems] = useState([
     {
       title: "Organizations",
       icon: "bx bx-buildings",
       isOpen: false,
       subMenus: [
-        { title: "Company Registration", path: "/compantregisteration" },
         { title: "HR Policy", path: "/policy" },
         { title: "Departments", path: "/departments" },
-        ...(adminSelectedList
-          ? [
-              {
-                title: "Exit Management Employee",
-                path: "/exitmanagementadmin",
-              },
-            ]
-          : [{ title: "Exit Management", path: "/exitmanagement" }]),
+        { title: "Exit Management Employee", path: "/exitmanagementadmin" },
+        { title: "Exit Management", path: "/exitmanagement" },
       ],
     },
   ]);
@@ -148,29 +132,39 @@ function Sidebar() {
             <span className="links_name">Employee Info</span>
           </NavLink>
         </li>
+        {/* <li>
+          <NavLink to="/employee" onClick={() => handleMenuClick(null)}>
+            <i class="bx bx-male-female"></i>
+            <span className="links_name">Employee Info</span>
+          </NavLink>
+        </li> */}
         <li>
           <NavLink to="/attendancehrms" onClick={() => handleMenuClick(null)}>
             <i class="bx bx-spreadsheet"></i>
             <span className="links_name">Attendance</span>
           </NavLink>
         </li>
-        {adminSelectedList ? (
-          <li>
-            <NavLink to="/leaveadmin" onClick={() => handleMenuClick(null)}>
-              <i className="bx bx-pie-chart-alt-2"></i>
-              <span className="links_name">Leave Admin</span>
-            </NavLink>
-          </li>
-        ) : (
-          <li>
-            <NavLink to="/leave" onClick={() => handleMenuClick(null)}>
-              <i className="bx bx-pie-chart-alt-2"></i>
-              <span className="links_name">Leave</span>
-            </NavLink>
-          </li>
-        )}
+        <li>
+          <NavLink to="/leaveadmin" onClick={() => handleMenuClick(null)}>
+            <i className="bx bx-pie-chart-alt-2"></i>
+            <span className="links_name">Leave Admin</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/leave" onClick={() => handleMenuClick(null)}>
+            <i className="bx bx-pie-chart-alt-2"></i>
+            <span className="links_name">Leave</span>
+          </NavLink>
+        </li>
+        {/* <li>
+          <NavLink to="/payroll" onClick={() => handleMenuClick(null)}>
+            <i className="bx bx-coin-stack"></i>
+            <span className="links_name">Payroll</span>
+          </NavLink>
+        </li> */}
         <li>
           <NavLink to="/performance" onClick={() => handleMenuClick(null)}>
+            {/*  */}
             <i class="bx bx-signal-4"></i>
             <span className="links_name">Performance</span>
           </NavLink>
@@ -181,39 +175,32 @@ function Sidebar() {
             <span className="links_name">Holiday</span>
           </NavLink>
         </li>
-
-        {adminSelectedList ? (
-          <li>
-            <NavLink to="/expenseadmin" onClick={() => handleMenuClick(null)}>
-              <i className="bx bx-food-menu"></i>
-              <span className="links_name">Expense Admin</span>
-            </NavLink>
-          </li>
-        ) : (
-          <li>
-            <NavLink to="/expensesreport" onClick={() => handleMenuClick(null)}>
-              <i className="bx bx-food-menu"></i>
-              <span className="links_name">Expense</span>
-            </NavLink>
-          </li>
-        )}
-        {adminSelectedList ? (
-          <li>
-            <NavLink to="/claimadmin" onClick={() => handleMenuClick(null)}>
-              {/* <i className="bx bx-grid-alt"></i> */}
-              <i className="bx bx-book-open"></i>
-              <span className="links_name">Claims Admin</span>
-            </NavLink>
-          </li>
-        ) : (
-          <li>
-            <NavLink to="/claim" onClick={() => handleMenuClick(null)}>
-              {/* <i className="bx bx-grid-alt"></i> */}
-              <i className="bx bx-book-open"></i>
-              <span className="links_name">Claims</span>
-            </NavLink>
-          </li>
-        )}
+        <li>
+          <NavLink to="/expensesreport" onClick={() => handleMenuClick(null)}>
+            <i className="bx bx-food-menu"></i>
+            <span className="links_name">Expense</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/expenseadmin" onClick={() => handleMenuClick(null)}>
+            <i className="bx bx-food-menu"></i>
+            <span className="links_name">Expense Admin</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/claim" onClick={() => handleMenuClick(null)}>
+            {/* <i className="bx bx-grid-alt"></i> */}
+            <i className="bx bx-book-open"></i>
+            <span className="links_name">Claims</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/claimadmin" onClick={() => handleMenuClick(null)}>
+            {/* <i className="bx bx-grid-alt"></i> */}
+            <i className="bx bx-book-open"></i>
+            <span className="links_name">Claims Admin</span>
+          </NavLink>
+        </li>
         <li>
           <NavLink to="/deductions" onClick={() => handleMenuClick(null)}>
             <i className="bx bx-grid-alt"></i>
@@ -226,17 +213,12 @@ function Sidebar() {
             <span className="links_name">Payroll</span>
           </NavLink>
         </li>
-        {!adminSelectedList && (
-          <li>
-            <NavLink
-              to="/employeepayslip"
-              onClick={() => handleMenuClick(null)}
-            >
-              <i class="bx bx-book-alt"></i>
-              <span className="links_name">Payslip</span>
-            </NavLink>
-          </li>
-        )}
+        <li>
+          <NavLink to="/employeepayslip" onClick={() => handleMenuClick(null)}>
+            <i class="bx bx-book-alt"></i>
+            <span className="links_name">Payslip</span>
+          </NavLink>
+        </li>
       </ul>
     </div>
   );
