@@ -11,7 +11,7 @@ const validationSchema = Yup.object().shape({
       jobTitle: Yup.string().required("*Referral job title is required"),
       referralContactNo: Yup.number().required(
         "*Referral contact number is required"
-      ) .typeError("*Must be a number"),
+      ).typeError("*Must be a number"),
       companyAddress: Yup.string().required("*Company address is required"),
       referralName: Yup.string().required("*Referral name is required"),
     })

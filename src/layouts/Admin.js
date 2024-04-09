@@ -95,7 +95,7 @@ function Admin({ handleLogout }) {
   return (
     <div>
       <BrowserRouter>
-      <ToastContainer position="top-center" />
+        <ToastContainer position="top-center" />
         <Sidebar />
         <section className="home-section">
           <Header onLogout={handleLogout} />
@@ -140,17 +140,29 @@ function Admin({ handleLogout }) {
                 element={<EmployeeAdminView />}
               />
 
-               {/* Company Registration */}
-               <Route path="/compantregisteration" element={<CompanyRegistration />} />
-              <Route path="/compantregisteration/add" element={<AddCompanyRegistration />} />
-              <Route path="/compantregisteration/edit" element={<EditCompanyRegistration />} />
-              <Route path="/compantregisteration/view" element={<ViewCompanyRegistration />} />
+              {/* Company Registration */}
+              <Route
+                path="/compantregisteration"
+                element={<CompanyRegistration />}
+              />
+              <Route
+                path="/compantregisteration/add"
+                element={<AddCompanyRegistration />}
+              />
+              <Route
+                path="/compantregisteration/edit"
+                element={<EditCompanyRegistration />}
+              />
+              <Route
+                path="/compantregisteration/view"
+                element={<ViewCompanyRegistration />}
+              />
 
               {/* Hrms Policy */}
               <Route path="/policy" element={<Policy />} />
               <Route path="/policy/add" element={<PolicyAdd />} />
-              <Route path="/policy/edit" element={<PolicyEdit />} />
-              <Route path="/policy/view" element={<PolicyView />} />
+              <Route path="/policy/edit/:id" element={<PolicyEdit />} />
+              <Route path="/policy/view/:id" element={<PolicyView />} />
 
               {/* Leave */}
               <Route path="/leave" element={<Leave />}></Route>

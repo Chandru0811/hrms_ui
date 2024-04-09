@@ -1,51 +1,69 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEdit, FaEye } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
+import api from "../../config/URL";
 
 const Policy = () => {
   const tableRef = useRef(null);
-
-  const datas = [
-    {
-      sno: 1,
-
-      hrpolicy: "Financy Policy",
-    },
-    {
-      sno: 2,
-
-      hrpolicy: "Marketing Policy",
-    },
-    {
-      sno: 3,
-
-      hrpolicy: "Healthy & Safety Policy ",
-    },
-    {
-      sno: 4,
-
-      hrpolicy: "Leave Policy",
-    },
-    {
-      sno: 5,
-
-      hrpolicy: "Attendance Policy",
-    },
-  ];
+  const [datas, setDatas] = useState([]);
+  // console.log(datas)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const table = $(tableRef.current).DataTable({
+    const getData = async () => {
+      try {
+        const response = await api.get("getAllHRPolicy");
+        setDatas(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data ", error);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      initializeDataTable();
+    }
+    return () => {
+      destroyDataTable();
+    };
+  }, [loading]);
+
+  const initializeDataTable = () => {
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      // DataTable already initialized, no need to initialize again
+      return;
+    }
+    $(tableRef.current).DataTable({
       responsive: true,
     });
+  };
 
-    return () => {
+  const destroyDataTable = () => {
+    const table = $(tableRef.current).DataTable();
+    if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
       table.destroy();
-    };
-  }, []);
+    }
+  };
+
+  const refreshData = async () => {
+    destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getAllHRPolicy");
+      setDatas(response.data);
+      // initializeDataTable(); // Reinitialize DataTable after successful data update
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="container my-4">
@@ -63,7 +81,6 @@ const Policy = () => {
               S No
             </th>
             <th scope="col">Hr Policy</th>
-
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -71,20 +88,23 @@ const Policy = () => {
           {datas.map((data, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
-              <td>{data.hrpolicy}</td>
+              <td>{data.hrPolicyList}</td>
               <td>
                 <div className="d-flex">
-                  <Link to={`/policy/view`}>
+                  <Link to={`/policy/view/${data.hrPolicyId}`}>
                     <button className="btn btn-sm">
                       <FaEye />
                     </button>
                   </Link>
-                  <Link to={`/policy/edit`}>
+                  <Link to={`/policy/edit/${data.hrPolicyId}`}>
                     <button className="btn btn-sm">
                       <FaEdit />
                     </button>
                   </Link>
-                  <Delete />
+                  <Delete
+                    onSuccess={refreshData}
+                    path={`/deleteHRPolicyById/${data.hrPolicyId}`}
+                  />
                 </div>
               </td>
             </tr>
