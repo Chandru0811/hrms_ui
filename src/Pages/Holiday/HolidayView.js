@@ -1,7 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
 
 function HolidayView() {
+
+  const [data, setData] = useState([]);
+  const { id } = useParams();
+  // console.log(id)
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`getPublicHolidaysById/${id}`);
+        setData(response.data);
+      } catch (error) {
+        // console.log(error.message);
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+  }, [id]);
+
   return (
     <div className="container">
     <div className="row mt-3">
@@ -19,7 +39,7 @@ function HolidayView() {
               <p className="fw-medium">Company ID</p>
             </div>
             <div className="col-6">
-              <p className="text-muted text-sm">: 01</p>
+              <p className="text-muted text-sm">: {data.pubHolidayCmpId}</p>
             </div>
           </div>
         </div>
@@ -29,7 +49,7 @@ function HolidayView() {
               <p className="fw-medium">Company Name</p>
             </div>
             <div className="col-6">
-              <p className="text-muted text-sm">: Cloud ECS Infotech</p>
+              <p className="text-muted text-sm">: {data.companyName}</p>
             </div>
           </div>
         </div>
@@ -39,7 +59,7 @@ function HolidayView() {
               <p className="fw-medium">Holiday Name</p>
             </div>
             <div className="col-6">
-              <p className="text-muted text-sm">: New Year</p>
+              <p className="text-muted text-sm">: {data.pubHolidayName}</p>
             </div>
           </div>
         </div>
@@ -49,7 +69,7 @@ function HolidayView() {
               <p className="fw-medium">Holiday Type</p>
             </div>
             <div className="col-6">
-              <p className="text-muted text-sm">: National Holiday</p>
+              <p className="text-muted text-sm">: {data.pubHolidayType}</p>
             </div>
           </div>
         </div>
@@ -59,7 +79,7 @@ function HolidayView() {
               <p className="fw-medium">Start Date</p>
             </div>
             <div className="col-6">
-              <p className="text-muted text-sm">: 01/01/2024</p>
+              <p className="text-muted text-sm">: {data.startDate}</p>
             </div>
           </div>
         </div>
@@ -69,7 +89,7 @@ function HolidayView() {
               <p className="fw-medium">End Date</p>
             </div>
             <div className="col-6">
-              <p className="text-muted text-sm">: 01/01/2024</p>
+              <p className="text-muted text-sm">: {data.endDate}</p>
             </div>
           </div>
         </div>
@@ -79,7 +99,7 @@ function HolidayView() {
               <p className="fw-medium">Country Code</p>
             </div>
             <div className="col-6">
-              <p className="text-muted text-sm">: +91 9876543210</p>
+              <p className="text-muted text-sm">: {data.pubHolidayCountryCode}</p>
             </div>
           </div>
         </div>

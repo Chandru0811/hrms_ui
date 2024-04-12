@@ -1,7 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
 
 function DepartmentView() {
+
+  const [data, setData] = useState([]);
+  const { id } = useParams();
+  // console.log(id)
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`getDepartmentById/${id}`);
+        setData(response.data);
+      } catch (error) {
+        // console.log(error.message);
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+  }, [id]);
+
   return (
     <div className="container">
       <div className="row mt-3">
@@ -20,7 +40,7 @@ function DepartmentView() {
                   <p className="fw-medium">Enter Department Name</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Health Department</p>
+                  <p className="text-muted text-sm">: {data.deptName}</p>
                 </div>
               </div>
               <div className="row mb-2">
@@ -28,7 +48,7 @@ function DepartmentView() {
                   <p className="fw-medium">Enter Department Description</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: IT Development</p>
+                  <p className="text-muted text-sm">: {data.deptDesc}</p>
                 </div>
               </div>
             </div>

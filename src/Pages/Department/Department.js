@@ -1,46 +1,103 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEdit, FaEye } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
+import api from "../../config/URL";
 
 const Department = () => {
   const tableRef = useRef(null);
-
-  const datas = [
-    {
-      id: 1,
-      departmentlist: "Financy",
-    },
-    {
-      id: 2,
-      departmentlist: "Marketing",
-    },
-    {
-      id: 3,
-      departmentlist: "Healthy & Safety",
-    },
-    {
-      id: 4,
-      departmentlist: "Accounting",
-    },
-    {
-      id: 5,
-      departmentlist: "Information Technology",
-    },
-  ];
+  const [datas, setDatas] = useState([]);
+  // console.log(datas)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const table = $(tableRef.current).DataTable({
+    const getData = async () => {
+      try {
+        const response = await api.get("getAllDepartment");
+        // console.log(response)
+        setDatas(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data ", error);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      initializeDataTable();
+    }
+    return () => {
+      destroyDataTable();
+    };
+  }, [loading]);
+
+  const initializeDataTable = () => {
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      // DataTable already initialized, no need to initialize again
+      return;
+    }
+    $(tableRef.current).DataTable({
       responsive: true,
     });
+  };
 
-    return () => {
+  const destroyDataTable = () => {
+    const table = $(tableRef.current).DataTable();
+    if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
       table.destroy();
-    };
-  }, []);
+    }
+  };
+
+  const refreshData = async () => {
+    destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getAllDepartment");
+      setDatas(response.data);
+      // initializeDataTable(); // Reinitialize DataTable after successful data update
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+    setLoading(false);
+  };
+
+  // const datas = [
+  //   {
+  //     id: 1,
+  //     departmentlist: "Financy",
+  //   },
+  //   {
+  //     id: 2,
+  //     departmentlist: "Marketing",
+  //   },
+  //   {
+  //     id: 3,
+  //     departmentlist: "Healthy & Safety",
+  //   },
+  //   {
+  //     id: 4,
+  //     departmentlist: "Accounting",
+  //   },
+  //   {
+  //     id: 5,
+  //     departmentlist: "Information Technology",
+  //   },
+  // ];
+
+  // useEffect(() => {
+  //   const table = $(tableRef.current).DataTable({
+  //     responsive: true,
+  //   });
+
+  //   return () => {
+  //     table.destroy();
+  //   };
+  // }, []);
 
   return (
     <div className="container my-4">
@@ -56,7 +113,6 @@ const Department = () => {
           <tr>
             <th scope="col">S No</th>
             <th scope="col">Department List </th>
-
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -64,19 +120,22 @@ const Department = () => {
           {datas.map((data, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
-              <td>{data.departmentlist}</td>
+              <td>{data.deptName}</td>
               <td>
-               <Link to={`/departments/view`}>
+               <Link to={`/departments/view/${data.deptId}`}>
                   <button className="btn btn-sm">
                     <FaEye />
                   </button>
                 </Link> 
-                <Link to={`/departments/edit`}>
+                <Link to={`/departments/edit/${data.deptId}`}>
                   <button className="btn btn-sm">
                     <FaEdit />
                   </button>
                 </Link>
-                <Delete />
+                <Delete 
+                onSuccess={refreshData} 
+                path={`/deleteDepartmentById/${data.deptId}`}
+                />
               </td>
             </tr>
           ))}

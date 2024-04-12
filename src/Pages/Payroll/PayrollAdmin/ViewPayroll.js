@@ -1,7 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import api from "../../../config/URL";
+import { toast } from "react-toastify";
 
 function Viewpayroll() {
+
+  const [data, setData] = useState([]);
+  const { id } = useParams();
+  // console.log(id)
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`getPayrollById/${id}`);
+        setData(response.data);
+      } catch (error) {
+        // console.log(error.message);
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+  }, [id]);
+
   return (
     <div className="container">
       <div className="row mt-3">
@@ -19,7 +39,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Employee ID</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: 2</p>
+                <p className="text-muted text-sm">: {data.payrollEmpId}</p>
               </div>
             </div>
           </div>
@@ -29,7 +49,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Employee Name</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: Nalini Sri</p>
+                <p className="text-muted text-sm">: {data.employeeName}</p>
               </div>
             </div>
           </div>
@@ -39,7 +59,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Company ID</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: 01</p>
+                <p className="text-muted text-sm">: {data.companyId}</p>
               </div>
             </div>
           </div>
@@ -49,7 +69,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Department ID</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: 003</p>
+                <p className="text-muted text-sm">: {data.departmentId}</p>
               </div>
             </div>
           </div>
@@ -59,7 +79,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Gross Pay</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: $5100</p>
+                <p className="text-muted text-sm">: {data.grossPay}</p>
               </div>
             </div>
           </div>
@@ -69,7 +89,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Bonus</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: $500</p>
+                <p className="text-muted text-sm">: {data.bonus}</p>
               </div>
             </div>
           </div>
@@ -79,7 +99,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Deduction</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: $150</p>
+                <p className="text-muted text-sm">: {data.deduction}</p>
               </div>
             </div>
           </div>
@@ -89,7 +109,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Net Pay</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: $5350</p>
+                <p className="text-muted text-sm">: {data.netPay}</p>
               </div>
             </div>
           </div>
@@ -99,7 +119,7 @@ function Viewpayroll() {
                 <p className="fw-medium">Status</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: Approved</p>
+                <p className="text-muted text-sm">: {data.payrollWorkingStatus}</p>
               </div>
             </div>
           </div>

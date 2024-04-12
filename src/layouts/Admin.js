@@ -110,11 +110,11 @@ function Admin({ handleLogout }) {
                 element={<ExitManagementAdd />}
               />
               <Route
-                path="/exitmanagement/edit"
+                path="/exitmanagement/edit/:id"
                 element={<ExitManagementEdit />}
               />
               <Route
-                path="/exitmanagement/view"
+                path="/exitmanagement/view/:id"
                 element={<ExitManagementView />}
               />
               <Route
@@ -188,11 +188,11 @@ function Admin({ handleLogout }) {
                 element={<PerformanceAppraisalAdd />}
               />
               <Route
-                path="/performance/edit"
+                path="/performance/edit/:id"
                 element={<PerformanceAppraisalEdit />}
               />
               <Route
-                path="/performance/view"
+                path="/performance/view/:id"
                 element={<PerformanceAppraisalView />}
               />
               <Route path="*" element={<Dashboard />} />
@@ -200,8 +200,8 @@ function Admin({ handleLogout }) {
               {/* Holiday  */}
               <Route path="/holiday" element={<Holiday />} />
               <Route path="/holiday/add" element={<HolidayAdd />} />
-              <Route path="/holiday/edit" element={<HolidayEdit />} />
-              <Route path="/holiday/view" element={<HolidayView />} />
+              <Route path="/holiday/edit/:id" element={<HolidayEdit />} />
+              <Route path="/holiday/view/:id" element={<HolidayView />} />
 
               {/* AttendanceHRMS */}
               <Route path="/attendancehrms" element={<Attendancehrms />} />
@@ -220,15 +220,15 @@ function Admin({ handleLogout }) {
 
               {/* {Department} */}
               <Route path="/departments" element={<Department />} />
-              <Route path="/departments/view" element={<DepartmentView />} />
-              <Route path="/departments/edit" element={<DepartmentEdit />} />
+              <Route path="/departments/view/:id" element={<DepartmentView />} />
+              <Route path="/departments/edit/:id" element={<DepartmentEdit />} />
               <Route path="/departments/add" element={<DepartmentAdd />} />
 
               {/* Payroll */}
               <Route path="/payrolladmin" element={<Payroll />} />
               <Route path="/payrolladmin/add" element={<AddPayroll />} />
-              <Route path="/payrolladmin/edit" element={<EditPayroll />} />
-              <Route path="/payrolladmin/view" element={<Viewpayroll />} />
+              <Route path="/payrolladmin/edit/:id" element={<EditPayroll />} />
+              <Route path="/payrolladmin/view/:id" element={<Viewpayroll />} />
 
               <Route path="/employeepayslip" element={<Payslip />} />
               <Route path="/employeepayslip/view" element={<ViewPayslip />} />

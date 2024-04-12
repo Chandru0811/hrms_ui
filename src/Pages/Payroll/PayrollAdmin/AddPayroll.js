@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import api from "./../../../config/URL";
 
 const validationSchema = Yup.object().shape({
-  employeeId: Yup.string().required("*Employee id is required"),
+  payrollEmpId: Yup.string().required("*Employee id is required"),
   employeeName: Yup.string().required("*Employee name is required"),
   companyId: Yup.string().required("*Company id is required"),
   departmentId: Yup.string().required("*Department id is required"),
@@ -12,13 +14,15 @@ const validationSchema = Yup.object().shape({
   bonus: Yup.string().required("*Bonus is required"),
   deduction: Yup.string().required("*Deduction is required"),
   netPay: Yup.string().required("*Net pay is required"),
-  status: Yup.string().required("*Status is required"),
+  payrollWorkingStatus: Yup.string().required("*Status is required"),
 });
 
 function AddPayroll() {
+
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      employeeId: "",
+      payrollEmpId: "",
       employeeName: "",
       companyId: "",
       departmentId: "",
@@ -26,13 +30,27 @@ function AddPayroll() {
       bonus: "",
       deduction: "",
       netPay: "",
-      status: "",
+      payrollWorkingStatus: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      // console.log(values);
+      // values.payrollClaimsId = 10;
+      try {
+        const response = await api.post("addPayroll", values);
+        // console.log(response)
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/payrolladmin");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error("Error Submiting Data, ", error);
+      }
     },
   });
+
   return (
     <div className="container-fluid">
       <form onSubmit={formik.handleSubmit}>
@@ -60,17 +78,17 @@ function AddPayroll() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.employeeId && formik.errors.employeeId
+                    formik.touched.payrollEmpId && formik.errors.payrollEmpId
                       ? "is-invalid"
                       : ""
                   }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("employeeId")}
+                  {...formik.getFieldProps("payrollEmpId")}
                 />
-                {formik.touched.employeeId && formik.errors.employeeId && (
+                {formik.touched.payrollEmpId && formik.errors.payrollEmpId && (
                   <div className="invalid-feedback">
-                    {formik.errors.employeeId}
+                    {formik.errors.payrollEmpId}
                   </div>
                 )}
               </div>
@@ -238,22 +256,22 @@ function AddPayroll() {
                   Status<span className="text-danger">*</span>
                 </lable>
                 <select
-                  {...formik.getFieldProps("status")}
+                  {...formik.getFieldProps("payrollWorkingStatus")}
                   className={`form-select    ${
-                    formik.touched.status && formik.errors.status
+                    formik.touched.payrollWorkingStatus && formik.errors.payrollWorkingStatus
                       ? "is-invalid"
                       : ""
                   }`}
                   aria-label="Default select example"
                 >
-                  <option selected></option>
+                  <option ></option>
                   <option value="Apporved">Apporved</option>
                   <option value="Rejected">Rejected</option>
                   <option value="Pending">Pending</option>
                 </select>
 
-                {formik.touched.status && formik.errors.status && (
-                  <div className="invalid-feedback">{formik.errors.status}</div>
+                {formik.touched.payrollWorkingStatus && formik.errors.payrollWorkingStatus && (
+                  <div className="invalid-feedback">{formik.errors.payrollWorkingStatus}</div>
                 )}
               </div>
             </div>

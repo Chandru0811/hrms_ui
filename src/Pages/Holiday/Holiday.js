@@ -5,6 +5,7 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
+import api from "../../config/URL";
 
 const Holiday = () => {
   const [viewAction, setViewAction] = useState(false);
@@ -15,37 +16,61 @@ const Holiday = () => {
     }
   }, [userName, setViewAction]);
   const tableRef = useRef(null);
-
-  const datas = [
-    {
-      id: 1,
-      companyID: "01",
-      companyName: "Cloud ECS Infotech",
-      holidayName: "New Year",
-      startDate: "2024-01-01",
-      endDate: "2024-01-01",
-      day: "Monday",
-    },
-    {
-      id: 2,
-      companyID: "02",
-      companyName: "ECS Cloud Technology",
-      holidayName: "Chinese New Year",
-      startDate: "2024-20-10",
-      endDate: "2024-20-12",
-      day: "Sat,Sun,Mon",
-    },
-  ];
+  const [datas, setDatas] = useState([]);
+  // console.log(datas)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const table = $(tableRef.current).DataTable({
+    const getData = async () => {
+      try {
+        const response = await api.get("getAllPublicHolidays");
+        setDatas(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data ", error);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      initializeDataTable();
+    }
+    return () => {
+      destroyDataTable();
+    };
+  }, [loading]);
+
+  const initializeDataTable = () => {
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      // DataTable already initialized, no need to initialize again
+      return;
+    }
+    $(tableRef.current).DataTable({
       responsive: true,
     });
+  };
 
-    return () => {
+  const destroyDataTable = () => {
+    const table = $(tableRef.current).DataTable();
+    if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
       table.destroy();
-    };
-  }, []);
+    }
+  };
+
+  const refreshData = async () => {
+    destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getAllPublicHolidays");
+      setDatas(response.data);
+      // initializeDataTable(); // Reinitialize DataTable after successful data update
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="container">
@@ -71,9 +96,9 @@ const Holiday = () => {
           {datas.map((data, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
-              <td>{data.companyID}</td>
+              <td>{data.pubHolidayCmpId}</td>
               <td>{data.companyName}</td>
-              <td>{data.holidayName}</td>
+              <td>{data.pubHolidayName}</td>
               <td>{data.startDate}</td>
               <td>
                 <div className="d-flex">
@@ -87,17 +112,19 @@ const Holiday = () => {
                     </span>
                   ) : (
                     <span>
-                      <Link to={`/Holiday/view`}>
+                      <Link to={`/Holiday/view/${data.pubHolidayId}`}>
                         <button className="btn btn-sm">
                           <FaEye />
                         </button>
                       </Link>
-                      <Link to={`/Holiday/edit`}>
+                      <Link to={`/Holiday/edit/${data.pubHolidayId}`}>
                         <button className="btn btn-sm">
                           <FaEdit />
                         </button>
                       </Link>
-                      <Delete />
+                      <Delete 
+                      onSuccess={refreshData}
+                      path={`/deletePublicHolidaysById/${data.pubHolidayId}`} />
                     </span>
                   )}
                 </div>
