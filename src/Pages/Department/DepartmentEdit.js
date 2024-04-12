@@ -1,26 +1,58 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import api from "../../config/URL";
 
 function DepartmentEdit() {
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const validationSchema = Yup.object({
-    departmentName: Yup.string().required("*Department name is required"),
-    departmentDescription: Yup.string().required(
-      "*Department description is required"
-    ),
+    deptName: Yup.string().required("*Department name is required"),
+    deptDesc: Yup.string().required("*Department description is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      departmentName: "Health Department",
-      departmentDescription: "IT Department",
+      deptName: "",
+      deptDesc: "",
     },
     validationSchema: validationSchema, // Assign the validation schema
     onSubmit: async (values) => {
-      console.log(values);
+      // console.log(values);
+      try {
+        const response = await api.put(`updateDepartmentById/${id}`, values, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/departments");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error(error);
+      }
     },
   });
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/getDepartmentById/${id}`);
+        formik.setValues(response.data);
+      } catch (error) {
+        toast.error("Error Fetching Data ", error);
+      }
+    };
+    getData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="container-fluid">
@@ -47,17 +79,17 @@ function DepartmentEdit() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.departmentName &&
-                    formik.errors.departmentName
+                    formik.touched.deptName &&
+                    formik.errors.deptName
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("departmentName")}
+                  {...formik.getFieldProps("deptName")}
                 />
-                {formik.touched.departmentName &&
-                  formik.errors.departmentName && (
+                {formik.touched.deptName &&
+                  formik.errors.deptName && (
                     <div className="invalid-feedback">
-                      {formik.errors.departmentName}
+                      {formik.errors.deptName}
                     </div>
                   )}
               </div>
@@ -72,17 +104,17 @@ function DepartmentEdit() {
                   id="floatingTextarea2"
                   style={{ height: "100px" }}
                   className={`form-control  ${
-                    formik.touched.departmentDescription &&
-                    formik.errors.departmentDescription
+                    formik.touched.deptDesc &&
+                    formik.errors.deptDesc
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("departmentDescription")}
+                  {...formik.getFieldProps("deptDesc")}
                 ></textarea>
-                {formik.touched.departmentDescription &&
-                  formik.errors.departmentDescription && (
+                {formik.touched.deptDesc &&
+                  formik.errors.deptDesc && (
                     <div className="invalid-feedback">
-                      {formik.errors.departmentDescription}
+                      {formik.errors.deptDesc}
                     </div>
                   )}
               </div>
