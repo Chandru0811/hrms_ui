@@ -2,6 +2,7 @@ import React from "react";
 import Logo from "../../../assets/images/ecs_logo.png";
 import "../../../styles/custom.css";
 import { Link } from "react-router-dom";
+import DownloadPDF from "./DownloadPDF";
 
 function Payslip() {
   return (
@@ -243,11 +244,8 @@ function Payslip() {
                 <Link to="/">
                   <button className="btn btn-sm btn-border mx-2">Back</button>
                 </Link>
-                <Link to="/">
-                  <button className="btn btn-sm btn-button1 mx-2">
-                    Download
-                  </button>
-                </Link>
+
+                <DownloadPDF />
               </div>
             </div>
           </div>

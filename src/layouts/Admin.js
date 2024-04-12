@@ -79,6 +79,7 @@ import AddCompanyRegistration from "../Pages/Company_Registration/AddCompanyRegi
 import EditCompanyRegistration from "../Pages/Company_Registration/EditCompanyRegistration";
 import ViewCompanyRegistration from "../Pages/Company_Registration/ViewCompanyRegistration";
 import { ToastContainer } from "react-toastify";
+import DownloadPDF from "../Pages/Payroll/EmployeePayslip/DownloadPDF";
 
 function Admin({ handleLogout }) {
   useEffect(() => {
@@ -102,6 +103,8 @@ function Admin({ handleLogout }) {
           <div className="home-content" style={{ minHeight: "95vh" }}>
             <Routes>
               <Route path="/" element={<Dashboard />} />
+
+              <Route path="/downloadpdf" element={<DownloadPDF />} />
 
               {/* Exit Management */}
               <Route path="/exitmanagement" element={<ExitManagement />} />
