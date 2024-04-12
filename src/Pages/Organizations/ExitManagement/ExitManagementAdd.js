@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function ExitManagementAdd() {
-
   const [approvalStatus, setApprovalStatus] = useState("");
   const [currentDate, setCurrentDate] = useState("");
 
@@ -16,97 +15,97 @@ function ExitManagementAdd() {
       <h5 class="text-start my-5">Add Exit Management</h5>
       <div className="container">
         <div className="row">
-        <div className="container">
-      <div className="row">
-        <div class="col-md-6 col-12 mb-2">
-          <lable className="form-lable">Employee ID</lable>
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              className={`form-control iconInput `}
-              placeholder=""
-              value={"23"}
-            />
+          <div className="container">
+            <div className="row">
+              <div class="col-md-6 col-12 mb-2">
+                <lable className="form-lable">Employee ID</lable>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    className={`form-control iconInput `}
+                    placeholder=""
+                    value={"23"}
+                  />
+                </div>
+              </div>
+              <div class="col-md-6 col-12 mb-2">
+                <lable class="form-lable">Employee Name</lable>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    className={`form-control iconInput `}
+                    placeholder=""
+                    value={"Raguvaran"}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div class="col-md-6 col-12 mb-2">
+                <lable className="form-lable">Company Id</lable>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    className={`form-control iconInput `}
+                    value={"EMP#01"}
+                  />
+                </div>
+              </div>
+              <div class="col-md-6 col-12 mb-2">
+                <lable class="form-lable">Reason For Relieving</lable>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    className={`form-control iconInput`}
+                    placeholder=""
+                    value={"Personal Issue"}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div class="col-md-6 col-12 mb-2">
+                <lable className="form-lable">Date of Relieving</lable>
+                <div class="input-group mb-3">
+                  <input
+                    type="date"
+                    className={`form-control iconInput`}
+                    value={"2024-04-03"}
+                  />
+                </div>
+              </div>
+              <div class="col-md-6 col-12 mb-2">
+                <lable class="form-lable">Date Of Apply </lable>
+                <div class="input-group mb-3">
+                  <input
+                    type="date"
+                    className={`form-control iconInput`}
+                    value={"2024-04-03"}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mb-5">
+              <div class="col-md-6 col-12 mb-2">
+                <lable className="form-lable">Notice Period</lable>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    className={`form-control iconInput `}
+                    placeholder=""
+                    value={"2 Months"}
+                  />
+                </div>
+              </div>
+              <div class="col-md-6 col-12 mb-2"></div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 col-12 mb-2">
-          <lable class="form-lable">Employee Name</lable>
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              className={`form-control iconInput `}
-              placeholder=""
-              value={"Raguvaran"}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div class="col-md-6 col-12 mb-2">
-          <lable className="form-lable">Company Id</lable>
-          <div class="input-group mb-3">
-            <input type="text" className={`form-control iconInput `}
-            value={"EMP#01"}
-            />
-          </div>
-        </div>
-        <div class="col-md-6 col-12 mb-2">
-          <lable class="form-lable">Reason For Relieving</lable>
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              className={`form-control iconInput`}
-              placeholder=""
-              value={"Personal Issue"}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div class="col-md-6 col-12 mb-2">
-          <lable className="form-lable">Date of Relieving</lable>
-          <div class="input-group mb-3">
-            <input
-              type="date"
-              className={`form-control iconInput`}
-              value={"2024-04-03"}
-            />
-          </div>
-        </div>
-        <div class="col-md-6 col-12 mb-2">
-          <lable class="form-lable">Date Of Apply </lable>
-          <div class="input-group mb-3">
-          <input
-              type="date"
-              className={`form-control iconInput`}
-              value={"2024-04-03"}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="row mb-5">
-        <div class="col-md-6 col-12 mb-2">
-          <lable className="form-lable">Notice Period</lable>
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              className={`form-control iconInput `}
-              placeholder=""
-              value={"2 Months"}
-            />
-          </div>
-        </div>
-        <div class="col-md-6 col-12 mb-2"></div>
-      </div>
-    
-    </div>
           <div class="col-md-6 col-12 mb-2">
             <lable className="form-lable">Employee ID</lable>
             <div class="input-group mb-3">
               <input
                 type="text"
                 className={`form-control iconInput `}
-                
                 placeholder=""
               />
             </div>
@@ -161,17 +160,16 @@ function ExitManagementAdd() {
               />
             </div>
           </div>
-          
         </div>
         <div className="row">
-        <div class="col-md-6 col-12 mb-2">
+          <div class="col-md-6 col-12 mb-2">
             <lable class="form-lable">Approval Status </lable>
             <div class="input-group mb-3">
               <select
-               className="form-select iconInput"
-               aria-label="Default select example"
-               value={approvalStatus}
-               onChange={handleApprovalStatusChange}
+                className="form-select iconInput"
+                aria-label="Default select example"
+                value={approvalStatus}
+                onChange={handleApprovalStatusChange}
               >
                 <option selected></option>
                 <option value="Approved">Approved</option>
@@ -180,15 +178,15 @@ function ExitManagementAdd() {
               </select>
             </div>
           </div>
-            <div class="col-md-6 col-12 mb-2">
+          <div class="col-md-6 col-12 mb-2">
             <lable className="form-lable">Current Date</lable>
             <div class="input-group mb-3">
               <input
-               type="date"
-               className="form-control iconInput"
-               value={currentDate}
-               readOnly
-             />
+                type="date"
+                className="form-control iconInput"
+                value={currentDate}
+                readOnly
+              />
             </div>
           </div>
         </div>

@@ -1,33 +1,52 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
 
-export default function ExitManagementAdmin() {
+function ExitManagementAdmin() {
+  const navigate = useNavigate();
   const validationSchema = Yup.object({
-    employeeID: Yup.string().required("*Employee ID is required"),
-    employeeName: Yup.string().required("*Employee name is required"),
-    companyID: Yup.string().required("*Company ID is required"),
+    exitMgmtEmpId: Yup.string().required("*Employee ID is required"),
+    exitMgmtEmpName: Yup.string().required("*Employee name is required"),
+    exitMgmtCmpId: Yup.string().required("*Company ID is required"),
     reasonForRelieving: Yup.string().required(
       "*Reason for relieving is required"
     ),
     dateOfRelieving: Yup.string().required("*Select the date of relieving"),
-    dateOfApply: Yup.string().required("*Select the date of apply"),
-    noticePeriod: Yup.string().required("*Notice period is required"),
+    exitMgmtDateOfApply: Yup.string().required("*Select the date of apply"),
+    exitMgmtNoticePeriod: Yup.string().required("*Notice period is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      employeeID: "",
-      employeeName: "",
-      companyID: "",
+      exitMgmtEmpId: "",
+      exitMgmtEmpName: "",
+      exitMgmtCmpId: "",
       reasonForRelieving: "",
       dateOfRelieving: "",
-      dateOfApply: "",
-      noticePeriod: "",
+      exitMgmtDateOfApply: "",
+      exitMgmtNoticePeriod: "",
     },
-    validationSchema: validationSchema, // Assign the validation schema
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+      // console.log(values);
+      values.exitMgmtCmpId = 106;
+      values.exitMgmtEmpId = "106-01";
+      values.relievingApprovalStatus = "Pending";
+      try {
+        const response = await api.post("addExitManagement", values);
+        // console.log(response)
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/exitmanagement");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error("Error Submiting Data, ", error);
+      }
     },
   });
 
@@ -44,24 +63,30 @@ export default function ExitManagementAdmin() {
               </div>
             </div>
             <div className="row mt-3">
-              <div class="col-md-6 col-12 mb-3">
+            <div className="col-md-6 col-12 mb-3">
                 <lable className="form-lable">
-                  Employee ID<span className="text-danger">*</span>
+                Employee ID<span className="text-danger">*</span>
                 </lable>
-                <input
-                  type="text"
-                  className={`form-control  ${
-                    formik.touched.employeeID && formik.errors.employeeID
+                <select
+                  {...formik.getFieldProps("exitMgmtEmpId")}
+                  className={`form-select  ${
+                    formik.touched.exitMgmtEmpId &&
+                    formik.errors.exitMgmtEmpId
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("employeeID")}
-                />
-                {formik.touched.employeeID && formik.errors.employeeID && (
-                  <div className="invalid-feedback">
-                    {formik.errors.employeeID}
-                  </div>
-                )}
+                  aria-label="Default select example"
+                >
+                  <option></option>
+                  <option value="106-01">106-01</option>
+                  <option value="106-02">106-02</option>
+                </select>
+                {formik.touched.exitMgmtEmpId &&
+                  formik.errors.exitMgmtEmpId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.exitMgmtEmpId}
+                    </div>
+                  )}
               </div>
               <div class="col-md-6 col-12 mb-3">
                 <lable class="form-lable">
@@ -70,15 +95,15 @@ export default function ExitManagementAdmin() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.employeeName && formik.errors.employeeName
+                    formik.touched.exitMgmtEmpName && formik.errors.exitMgmtEmpName
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("employeeName")}
+                  {...formik.getFieldProps("exitMgmtEmpName")}
                 />
-                {formik.touched.employeeName && formik.errors.employeeName && (
+                {formik.touched.exitMgmtEmpName && formik.errors.exitMgmtEmpName && (
                   <div className="invalid-feedback">
-                    {formik.errors.employeeName}
+                    {formik.errors.exitMgmtEmpName}
                   </div>
                 )}
               </div>
@@ -89,15 +114,15 @@ export default function ExitManagementAdmin() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.companyID && formik.errors.companyID
+                    formik.touched.exitMgmtCmpId && formik.errors.exitMgmtCmpId
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("companyID")}
+                  {...formik.getFieldProps("exitMgmtCmpId")}
                 />
-                {formik.touched.companyID && formik.errors.companyID && (
+                {formik.touched.exitMgmtCmpId && formik.errors.exitMgmtCmpId && (
                   <div className="invalid-feedback">
-                    {formik.errors.companyID}
+                    {formik.errors.exitMgmtCmpId}
                   </div>
                 )}
               </div>
@@ -150,15 +175,15 @@ export default function ExitManagementAdmin() {
                 <input
                   type="date"
                   className={`form-control  ${
-                    formik.touched.dateOfApply && formik.errors.dateOfApply
+                    formik.touched.exitMgmtDateOfApply && formik.errors.exitMgmtDateOfApply
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("dateOfApply")}
+                  {...formik.getFieldProps("exitMgmtDateOfApply")}
                 />
-                {formik.touched.dateOfApply && formik.errors.dateOfApply && (
+                {formik.touched.exitMgmtDateOfApply && formik.errors.exitMgmtDateOfApply && (
                   <div className="invalid-feedback">
-                    {formik.errors.dateOfApply}
+                    {formik.errors.exitMgmtDateOfApply}
                   </div>
                 )}
               </div>
@@ -169,15 +194,15 @@ export default function ExitManagementAdmin() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.noticePeriod && formik.errors.noticePeriod
+                    formik.touched.exitMgmtNoticePeriod && formik.errors.exitMgmtNoticePeriod
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("noticePeriod")}
+                  {...formik.getFieldProps("exitMgmtNoticePeriod")}
                 />
-                {formik.touched.noticePeriod && formik.errors.noticePeriod && (
+                {formik.touched.exitMgmtNoticePeriod && formik.errors.exitMgmtNoticePeriod && (
                   <div className="invalid-feedback">
-                    {formik.errors.noticePeriod}
+                    {formik.errors.exitMgmtNoticePeriod}
                   </div>
                 )}
               </div>
@@ -188,3 +213,5 @@ export default function ExitManagementAdmin() {
     </section>
   );
 }
+
+export default ExitManagementAdmin;

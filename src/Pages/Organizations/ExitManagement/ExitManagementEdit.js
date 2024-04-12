@@ -1,50 +1,102 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import api from "../../../config/URL";
 
 function ExitManagementEdit() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const validationSchema = Yup.object({
-    employeeID: Yup.string().required("*Employee ID is required"),
-    employeeName: Yup.string().required("*Employee name is required"),
-    companyID: Yup.string().required("*Company ID is required"),
-    dateOfApply: Yup.string().required("*Select the date of apply"),
-    noticePeriod: Yup.string().required("*Notice period is required"),
-    currentDate: Yup.string().required("*Select the current date"),
+    exitMgmtEmpId: Yup.string().required("*Employee ID is required"),
+    exitMgmtEmpName: Yup.string().required("*Employee name is required"),
+    exitMgmtCmpId: Yup.string().required("*Company ID is required"),
+    exitMgmtDateOfApply: Yup.string().required("*Select the date of apply"),
+    exitMgmtNoticePeriod: Yup.string().required("*Notice period is required"),
+    // currentDate: Yup.string().required("*Select the current date"),
     reasonForRelieving: Yup.string().required(
       "*Reason for relieving is required"
     ),
     dateOfRelieving: Yup.string().required("*Select the date of relieving"),
-    relievingApprover: Yup.string().required(
+    relievingApproverName: Yup.string().required(
       "*Relieving approver name is required"
     ),
-    relievingApproverID: Yup.string().required(
+    relievingApproverId: Yup.string().required(
       "*Relieving approver id is required"
     ),
-    approvalStatus: Yup.string().required("*Select the approval status"),
+    relievingApprovalStatus: Yup.string().required(
+      "*Select the approval status"
+    ),
     assetsReturned: Yup.string().required("*Select the assets returned"),
   });
 
   const formik = useFormik({
     initialValues: {
-      employeeID: "ECS78",
-      employeeName: "Suriya",
-      companyID: "ECS236",
-      dateOfApply: "2024-01-10",
-      noticePeriod: "45 Days",
-      currentDate: "2024-03-14",
-      reasonForRelieving: "Career Growth",
-      dateOfRelieving: "2024-03-11",
-      relievingApprover: "",
-      relievingApproverID: "",
-      approvalStatus: "",
+      exitMgmtEmpId: "",
+      exitMgmtCmpId: "",
+      exitMgmtEmpName: "",
+      exitMgmtDateOfApply: "",
+      exitMgmtNoticePeriod: "",
+      reasonForRelieving: "",
+      dateOfRelieving: "",
+      relievingApproverName: "",
+
+      relievingApproverId: "",
+      relievingApprovalStatus: "",
       assetsReturned: "",
     },
-    validationSchema: validationSchema, 
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+      // console.log(values);
+      try {
+        const response = await api.put(
+          `updateExitManagementById/${id}`,
+          values,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/exitmanagement");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error(error);
+      }
     },
   });
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/getExitManagementById/${id}`);
+        const formattedData = {
+          ...response.data,
+          exitMgmtDateOfApply: response.data.exitMgmtDateOfApply
+            ? new Date(response.data.exitMgmtDateOfApply)
+                .toISOString()
+                .substring(0, 10)
+            : null,
+          dateOfRelieving: response.data.dateOfRelieving
+            ? new Date(response.data.dateOfRelieving)
+                .toISOString()
+                .substring(0, 10)
+            : null,
+        };
+        formik.setValues(formattedData);
+      } catch (error) {
+        toast.error("Error Fetching Data ", error);
+      }
+    };
+
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className="ExitAdd p-3">
@@ -72,17 +124,18 @@ function ExitManagementEdit() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.employeeID && formik.errors.employeeID
+                    formik.touched.exitMgmtEmpId && formik.errors.exitMgmtEmpId
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("employeeID")}
+                  {...formik.getFieldProps("exitMgmtEmpId")}
                 />
-                {formik.touched.employeeID && formik.errors.employeeID && (
-                  <div className="invalid-feedback">
-                    {formik.errors.employeeID}
-                  </div>
-                )}
+                {formik.touched.exitMgmtEmpId &&
+                  formik.errors.exitMgmtEmpId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.exitMgmtEmpId}
+                    </div>
+                  )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <lable className="form-lable">
@@ -91,17 +144,19 @@ function ExitManagementEdit() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.employeeName && formik.errors.employeeName
+                    formik.touched.exitMgmtEmpName &&
+                    formik.errors.exitMgmtEmpName
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("employeeName")}
+                  {...formik.getFieldProps("exitMgmtEmpName")}
                 />
-                {formik.touched.employeeName && formik.errors.employeeName && (
-                  <div className="invalid-feedback">
-                    {formik.errors.employeeName}
-                  </div>
-                )}
+                {formik.touched.exitMgmtEmpName &&
+                  formik.errors.exitMgmtEmpName && (
+                    <div className="invalid-feedback">
+                      {formik.errors.exitMgmtEmpName}
+                    </div>
+                  )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <lable className="form-lable">
@@ -110,17 +165,18 @@ function ExitManagementEdit() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.companyID && formik.errors.companyID
+                    formik.touched.exitMgmtCmpId && formik.errors.exitMgmtCmpId
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("companyID")}
+                  {...formik.getFieldProps("exitMgmtCmpId")}
                 />
-                {formik.touched.companyID && formik.errors.companyID && (
-                  <div className="invalid-feedback">
-                    {formik.errors.companyID}
-                  </div>
-                )}
+                {formik.touched.exitMgmtCmpId &&
+                  formik.errors.exitMgmtCmpId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.exitMgmtCmpId}
+                    </div>
+                  )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <lable className="form-lable">
@@ -129,17 +185,19 @@ function ExitManagementEdit() {
                 <input
                   type="date"
                   className={`form-control  ${
-                    formik.touched.dateOfApply && formik.errors.dateOfApply
+                    formik.touched.exitMgmtDateOfApply &&
+                    formik.errors.exitMgmtDateOfApply
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("dateOfApply")}
+                  {...formik.getFieldProps("exitMgmtDateOfApply")}
                 />
-                {formik.touched.dateOfApply && formik.errors.dateOfApply && (
-                  <div className="invalid-feedback">
-                    {formik.errors.dateOfApply}
-                  </div>
-                )}
+                {formik.touched.exitMgmtDateOfApply &&
+                  formik.errors.exitMgmtDateOfApply && (
+                    <div className="invalid-feedback">
+                      {formik.errors.exitMgmtDateOfApply}
+                    </div>
+                  )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <lable className="form-lable">
@@ -148,19 +206,21 @@ function ExitManagementEdit() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.noticePeriod && formik.errors.noticePeriod
+                    formik.touched.exitMgmtNoticePeriod &&
+                    formik.errors.exitMgmtNoticePeriod
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("noticePeriod")}
+                  {...formik.getFieldProps("exitMgmtNoticePeriod")}
                 />
-                {formik.touched.noticePeriod && formik.errors.noticePeriod && (
-                  <div className="invalid-feedback">
-                    {formik.errors.noticePeriod}
-                  </div>
-                )}
+                {formik.touched.exitMgmtNoticePeriod &&
+                  formik.errors.exitMgmtNoticePeriod && (
+                    <div className="invalid-feedback">
+                      {formik.errors.exitMgmtNoticePeriod}
+                    </div>
+                  )}
               </div>
-              <div className="col-md-6 col-12 mb-3">
+              {/* <div className="col-md-6 col-12 mb-3">
                 <lable className="form-lable">
                   Current Date<span className="text-danger">*</span>
                 </lable>
@@ -178,7 +238,7 @@ function ExitManagementEdit() {
                     {formik.errors.currentDate}
                   </div>
                 )}
-              </div>
+              </div> */}
               <div className="col-md-6 col-12 mb-3">
                 <lable className="form-lable">
                   Reason For Relieving<span className="text-danger">*</span>
@@ -228,17 +288,17 @@ function ExitManagementEdit() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.relievingApproverID &&
-                    formik.errors.relievingApproverID
+                    formik.touched.relievingApproverId &&
+                    formik.errors.relievingApproverId
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("relievingApproverID")}
+                  {...formik.getFieldProps("relievingApproverId")}
                 />
-                {formik.touched.relievingApproverID &&
-                  formik.errors.relievingApproverID && (
+                {formik.touched.relievingApproverId &&
+                  formik.errors.relievingApproverId && (
                     <div className="invalid-feedback">
-                      {formik.errors.relievingApproverID}
+                      {formik.errors.relievingApproverId}
                     </div>
                   )}
               </div>
@@ -249,17 +309,17 @@ function ExitManagementEdit() {
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.relievingApprover &&
-                    formik.errors.relievingApprover
+                    formik.touched.relievingApproverName &&
+                    formik.errors.relievingApproverName
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("relievingApprover")}
+                  {...formik.getFieldProps("relievingApproverName")}
                 />
-                {formik.touched.relievingApprover &&
-                  formik.errors.relievingApprover && (
+                {formik.touched.relievingApproverName &&
+                  formik.errors.relievingApproverName && (
                     <div className="invalid-feedback">
-                      {formik.errors.relievingApprover}
+                      {formik.errors.relievingApproverName}
                     </div>
                   )}
               </div>
@@ -271,22 +331,23 @@ function ExitManagementEdit() {
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      value="Yes"
+                      value="true"
                       name="assetsReturned"
                       type="radio"
                       onChange={formik.handleChange}
-                      checked={formik.values.assetsReturned === "Yes"}
+                      checked={formik.values.assetsReturned === "true"}
                     />
                     <label className="form-check-label">Yes</label>
                   </div>
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
-                      value="No"
+                      value="false"
                       name="assetsReturned"
                       type="radio"
                       onChange={formik.handleChange}
-                      checked={formik.values.assetsReturned === "No"}
+                      checked={formik.values.assetsReturned === "false"}
+                      
                     />
                     <label className="form-check-label">No</label>
                   </div>
@@ -303,23 +364,25 @@ function ExitManagementEdit() {
                   Approval Status<span className="text-danger">*</span>
                 </lable>
                 <select
-                  {...formik.getFieldProps("approvalStatus")}
+                  {...formik.getFieldProps("relievingApprovalStatus")}
                   className={`form-select  ${
-                    formik.touched.approvalStatus &&
-                    formik.errors.approvalStatus
+                    formik.touched.relievingApprovalStatus &&
+                    formik.errors.relievingApprovalStatus
                       ? "is-invalid"
                       : ""
                   }`}
                   aria-label="Default select example"
                 >
-                  <option value="Pending" selected>Pending</option>
+                  <option value="Pending" selected>
+                    Pending
+                  </option>
                   <option value="Approved">Approved</option>
                   <option value="Rejected">Rejected</option>
                 </select>
-                {formik.touched.approvalStatus &&
-                  formik.errors.approvalStatus && (
+                {formik.touched.relievingApprovalStatus &&
+                  formik.errors.relievingApprovalStatus && (
                     <div className="invalid-feedback">
-                      {formik.errors.approvalStatus}
+                      {formik.errors.relievingApprovalStatus}
                     </div>
                   )}
               </div>

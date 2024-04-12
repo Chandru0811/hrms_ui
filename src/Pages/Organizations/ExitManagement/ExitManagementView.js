@@ -1,7 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../../../config/URL";
 
 function ExitManagementView() {
+  const [data, setData] = useState([]);
+  const { id } = useParams();
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`getExitManagementById/${id}`);
+        setData(response.data);
+      } catch (error) {
+        // console.log(error.message);
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+  }, [id]);
   return (
     <div className="container">
       <div className="row mt-3">
@@ -20,7 +37,7 @@ function ExitManagementView() {
                   <p className="fw-medium">Employee ID</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 02</p>
+                  <p className="text-muted text-sm">: {data.exitMgmtEmpId}</p>
                 </div>
               </div>
             </div>
@@ -30,7 +47,7 @@ function ExitManagementView() {
                   <p className="fw-medium">Employee Name</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Suriya</p>
+                  <p className="text-muted text-sm">: {data.exitMgmtEmpId}</p>
                 </div>
               </div>
             </div>
@@ -40,7 +57,7 @@ function ExitManagementView() {
                   <p className="fw-medium">Company ID</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: ECS041</p>
+                  <p className="text-muted text-sm">: {data.exitMgmtCmpId}</p>
                 </div>
               </div>
             </div>
@@ -50,7 +67,12 @@ function ExitManagementView() {
                   <p className="fw-medium">Date Of Apply</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 01-03-2024</p>
+                  <p className="text-muted text-sm">
+                    :{" "}
+                    {data.exitMgmtDateOfApply
+                      ? data.exitMgmtDateOfApply.substring(0, 10)
+                      : ""}
+                  </p>
                 </div>
               </div>
             </div>
@@ -60,11 +82,13 @@ function ExitManagementView() {
                   <p className="fw-medium">Notice Period</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 45 Days</p>
+                  <p className="text-muted text-sm">
+                    : {data.exitMgmtNoticePeriod}
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <div className="row   mb-2">
                 <div className="col-6 ">
                   <p className="fw-medium">Current Date</p>
@@ -73,14 +97,16 @@ function ExitManagementView() {
                   <p className="text-muted text-sm">: 11-03-2024</p>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="col-md-6 col-12">
               <div className="row  mb-2 ">
                 <div className="col-6  ">
                   <p className="fw-medium">Reason For Relieving</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Career Change</p>
+                  <p className="text-muted text-sm">
+                    : {data.reasonForRelieving}
+                  </p>
                 </div>
               </div>
             </div>
@@ -90,7 +116,12 @@ function ExitManagementView() {
                   <p className="fw-medium">Date Of Relieving</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 10-05-2024</p>
+                  <p className="text-muted text-sm">
+                    :{" "}
+                    {data.dateOfRelieving
+                      ? data.dateOfRelieving.substring(0, 10)
+                      : ""}
+                  </p>
                 </div>
               </div>
             </div>
@@ -100,7 +131,9 @@ function ExitManagementView() {
                   <p className="fw-medium">Relieving Approval</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: </p>
+                  <p className="text-muted text-sm">
+                    : {data.relievingApproverName}
+                  </p>
                 </div>
               </div>
             </div>
@@ -110,7 +143,9 @@ function ExitManagementView() {
                   <p className="fw-medium">Relieving Approval ID</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: </p>
+                  <p className="text-muted text-sm">
+                    : {data.relievingApproverId}
+                  </p>
                 </div>
               </div>
             </div>
@@ -120,7 +155,9 @@ function ExitManagementView() {
                   <p className="fw-medium">Approval Status</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: </p>
+                  <p className="text-muted text-sm">
+                    : {data.relievingApprovalStatus}
+                  </p>
                 </div>
               </div>
             </div>
@@ -130,14 +167,15 @@ function ExitManagementView() {
                   <p className="fw-medium">Assets Returned</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: </p>
+                  <p className="text-muted text-sm">
+                    : {data.assetsReturned ? "Yes" : "No"}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-     
     </div>
   );
 }

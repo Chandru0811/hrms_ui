@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import api from "../../config/URL";
 
-export default function PolicyAdd() {
+ function PolicyAdd() {
   const navigate = useNavigate();
   const validationSchema = Yup.object({
     // hrPolicyCmpId: Yup.string().required("*Company id is required"),
@@ -128,3 +128,4 @@ export default function PolicyAdd() {
     </div>
   );
 }
+export default PolicyAdd;
