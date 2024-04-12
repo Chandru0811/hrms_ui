@@ -6,16 +6,24 @@ import Logo from "../../assets/images/Logo.png";
 
 function Sidebar() {
   const [activeMenu, setActiveMenu] = useState(null);
+  const userRole = sessionStorage.getItem("userName")
+
   const [menuItems, setMenuItems] = useState([
     {
       title: "Organizations",
       icon: "bx bx-buildings",
       isOpen: false,
       subMenus: [
-        { title: "HR Policy", path: "/policy" },
-        { title: "Departments", path: "/departments" },
-        { title: "Exit Management Employee", path: "/exitmanagementadmin" },
-        { title: "Exit Management", path: "/exitmanagement" },
+        ...(userRole === 'admin' || userRole === 'super admin'
+          ? [
+            { title: "Company Registration", path: "/compantregisteration" },
+            { title: "HR Policy", path: "/policy" },
+            { title: "Departments", path: "/departments" },
+            { title: "Exit Management", path: "/exitmanagement" },
+          ]
+          : []
+        ),
+        { title: "Exit Management", path: "/exitmanagementadmin" },
       ],
     },
   ]);
@@ -93,9 +101,8 @@ function Sidebar() {
                 </span>
                 <span>
                   <i
-                    className={`bx bx-chevron-down arrow ${
-                      item.isOpen ? "open" : ""
-                    }`}
+                    className={`bx bx-chevron-down arrow ${item.isOpen ? "open" : ""
+                      }`}
                     style={{
                       paddingRight: "5px",
                       minWidth: "0px",
@@ -126,12 +133,14 @@ function Sidebar() {
             </Collapse>
           </li>
         ))}
-        <li>
-          <NavLink to="/employeeadmin" onClick={() => handleMenuClick(null)}>
-            <i class="bx bx-male-female"></i>
-            <span className="links_name">Employee Info</span>
-          </NavLink>
-        </li>
+        {(userRole === 'Admin' || userRole === 'Super Admin') && (
+          <li>
+            <NavLink to="/employeeadmin" onClick={() => handleMenuClick(null)}>
+              <i class="bx bx-male-female"></i>
+              <span className="links_name">Employee Info</span>
+            </NavLink>
+          </li>
+        )}
         {/* <li>
           <NavLink to="/employee" onClick={() => handleMenuClick(null)}>
             <i class="bx bx-male-female"></i>
@@ -144,12 +153,15 @@ function Sidebar() {
             <span className="links_name">Attendance</span>
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/leaveadmin" onClick={() => handleMenuClick(null)}>
-            <i className="bx bx-pie-chart-alt-2"></i>
-            <span className="links_name">Leave Admin</span>
-          </NavLink>
-        </li>
+        {(userRole === 'Admin' || userRole === 'Super Admin') && (
+          <li>
+            <NavLink to="/leaveadmin" onClick={() => handleMenuClick(null)}>
+              <i className="bx bx-pie-chart-alt-2"></i>
+              <span className="links_name">Leave Admin</span>
+            </NavLink>
+          </li>
+        )}
+
         <li>
           <NavLink to="/leave" onClick={() => handleMenuClick(null)}>
             <i className="bx bx-pie-chart-alt-2"></i>
@@ -162,31 +174,38 @@ function Sidebar() {
             <span className="links_name">Payroll</span>
           </NavLink>
         </li> */}
-        <li>
-          <NavLink to="/performance" onClick={() => handleMenuClick(null)}>
-            {/*  */}
-            <i class="bx bx-signal-4"></i>
-            <span className="links_name">Performance</span>
-          </NavLink>
-        </li>
+        {(userRole === 'Admin' || userRole === 'Super Admin') && (
+          <li>
+            <NavLink to="/performance" onClick={() => handleMenuClick(null)}>
+              {/*  */}
+              <i class="bx bx-signal-4"></i>
+              <span className="links_name">Performance</span>
+            </NavLink>
+          </li>
+        )}
         <li>
           <NavLink to="/holiday" onClick={() => handleMenuClick(null)}>
             <i className="bx bx-receipt"></i>
             <span className="links_name">Holiday</span>
           </NavLink>
         </li>
+        {userRole === 'Employee' && (
         <li>
           <NavLink to="/expensesreport" onClick={() => handleMenuClick(null)}>
             <i className="bx bx-food-menu"></i>
             <span className="links_name">Expense</span>
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/expenseadmin" onClick={() => handleMenuClick(null)}>
-            <i className="bx bx-food-menu"></i>
-            <span className="links_name">Expense Admin</span>
-          </NavLink>
-        </li>
+        )}
+        {(userRole === 'Admin' || userRole === 'Super Admin') && (
+          <li>
+            <NavLink to="/expenseadmin" onClick={() => handleMenuClick(null)}>
+              <i className="bx bx-food-menu"></i>
+              <span className="links_name">Expense Admin</span>
+            </NavLink>
+          </li>
+        )}
+        {userRole === 'Employee' && (
         <li>
           <NavLink to="/claim" onClick={() => handleMenuClick(null)}>
             {/* <i className="bx bx-grid-alt"></i> */}
@@ -194,25 +213,32 @@ function Sidebar() {
             <span className="links_name">Claims</span>
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/claimadmin" onClick={() => handleMenuClick(null)}>
-            {/* <i className="bx bx-grid-alt"></i> */}
-            <i className="bx bx-book-open"></i>
-            <span className="links_name">Claims Admin</span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/deductions" onClick={() => handleMenuClick(null)}>
-            <i className="bx bx-grid-alt"></i>
-            <span className="links_name">Deductions</span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/payrolladmin" onClick={() => handleMenuClick(null)}>
-            <i class="bx bx-book-alt"></i>
-            <span className="links_name">Payroll</span>
-          </NavLink>
-        </li>
+        )}
+        {(userRole === 'Admin' || userRole === 'Super Admin') && (
+          <li>
+            <NavLink to="/claimadmin" onClick={() => handleMenuClick(null)}>
+              {/* <i className="bx bx-grid-alt"></i> */}
+              <i className="bx bx-book-open"></i>
+              <span className="links_name">Claims Admin</span>
+            </NavLink>
+          </li>
+        )}
+        {(userRole === 'Admin' || userRole === 'Super Admin') && (
+          <li>
+            <NavLink to="/deductions" onClick={() => handleMenuClick(null)}>
+              <i className="bx bx-grid-alt"></i>
+              <span className="links_name">Deductions</span>
+            </NavLink>
+          </li>
+        )}
+        {(userRole === 'Admin' || userRole === 'Super Admin') && (
+          <li>
+            <NavLink to="/payrolladmin" onClick={() => handleMenuClick(null)}>
+              <i class="bx bx-book-alt"></i>
+              <span className="links_name">Payroll</span>
+            </NavLink>
+          </li>
+        )}
         <li>
           <NavLink to="/employeepayslip" onClick={() => handleMenuClick(null)}>
             <i class="bx bx-book-alt"></i>

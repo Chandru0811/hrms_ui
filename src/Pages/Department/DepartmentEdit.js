@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -9,6 +9,7 @@ function DepartmentEdit() {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const validationSchema = Yup.object({
     deptName: Yup.string().required("*Department name is required"),
@@ -46,6 +47,7 @@ function DepartmentEdit() {
       try {
         const response = await api.get(`/getDepartmentById/${id}`);
         formik.setValues(response.data);
+        setLoading(false);
       } catch (error) {
         toast.error("Error Fetching Data ", error);
       }
@@ -55,74 +57,83 @@ function DepartmentEdit() {
   }, []);
 
   return (
-    <div className="container-fluid">
-      <div className="container py-3">
-        <form onSubmit={formik.handleSubmit}>
-          <div className="row">
-            <div className="col-12 text-end">
-              <Link to="/departments">
-                <button type="button" className="btn btn-sm btn-border">
-                  Back
+    <section>
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="container-fluid">
+        <div className="container py-3">
+          <form onSubmit={formik.handleSubmit}>
+            <div className="row">
+              <div className="col-12 text-end">
+                <Link to="/departments">
+                  <button type="button" className="btn btn-sm btn-border">
+                    Back
+                  </button>
+                </Link>
+                &nbsp;&nbsp;
+                <button type="submit" className="btn btn-sm btn-button">
+                  Update
                 </button>
-              </Link>
-              &nbsp;&nbsp;
-              <button type="submit" className="btn btn-sm btn-button">
-                Update
-              </button>
-            </div>
-          </div>
-          <div className="row mt-3">
-            <div className="col-lg-6 col-md-6 col-12">
-              <div className="text-start mt-2">
-                <lable className="form-lable">Enter Department Name</lable>
-                <span className="text-danger">*</span>
-                <input
-                  type="text"
-                  className={`form-control  ${
-                    formik.touched.deptName &&
-                    formik.errors.deptName
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("deptName")}
-                />
-                {formik.touched.deptName &&
-                  formik.errors.deptName && (
-                    <div className="invalid-feedback">
-                      {formik.errors.deptName}
-                    </div>
-                  )}
               </div>
             </div>
-            <div className="col-lg-6 col-md-6 col-12">
-              <div className="text-start mt-2">
-                <lable className="form-lable">
-                  Enter Department Description
-                </lable>
-                <span className="text-danger">*</span>
-                <textarea
-                  id="floatingTextarea2"
-                  style={{ height: "100px" }}
-                  className={`form-control  ${
-                    formik.touched.deptDesc &&
-                    formik.errors.deptDesc
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("deptDesc")}
-                ></textarea>
-                {formik.touched.deptDesc &&
-                  formik.errors.deptDesc && (
-                    <div className="invalid-feedback">
-                      {formik.errors.deptDesc}
-                    </div>
-                  )}
+            <div className="row mt-3">
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2">
+                  <lable className="form-lable">Enter Department Name</lable>
+                  <span className="text-danger">*</span>
+                  <input
+                    type="text"
+                    className={`form-control  ${
+                      formik.touched.deptName &&
+                      formik.errors.deptName
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("deptName")}
+                  />
+                  {formik.touched.deptName &&
+                    formik.errors.deptName && (
+                      <div className="invalid-feedback">
+                        {formik.errors.deptName}
+                      </div>
+                    )}
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2">
+                  <lable className="form-lable">
+                    Enter Department Description
+                  </lable>
+                  <span className="text-danger">*</span>
+                  <textarea
+                    id="floatingTextarea2"
+                    style={{ height: "100px" }}
+                    className={`form-control  ${
+                      formik.touched.deptDesc &&
+                      formik.errors.deptDesc
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("deptDesc")}
+                  ></textarea>
+                  {formik.touched.deptDesc &&
+                    formik.errors.deptDesc && (
+                      <div className="invalid-feedback">
+                        {formik.errors.deptDesc}
+                      </div>
+                    )}
+                </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+      )}
+    </section>
   );
 }
 

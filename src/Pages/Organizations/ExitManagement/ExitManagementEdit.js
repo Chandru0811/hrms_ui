@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import api from "../../../config/URL";
 function ExitManagementEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const validationSchema = Yup.object({
     exitMgmtEmpId: Yup.string().required("*Employee ID is required"),
@@ -71,6 +72,7 @@ function ExitManagementEdit() {
       }
     },
   });
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -89,6 +91,7 @@ function ExitManagementEdit() {
             : null,
         };
         formik.setValues(formattedData);
+        setLoading(false);
       } catch (error) {
         toast.error("Error Fetching Data ", error);
       }
@@ -100,7 +103,13 @@ function ExitManagementEdit() {
 
   return (
     <section className="ExitAdd p-3">
-      <div className="container-fluid">
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="container-fluid">
         <div className="container py-3">
           <form onSubmit={formik.handleSubmit}>
             <div className="row">
@@ -390,6 +399,7 @@ function ExitManagementEdit() {
           </form>
         </div>
       </div>
+      )}
     </section>
   );
 }

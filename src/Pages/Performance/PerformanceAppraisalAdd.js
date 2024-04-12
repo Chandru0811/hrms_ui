@@ -46,8 +46,8 @@ function PerformanceAppraisalAdd() {
         <div className="container">
           <div className="my-3 d-flex justify-content-end align-items-end my-3">
             <Link to="/performance">
-              <button type="button " className="btn btn-border btn-sm">
-                Cancel
+              <button type="button" className="btn btn-border btn-sm">
+                Back
               </button>
             </Link>
             &nbsp;&nbsp;

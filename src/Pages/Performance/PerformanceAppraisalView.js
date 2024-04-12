@@ -7,12 +7,14 @@ function PerformanceAppraisalView() {
   const [data, setData] = useState([]);
   const { id } = useParams();
   // console.log(id)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await api.get(`getPerformanceAppraisalById/${id}`);
         setData(response.data);
+        setLoading(false);
       } catch (error) {
         // console.log(error.message);
         toast.error("Error Fetching Data ", error.message);
@@ -22,8 +24,14 @@ function PerformanceAppraisalView() {
   }, [id]);
 
   return (
-    <section className="container ">
-      <div className="container">
+    <section className="container">
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="container">
         <div className=" d-flex align-items-end justify-content-end">
           <Link to={`/performance`}>
             <button type="button" className="btn btn-border btn-sm m-xl-3">
@@ -117,6 +125,7 @@ function PerformanceAppraisalView() {
           </div>
         </div>
       </div>
+      )}
     </section>
   );
 }

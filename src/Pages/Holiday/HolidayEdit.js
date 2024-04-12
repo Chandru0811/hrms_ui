@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -9,6 +9,7 @@ function EditNewBublicHoliday() {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const validationSchema = Yup.object({
     pubHolidayCmpId: Yup.string().required("*Company ID is required"),
@@ -60,6 +61,7 @@ function EditNewBublicHoliday() {
       try {
         const response = await api.get(`/getPublicHolidaysById/${id}`);
         formik.setValues(response.data);
+        setLoading(false);
       } catch (error) {
         toast.error("Error Fetching Data ", error);
       }
@@ -70,7 +72,13 @@ function EditNewBublicHoliday() {
 
   return (
     <section className="HolidayEdit p-3">
-      <div className="container-fluid">
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="container-fluid">
         <div className="container">
           <form onSubmit={formik.handleSubmit}>
             <div className="row">
@@ -260,6 +268,7 @@ function EditNewBublicHoliday() {
           </form>
         </div>
       </div>
+      )}
     </section>
   );
 }

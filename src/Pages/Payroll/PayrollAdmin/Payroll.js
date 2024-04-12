@@ -66,65 +66,74 @@ const Payroll = () => {
   };
 
   return (
-    <div className="container">
-      <div className="col-12 text-end my-3">
-        <Link to={`/payrolladmin/add`}>
-          <button type="button" className="btn btn-button btn-sm">Add  <i class="bx bx-plus"></i></button>
-        </Link>
-      </div>
-      <table ref={tableRef} className="display">
-        <thead>
-          <tr>
-            <th scope="col">S No</th>
-            <th scope="col">Employee ID</th>
-            <th scope="col">Emplopee Name</th>
-            <th scope="col">Bonus</th>
-            <th scope="col">Gross Pay</th>
-            {/* <th scope="col">Deduction</th> */}
-            <th scope="col">Net Pay</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {datas.map((data, index) => (
-            <tr key={index}>
-              <th scope="row">{index + 1}</th>
-              <td>{data.payrollEmpId}</td>
-              <td>{data.employeeName}</td>
-              <td>{data.bonus}</td>
-              <td>{data.grossPay}</td>
-              {/* <td>{data.deduction}</td> */}
-              <td>{data.netPay}</td>
-              <td>
-                {data.payrollWorkingStatus === "Approved" ? (
-                  <span className="badge badges-Green">Approved</span>
-                ) : data.payrollWorkingStatus === "Pending" ? (
-                  <span className="badge badges-Yellow">Pending</span>
-                ) : (
-                  <span className="badge badges-Red">Rejected</span>
-                )}
-              </td>
-              <td>
-                <Link to={`/payrolladmin/view/${data.payrollId}`}>
-                  <button className="btn btn-sm">
-                    <FaEye />
-                  </button>
-                </Link>
-                <Link to={`/payrolladmin/edit/${data.payrollId}`}>
-                  <button className="btn btn-sm">
-                    <FaEdit />
-                  </button>
-                </Link>
-                <Delete
-                  onSuccess={refreshData}
-                  path={`/deletePayrollById/${data.payrollId}`} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <section>
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="container">
+          <div className="col-12 text-end my-3">
+            <Link to={`/payrolladmin/add`}>
+              <button type="button" className="btn btn-button btn-sm">Add  <i class="bx bx-plus"></i></button>
+            </Link>
+          </div>
+          <table ref={tableRef} className="display">
+            <thead>
+              <tr>
+                <th scope="col">S No</th>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Emplopee Name</th>
+                <th scope="col">Bonus</th>
+                <th scope="col">Gross Pay</th>
+                {/* <th scope="col">Deduction</th> */}
+                <th scope="col">Net Pay</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {datas.map((data, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{data.payrollEmpId}</td>
+                  <td>{data.employeeName}</td>
+                  <td>{data.bonus}</td>
+                  <td>{data.grossPay}</td>
+                  {/* <td>{data.deduction}</td> */}
+                  <td>{data.netPay}</td>
+                  <td>
+                    {data.payrollWorkingStatus === "Approved" ? (
+                      <span className="badge badges-Green">Approved</span>
+                    ) : data.payrollWorkingStatus === "Pending" ? (
+                      <span className="badge badges-Yellow">Pending</span>
+                    ) : (
+                      <span className="badge badges-Red">Rejected</span>
+                    )}
+                  </td>
+                  <td>
+                    <Link to={`/payrolladmin/view/${data.payrollId}`}>
+                      <button className="btn btn-sm">
+                        <FaEye />
+                      </button>
+                    </Link>
+                    <Link to={`/payrolladmin/edit/${data.payrollId}`}>
+                      <button className="btn btn-sm">
+                        <FaEdit />
+                      </button>
+                    </Link>
+                    <Delete
+                      onSuccess={refreshData}
+                      path={`/deletePayrollById/${data.payrollId}`} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
   );
 };
 

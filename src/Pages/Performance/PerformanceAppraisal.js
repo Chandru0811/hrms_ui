@@ -68,95 +68,104 @@ const PerformanceAppraisal = () => {
   };
 
   return (
-    <div className="container my-4">
-      <div className="my-3 d-flex justify-content-end align-items-end">
-        <Link to="/performance/add">
-          <button type="button" className="btn btn-button btn-sm">
-            <i className="bx bx-plus"></i>Add
-          </button>
-        </Link>
-      </div>
-
-      <div className="row mb-3">
-        <div className="col-md-4 col-12 mb-2">
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              className={`form-control iconInput `}
-              placeholder="Appraisalid"
-            />
+    <section>
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="container my-4">
+        <div className="my-3 d-flex justify-content-end align-items-end">
+          <Link to="/performance/add">
+            <button type="button" className="btn btn-button btn-sm">
+              Add <i className="bx bx-plus"></i>
+            </button>
+          </Link>
+        </div>
+  
+        <div className="row mb-3">
+          <div className="col-md-4 col-12 mb-2">
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className={`form-control iconInput `}
+                placeholder="Appraisalid"
+              />
+            </div>
+          </div>
+          <div className="col-md-4 col-12 mb-2">
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className={`form-control iconInput `}
+                placeholder="Empid"
+              />
+            </div>
+          </div>
+          <div className="col-md-4 col-12 mb-2">
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className={`form-control iconInput `}
+                placeholder="Appraisal date"
+              />
+            </div>
           </div>
         </div>
-        <div className="col-md-4 col-12 mb-2">
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              className={`form-control iconInput `}
-              placeholder="Empid"
-            />
-          </div>
-        </div>
-        <div className="col-md-4 col-12 mb-2">
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              className={`form-control iconInput `}
-              placeholder="Appraisal date"
-            />
-          </div>
-        </div>
-      </div>
-      <table ref={tableRef} className="display ">
-        <thead>
-          <tr>
-            <th scope="col" style={{ whiteSpace: "nowrap" }}>
-              S No
-            </th>
-            <th scope="col">Date</th>
-            <th scope="col">Goals</th>
-            <th scope="col">Review</th>
-            <th scope="col">Feedback</th>
-            {/* <th scope="col">Overall Self Comment</th> */}
-            <th scope="col">Amount</th>
-            {/* <th scope="col">Status</th> */}
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-      
-          {datas.map((data, index) => (
-            <tr key={index}>
-              <th scope="row">{index + 1}</th>
-              <td>{formatDate(data.perfAppraisalDate)}</td>
-              <td>{data.perfAppraisalGoals}</td>
-              <td>{data.perfAppraisalReviews}</td>
-              <td>{data.perfAppraisalFeedback}</td>
-              {/* <td>{data.overallselfcomment}</td> */}
-              <td>{data.perfAppraisalAmount}</td>
-              {/* <td>{data.status}</td> */}
-              <td>
-                <div className="d-flex">
-                  <Link to={`/performance/view/${data.perfAppraisalId}`}>
-                    <button className="btn btn-sm">
-                      <FaEye />
-                    </button>
-                  </Link>
-                  <Link to={`/performance/edit/${data.perfAppraisalId}`}>
-                    <button className="btn btn-sm">
-                      <FaEdit />
-                    </button>
-                  </Link>
-                  <Delete
-                    onSuccess={refreshData}
-                    path={`deletePerformanceAppraisalById/${data.perfAppraisalId}`}
-                  />
-                </div>
-              </td>
+        <table ref={tableRef} className="display ">
+          <thead>
+            <tr>
+              <th scope="col" style={{ whiteSpace: "nowrap" }}>
+                S No
+              </th>
+              <th scope="col">Date</th>
+              <th scope="col">Goals</th>
+              <th scope="col">Review</th>
+              <th scope="col">Feedback</th>
+              {/* <th scope="col">Overall Self Comment</th> */}
+              <th scope="col">Amount</th>
+              {/* <th scope="col">Status</th> */}
+              <th scope="col">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+        
+            {datas.map((data, index) => (
+              <tr key={index}>
+                <th scope="row">{index + 1}</th>
+                <td>{formatDate(data.perfAppraisalDate)}</td>
+                <td>{data.perfAppraisalGoals}</td>
+                <td>{data.perfAppraisalReviews}</td>
+                <td>{data.perfAppraisalFeedback}</td>
+                {/* <td>{data.overallselfcomment}</td> */}
+                <td>{data.perfAppraisalAmount}</td>
+                {/* <td>{data.status}</td> */}
+                <td>
+                  <div className="d-flex">
+                    <Link to={`/performance/view/${data.perfAppraisalId}`}>
+                      <button className="btn btn-sm">
+                        <FaEye />
+                      </button>
+                    </Link>
+                    <Link to={`/performance/edit/${data.perfAppraisalId}`}>
+                      <button className="btn btn-sm">
+                        <FaEdit />
+                      </button>
+                    </Link>
+                    <Delete
+                      onSuccess={refreshData}
+                      path={`deletePerformanceAppraisalById/${data.perfAppraisalId}`}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      )}
+    </section>
   );
 };
 
