@@ -21,38 +21,22 @@ class DownloadPDF extends React.Component {
     const doc = new jsPDF("landscape");
 
      // Set header
-   
+     doc.setFont("helvetica", "bold");
      doc.text("ECS CLOUD INFOTECH PVT LTD", 150, 30, { align: "center"}); // Set header
  
     doc.rect(10, 40, 280, 170); // x, y, width, height
   
-    doc.addImage(Logo, "PNG", 10, 10, 90, 40);
-    
+    doc.addImage(Logo, "PNG", 10, 18, 90, 20);
+    doc.setFont("helvetica", "medium");
     doc.text(20, 60, `EMPLOYEE ID: ${payslipData.payslipOwner || "ECS12"}`);
-    doc.text(
-      20,
-      70,
-      `DATE OF JOINING: ${payslipData.payslipOwner || "04-01-2024"}`
-    );
-    doc.text(
-      20,
-      80,
-      `DESIGNATIONG: ${payslipData.subject || "JUNIOR DEVELOPER"}`
-    );
+    doc.text(20,70,`DATE OF JOINING: ${payslipData.payslipOwner || "04-01-2024"}`);
+    doc.text(20,80,`DESIGNATIONG: ${payslipData.subject || "JUNIOR DEVELOPER"}`);
     doc.text(20, 90, `PAID DAYS: ${payslipData.subject || "31"}`);
 
-    doc.text(
-      150,
-      60,
-      `EMPLOYEE NAME: ${payslipData.payslipOwner || "Nalina Sri"}`
-    );
-    doc.text(
-      150,
-      70,
-      `PAYSLIP MONTH: ${payslipData.payslipOwner || "JANUARY"}`
-    );
-    doc.text(150, 80, `DEPARTMENT: ${payslipData.subject || "IT"}`);
-    doc.text(150, 90, `LOP: ${payslipData.subject || "0"}`);
+    doc.text(170,60,`EMPLOYEE NAME: ${payslipData.payslipOwner || "Nalina Sri"}`);
+    doc.text(170,70,`PAYSLIP MONTH: ${payslipData.payslipOwner || "JANUARY"}`);
+    doc.text(170, 80, `DEPARTMENT: ${payslipData.subject || "IT"}`);
+    doc.text(170, 90, `LOP: ${payslipData.subject || "0"}`);
 
     doc.line(10, 100, 290, 100); // x, y, width, height
     doc.line(10, 120, 290, 120); // x, y, width, height
@@ -86,7 +70,7 @@ class DownloadPDF extends React.Component {
 
     doc.line(10, 160, 290, 160); // x, y, width, height
 
-    doc.setFont("helvetica", "light");
+    doc.setFont("helvetica", "bold");
     doc.text(20,170,`GROSS PAY`);
     doc.text(80,170,`265`);
     doc.text(120,170,`$4680.00`);
