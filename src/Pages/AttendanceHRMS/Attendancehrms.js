@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
@@ -7,8 +7,14 @@ import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
 
 const Attendancehrms = () => {
+  const [viewAction, setViewAction] = useState(false);
+  const userName = sessionStorage.getItem("userName");
+  useEffect(() => {
+    if (userName === "Employee") {
+      setViewAction(true);
+    }
+  }, [userName, setViewAction]);
   const tableRef = useRef(null);
-  //   const [status, setStatus] = useState({});
 
   const datas = [
     {
@@ -52,14 +58,16 @@ const Attendancehrms = () => {
   //   };
 
   return (
-    <div className="container my-4">
-      <div className="my-3 d-flex align-items-end justify-content-end">
+    <div className="container my-5">
+      {!viewAction && (
+      <div className="col-12 text-end mb-3">
         <Link to="/attendancehrms/add">
           <button type="button" className="btn btn-button btn-sm">
             Add <i className="bx bx-plus"></i>
           </button>
         </Link>
       </div>
+      )}
       <table ref={tableRef} className="display">
         <thead>
           <tr>
@@ -95,19 +103,28 @@ const Attendancehrms = () => {
                   </span>
                 )}
               </td>
-
               <td>
+              {viewAction ? (
                 <Link to={`/attendancehrms/view`}>
                   <button className="btn btn-sm">
                     <FaEye />
                   </button>
                 </Link>
-                <Link to={`/attendancehrms/edit`}>
+                ) : (
+                <span>
+                  <Link to={`/attendancehrms/view`}>
+                  <button className="btn btn-sm">
+                    <FaEye />
+                  </button>
+                </Link>
+                  <Link to={`/attendancehrms/edit`}>
                   <button className="btn btn-sm">
                     <FaEdit />
                   </button>
                 </Link>
                 <Delete />
+                </span>
+              )}
               </td>
             </tr>
           ))}
