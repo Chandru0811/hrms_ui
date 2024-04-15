@@ -80,14 +80,16 @@ const Holiday = () => {
         </div>
       )}
       {!loading && (
-        <div className="container">
-          <div className="col-12 text-end my-3">
+        <div className="container my-5">
+          {!viewAction && (
+          <div className="col-12 text-end mb-3">
             <Link to="/Holiday/add">
               <button type="button" className="btn btn-sm btn-button">
                 Add <i class="bx bx-plus"></i>
               </button>
             </Link>
           </div>
+          )}
           <table ref={tableRef} className="display">
             <thead>
               <tr>
@@ -111,7 +113,7 @@ const Holiday = () => {
                     <div className="d-flex">
                       {viewAction ? (
                         <span>
-                          <Link to={`/Holiday/view`}>
+                          <Link to={`/Holiday/view/${data.pubHolidayId}`}>
                             <button className="btn btn-sm">
                               <FaEye />
                             </button>

@@ -6,7 +6,7 @@ import Logo from "../../assets/images/Logo.png";
 
 function Sidebar() {
   const [activeMenu, setActiveMenu] = useState(null);
-  const userRole = sessionStorage.getItem("userName")
+  const userRole = sessionStorage.getItem("userName");
 
   const [menuItems, setMenuItems] = useState([
     {
@@ -14,17 +14,12 @@ function Sidebar() {
       icon: "bx bx-buildings",
       isOpen: false,
       subMenus: [
-        ...(userRole === 'admin' || userRole === 'super admin'
-          ? [
-            { title: "Company Registration", path: "/compantregisteration" },
-            { title: "HR Policy", path: "/policy" },
-            { title: "Departments", path: "/departments" },
-            { title: "Exit Management", path: "/exitmanagement" },
-          ]
-          : []
-        ),
-        { title: "Exit Management", path: "/exitmanagementadmin" },
-      ],
+        { title: "Company Registration", path: "/compantregisteration" },
+        { title: "HR Policy", path: "/policy" },
+        { title: "Departments", path: "/departments" },
+        { title: "Exit Management", path: "/exitmanagement" },
+        { title: "Exit Management Employee", path: "/exitmanagementadmin" },
+  ],
     },
   ]);
 
@@ -157,17 +152,18 @@ function Sidebar() {
           <li>
             <NavLink to="/leaveadmin" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-pie-chart-alt-2"></i>
-              <span className="links_name">Leave Admin</span>
+              <span className="links_name">Leave</span>
             </NavLink>
           </li>
         )}
-
-        <li>
-          <NavLink to="/leave" onClick={() => handleMenuClick(null)}>
-            <i className="bx bx-pie-chart-alt-2"></i>
-            <span className="links_name">Leave</span>
-          </NavLink>
-        </li>
+        {userRole === 'Employee' && (
+          <li>
+            <NavLink to="/leave" onClick={() => handleMenuClick(null)}>
+              <i className="bx bx-pie-chart-alt-2"></i>
+              <span className="links_name">Leave</span>
+            </NavLink>
+          </li>
+        )}
         {/* <li>
           <NavLink to="/payroll" onClick={() => handleMenuClick(null)}>
             <i className="bx bx-coin-stack"></i>
@@ -190,36 +186,36 @@ function Sidebar() {
           </NavLink>
         </li>
         {userRole === 'Employee' && (
-        <li>
-          <NavLink to="/expensesreport" onClick={() => handleMenuClick(null)}>
-            <i className="bx bx-food-menu"></i>
-            <span className="links_name">Expense</span>
-          </NavLink>
-        </li>
+          <li>
+            <NavLink to="/expensesreport" onClick={() => handleMenuClick(null)}>
+              <i className="bx bx-food-menu"></i>
+              <span className="links_name">Expense</span>
+            </NavLink>
+          </li>
         )}
         {(userRole === 'Admin' || userRole === 'Super Admin') && (
           <li>
             <NavLink to="/expenseadmin" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-food-menu"></i>
-              <span className="links_name">Expense Admin</span>
+              <span className="links_name">Expense</span>
             </NavLink>
           </li>
         )}
         {userRole === 'Employee' && (
-        <li>
-          <NavLink to="/claim" onClick={() => handleMenuClick(null)}>
-            {/* <i className="bx bx-grid-alt"></i> */}
-            <i className="bx bx-book-open"></i>
-            <span className="links_name">Claims</span>
-          </NavLink>
-        </li>
+          <li>
+            <NavLink to="/claim" onClick={() => handleMenuClick(null)}>
+              {/* <i className="bx bx-grid-alt"></i> */}
+              <i className="bx bx-book-open"></i>
+              <span className="links_name">Claims</span>
+            </NavLink>
+          </li>
         )}
         {(userRole === 'Admin' || userRole === 'Super Admin') && (
           <li>
             <NavLink to="/claimadmin" onClick={() => handleMenuClick(null)}>
               {/* <i className="bx bx-grid-alt"></i> */}
               <i className="bx bx-book-open"></i>
-              <span className="links_name">Claims Admin</span>
+              <span className="links_name">Claims</span>
             </NavLink>
           </li>
         )}
@@ -239,12 +235,14 @@ function Sidebar() {
             </NavLink>
           </li>
         )}
-        <li>
-          <NavLink to="/employeepayslip" onClick={() => handleMenuClick(null)}>
-            <i class="bx bx-book-alt"></i>
-            <span className="links_name">Payslip</span>
-          </NavLink>
-        </li>
+        {userRole === 'Employee' && (
+          <li>
+            <NavLink to="/employeepayslip" onClick={() => handleMenuClick(null)}>
+              <i class="bx bx-book-alt"></i>
+              <span className="links_name">Payslip</span>
+            </NavLink>
+          </li>
+        )}
       </ul>
     </div>
   );
