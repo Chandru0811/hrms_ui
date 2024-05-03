@@ -8,10 +8,10 @@ import * as Yup from "yup";
 function Login({ onLogin }) {
   const validationSchema = Yup.object({
     username: Yup.string()
-      .email("Invalid email address")
+      .email("*Invalid email address")
       .required("*Username is required"),
     password: Yup.string()
-      .min(8, "Password must be 8 characters")
+      .min(8, "*Password must be 8 characters")
       .required("*Password is required"),
     companyId: Yup.string().required("*Company Id is required"),
   });
@@ -53,7 +53,7 @@ function Login({ onLogin }) {
       <div
         className="card"
         style={{
-          width: "25rem",
+          width: "28rem",
           borderRadius: "0px",
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         }}
@@ -63,6 +63,7 @@ function Login({ onLogin }) {
             <h4 className="card-title text-center mb-5">Login</h4>
             <div className="mb-2">
               <label className="form-label fw-medium">Username</label>
+              <span className="text-danger">*</span>
               <input
                 type="text"
                 {...formik.getFieldProps("username")}
@@ -77,9 +78,9 @@ function Login({ onLogin }) {
               )}
             </div>
 
-            <div className="mb-2">
+            <div className="mb-2"> 
               <label className="form-label fw-medium">Password</label>
-
+              <span className="text-danger">*</span>
               <div className={`input-group mb-3`}>
                 <input
                   {...formik.getFieldProps("password")}
@@ -91,11 +92,7 @@ function Login({ onLogin }) {
                   }`}
                   name="password"
                 />
-                {formik.touched.password && formik.errors.password && (
-                  <div className="invalid-feedback">
-                    {formik.errors.password}
-                  </div>
-                )}
+                
                 <span
                   className={`input-group-text iconInputBackground`}
                   id="basic-addon1"
@@ -104,11 +101,17 @@ function Login({ onLogin }) {
                 >
                   {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
                 </span>
+                {formik.touched.password && formik.errors.password && (
+                  <div className="invalid-feedback">
+                    {formik.errors.password}
+                  </div>
+                )}
               </div>
-            </div>
+            </div> 
 
             <div className="mb-4">
               <label className="form-label fw-medium">Company ID</label>
+              <span className="text-danger">*</span>
               <input
                 type="text"
                 {...formik.getFieldProps("companyId")}

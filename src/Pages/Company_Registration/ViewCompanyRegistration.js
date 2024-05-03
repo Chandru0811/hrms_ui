@@ -6,7 +6,7 @@ function ViewCompanyRegistration() {
     <div className="container">
       <div className="row mt-3">
         <div className="col-12 text-end">
-          <Link to="/compantregisteration">
+          <Link to="/companyregisteration">
             <button type="button" className="btn btn-sm btn-border">
               Back
             </button>

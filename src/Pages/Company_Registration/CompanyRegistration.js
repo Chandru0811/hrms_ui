@@ -32,7 +32,7 @@ const CompanyRegistration = () => {
   return (
     <div className="container">
       <div className="col-12 text-end my-3">
-        <Link to="/compantregisteration/add">
+        <Link to="/companyregisteration/add">
           <button type="button" className="btn btn-sm btn-button">
             Add <i class="bx bx-plus"></i>
           </button>
@@ -59,12 +59,12 @@ const CompanyRegistration = () => {
               <td>{data.companyEmail}</td>
               <td>
                 <div className="d-flex">
-                  <Link to={`/compantregisteration/view`}>
+                  <Link to={`/companyregisteration/view`}>
                     <button className="btn btn-sm">
                       <FaEye />
                     </button>
                   </Link>
-                  <Link to={`/compantregisteration/edit`}>
+                  <Link to={`/companyregisteration/edit`}>
                     <button className="btn btn-sm">
                       <FaEdit />
                     </button>

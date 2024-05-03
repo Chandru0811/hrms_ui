@@ -83,7 +83,7 @@ function DepartmentEdit() {
             <div className="row mt-3">
               <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start mt-2">
-                  <lable className="form-lable">Enter Department Name</lable>
+                  <lable className="form-lable">Department Name</lable>
                   <span className="text-danger">*</span>
                   <input
                     type="text"
@@ -106,7 +106,7 @@ function DepartmentEdit() {
               <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start mt-2">
                   <lable className="form-lable">
-                    Enter Department Description
+                    Department Description
                   </lable>
                   <span className="text-danger">*</span>
                   <textarea

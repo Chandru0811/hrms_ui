@@ -54,7 +54,7 @@ function DepartmentAdd() {
           <div className="row mt-3">
             <div className="col-lg-6 col-md-6 col-12">
               <div className="text-start mt-2">
-                <lable className="form-lable">Enter Department Name</lable><span className="text-danger">*</span>
+                <lable className="form-lable">Department Name</lable><span className="text-danger">*</span>
                 <input 
                 type="text" 
                 className={`form-control  ${formik.touched.deptName && formik.errors.deptName ? 'is-invalid' : ''}`}
@@ -66,7 +66,7 @@ function DepartmentAdd() {
             </div>
             <div className="col-lg-6 col-md-6 col-12">
               <div className="text-start mt-2">
-                <lable className="form-lable">Enter Department Description</lable><span className="text-danger">*</span>
+                <lable className="form-lable">Department Description</lable><span className="text-danger">*</span>
                 <textarea
                   id="floatingTextarea2"
                   style={{ height: "100px" }}

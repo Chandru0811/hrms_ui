@@ -145,19 +145,19 @@ function Admin({ handleLogout }) {
 
               {/* Company Registration */}
               <Route
-                path="/compantregisteration"
+                path="/companyregisteration"
                 element={<CompanyRegistration />}
               />
               <Route
-                path="/compantregisteration/add"
+                path="/companyregisteration/add"
                 element={<AddCompanyRegistration />}
               />
               <Route
-                path="/compantregisteration/edit"
+                path="/companyregisteration/edit"
                 element={<EditCompanyRegistration />}
               />
               <Route
-                path="/compantregisteration/view"
+                path="/companyregisteration/view"
                 element={<ViewCompanyRegistration />}
               />
 

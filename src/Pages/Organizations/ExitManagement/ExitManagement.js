@@ -85,9 +85,10 @@ const ExitManagement = () => {
               <th scope="col" style={{ whiteSpace: "nowrap" }}>
                 S No
               </th>
-              <th scope="col">Employee ID</th>
+              {/* <th scope="col">Employee ID</th> */}
               <th scope="col">Employee Name</th>
               <th scope="col">Reason For Relieving</th>
+              <th scope="col">Notice Period</th>
               <th scope="col">Approval Status</th>
               <th scope="col">Action</th>
             </tr>
@@ -96,9 +97,10 @@ const ExitManagement = () => {
             {datas.map((data, index) => (
               <tr key={index}>
                 <th scope="row">{index + 1}</th>
-                <td>{data.exitMgmtEmpId}</td>
+                {/* <td>{data.exitMgmtEmpId}</td> */}
                 <td>{data.exitMgmtEmpName}</td>
                 <td>{data.reasonForRelieving}</td>
+                <td>{data.exitMgmtNoticePeriod}</td>
                 <td>
                   {
                    data.relievingApprovalStatus === "Pending" ? (

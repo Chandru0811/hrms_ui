@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
+import { toast } from "react-toastify";
 
 function AttendancehrmsEdit() {
+  const [employeeData, setEmployeeData] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const employeeData = await fetchAllEmployeeNamesWithId();
+      setEmployeeData(employeeData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const validationSchema = Yup.object({
-    employeeId: Yup.string().required("*Employee ID is required"),
-    employeeName: Yup.string().required("*Employee name is required"),
+    employeeId: Yup.string().required("*Employee name is required"),
     date: Yup.string().required("*Date is required"),
     attendanceStatus: Yup.string().required("*Attendance status is required"),
     modeOfworking: Yup.string().required("*Mode of working is required"),
@@ -20,7 +36,7 @@ function AttendancehrmsEdit() {
   });
   const formik = useFormik({
     initialValues: {
-      employeeId: "ECS01",
+      employeeId: "Nalina Sri",
       employeeName: "Suriya",
       date: "2024-03-15",
       attendanceStatus: "Present",
@@ -53,42 +69,35 @@ function AttendancehrmsEdit() {
             </div>
           </div>
           <div className="row mt-3">
-            <div className="col-md-6 col-12 mb-3 ">
-              <lable className="">Employee ID</lable>
-              <span className="text-danger">*</span>
-              <input
-                type="text"
-                className={`form-control  ${
-                  formik.touched.employeeId && formik.errors.employeeId
-                    ? "is-invalid"
-                    : ""
-                }`}
-                {...formik.getFieldProps("employeeId")}
-              />
-              {formik.touched.employeeId && formik.errors.employeeId && (
-                <div className="invalid-feedback">
-                  {formik.errors.employeeId}
+            <div className="col-md-6 col-12 mb-2">
+                <lable className="form-lable">
+                  Employee Name<span className="text-danger">*</span>
+                </lable>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("employeeId")}
+                    className={`form-select  ${
+                      formik.touched.employeeId && formik.errors.employeeId
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    aria-label="Default select example"
+                  >
+                    <option selected></option>
+                    {employeeData &&
+                      employeeData.map((employeeId) => (
+                        <option key={employeeId.id} value={employeeId.id}>
+                          {employeeId.firstName} {employeeId.lastName}
+                        </option>
+                      ))}
+                  </select>
+                  {formik.touched.employeeId && formik.errors.employeeId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.employeeId}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            <div className="col-md-6 col-12 mb-3 ">
-              <lable className="">Employee Name</lable>
-              <span className="text-danger">*</span>
-              <input
-                type="text"
-                className={`form-control ${
-                  formik.touched.employeeName && formik.errors.employeeName
-                    ? "is-invalid"
-                    : ""
-                }`}
-                {...formik.getFieldProps("employeeName")}
-              />
-              {formik.touched.employeeName && formik.errors.employeeName && (
-                <div className="invalid-feedback">
-                  {formik.errors.employeeName}
-                </div>
-              )}
-            </div>
+              </div>
             <div className="col-md-6 col-12 mb-3 ">
               <lable className="">Date</lable>
               <span className="text-danger">*</span>

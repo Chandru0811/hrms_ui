@@ -6,7 +6,6 @@ import * as Yup from "yup";
 function EditCompanyRegistration() {
   const validationSchema = Yup.object({
     companyName: Yup.string().required("*Company name is required"),
-    companyRoleId: Yup.string().required("*Company role id is required"),
     companyAddress: Yup.string().required("*Company address is required"),
     companyCity: Yup.string().required("*Company city is required"),
     companyPincode: Yup.number()
@@ -25,7 +24,6 @@ function EditCompanyRegistration() {
   const formik = useFormik({
     initialValues: {
       companyName: "ECS Cloud",
-      companyRoleId: "Test",
       companyAddress: "Sakthi Tower",
       companyCity: "Chennai",
       companyPincode: "600001",
@@ -47,7 +45,7 @@ function EditCompanyRegistration() {
           <form onSubmit={formik.handleSubmit}>
             <div className="row">
               <div className="col-12 text-end">
-                <Link to="/compantregisteration">
+                <Link to="/companyregisteration">
                   <button type="button" className="btn btn-sm btn-border">
                     Back
                   </button>
@@ -78,29 +76,6 @@ function EditCompanyRegistration() {
                       {formik.errors.companyName}
                     </div>
                   )}
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                    Company Role ID<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="text"
-                    className={`form-control  ${
-                      formik.touched.companyRoleId &&
-                      formik.errors.companyRoleId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("companyRoleId")}
-                  />
-                  {formik.touched.companyRoleId &&
-                    formik.errors.companyRoleId && (
-                      <div className="invalid-feedback">
-                        {formik.errors.companyRoleId}
-                      </div>
-                    )}
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
