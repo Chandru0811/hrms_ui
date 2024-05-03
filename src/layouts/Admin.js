@@ -95,7 +95,7 @@ function Admin({ handleLogout }) {
 
   return (
     <div>
-      <BrowserRouter>
+      <BrowserRouter basename="/hrms">
         <ToastContainer position="top-center" />
         <Sidebar />
         <section className="home-section">
@@ -223,8 +223,14 @@ function Admin({ handleLogout }) {
 
               {/* {Department} */}
               <Route path="/departments" element={<Department />} />
-              <Route path="/departments/view/:id" element={<DepartmentView />} />
-              <Route path="/departments/edit/:id" element={<DepartmentEdit />} />
+              <Route
+                path="/departments/view/:id"
+                element={<DepartmentView />}
+              />
+              <Route
+                path="/departments/edit/:id"
+                element={<DepartmentEdit />}
+              />
               <Route path="/departments/add" element={<DepartmentAdd />} />
 
               {/* Payroll */}
