@@ -7,14 +7,16 @@ function ClaimView() {
     <div className="container">
       <div className="row mt-3">
         <div className="col-12 text-end">
-          <Link to="/claim">
-            <button type="button" className="btn btn-sm btn-border">Back</button>
+          <Link to="/claimadmin">
+            <button type="button" className="btn btn-sm btn-border">
+              Back
+            </button>
           </Link>
         </div>
       </div>
       <div className="container">
         <div className="row mt-5">
-          <div className="col-md-6 col-12">
+          {/* <div className="col-md-6 col-12">
             <div className="row mb-2">
               <div className="col-6 ">
                 <p className="fw-medium">Employee ID</p>
@@ -23,7 +25,7 @@ function ClaimView() {
                 <p className="text-muted text-sm">: 12</p>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="col-md-6 col-12">
             <div className="row mb-2">
               <div className="col-6  ">
@@ -34,7 +36,7 @@ function ClaimView() {
               </div>
             </div>
           </div>
-          <div className="col-md-6 col-12">
+          {/* <div className="col-md-6 col-12">
             <div className="row mb-2">
               <div className="col-6 ">
                 <p className="fw-medium">Company ID</p>
@@ -43,7 +45,7 @@ function ClaimView() {
                 <p className="text-muted text-sm">: ECS031</p>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="col-md-6 col-12">
             <div className="row mb-2">
               <div className="col-6 ">
@@ -54,7 +56,7 @@ function ClaimView() {
               </div>
             </div>
           </div>
-          <div className="col-md-6 col-12">
+          {/* <div className="col-md-6 col-12">
             <div className="row mb-2">
               <div className="col-6 ">
                 <p className="fw-medium">Department ID</p>
@@ -63,7 +65,7 @@ function ClaimView() {
                 <p className="text-muted text-sm">: ECSD002</p>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="col-md-6 col-12">
             <div className="row mb-2">
               <div className="col-6 ">

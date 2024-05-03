@@ -1,33 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-const validationSchema = Yup.object().shape({
-  expenseDate: Yup.string().required("*Expense date is required"),
-  expenseType: Yup.string().required("*Select a expense type"),
-  expenseAmount: Yup.number()
-  .required("*Expense amount is required")
-  .typeError("*Must be a number"),
-  attachment: Yup.string().required("*Attachment is required"),
-  employeeId: Yup.string().required("*Employe id is required"),
-  employeeName: Yup.string().required("*Employee name is required"),
-  companyId: Yup.string().required("*Company id is required"),
-  companyName: Yup.string().required("*Company name is required"),
-});
+import { toast } from "react-toastify";
+import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
+import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 
 function ExpenseAdd() {
+  const [companyData, setCompanyData] = useState(null);
+  const [employeeData, setEmployeeData] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const companyData = await fetchAllCompanyNamesWithId();
+      const employeeData = await fetchAllEmployeeNamesWithId();
+      setCompanyData(companyData);
+      setEmployeeData(employeeData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const validationSchema = Yup.object().shape({
+    expenseDate: Yup.string().required("*Expense date is required"),
+    expenseType: Yup.string().required("*Select a expense type"),
+    expenseAmount: Yup.number()
+      .required("*Expense amount is required")
+      .typeError("*Must be a number"),
+    attachment: Yup.string().required("*Attachment is required"),
+    // employeeId: Yup.string().required("*Employe id is required"),
+    employeeId: Yup.string().required("*Employee name is required"),
+    // companyId: Yup.string().required("*Company id is required"),
+    cmpId: Yup.string().required("*Company name is required"),
+  });
+
   const formik = useFormik({
     initialValues: {
       expenseDate: "",
       expenseType: "",
       expenseAmount: "",
       attachment: "",
-      employeeId:"",
-      employeeName:"",
-      companyId:"",
-      companyName:"",
-      remarks: ""
+      // employeeId:"",
+      employeeId: "",
+      // companyId:"",
+      cmpId: "",
+      remarks: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -53,7 +74,7 @@ function ExpenseAdd() {
             </div>
           </div>
           <div className="row mt-3">
-          <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">
                   Employee ID<span className="text-danger">*</span>
@@ -75,31 +96,37 @@ function ExpenseAdd() {
                   </div>
                 )}
               </div>
-            </div>
-            <div className="col-md-6 col-12">
-              <div className="text-start mt-2 mb-3">
-                <lable className="form-lable">
-                  Employee Name<span className="text-danger">*</span>
-                </lable>
-                <input
-                  type="text"
-                  className={`form-control  ${
-                    formik.touched.employeeName && formik.errors.employeeName
+            </div> */}
+            <div className="col-md-6 col-12 mb-2">
+              <lable className="form-lable">
+                Employee Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("employeeId")}
+                  className={`form-select  ${
+                    formik.touched.employeeId && formik.errors.employeeId
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("employeeName")}
-                />
-                {formik.touched.employeeName && formik.errors.employeeName && (
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {employeeData &&
+                    employeeData.map((employeeId) => (
+                      <option key={employeeId.id} value={employeeId.id}>
+                        {employeeId.firstName} {employeeId.lastName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.employeeId && formik.errors.employeeId && (
                   <div className="invalid-feedback">
-                    {formik.errors.employeeName}
+                    {formik.errors.employeeId}
                   </div>
                 )}
               </div>
             </div>
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">
                   Company ID<span className="text-danger">*</span>
@@ -121,27 +148,31 @@ function ExpenseAdd() {
                   </div>
                 )}
               </div>
-            </div>
-            <div className="col-md-6 col-12">
-              <div className="text-start mt-2 mb-3">
-                <lable className="form-lable">
-                  Company Name<span className="text-danger">*</span>
-                </lable>
-                <input
-                  type="text"
-                  className={`form-control  ${
-                    formik.touched.companyName && formik.errors.companyName
+            </div> */}
+            <div className="col-md-6 col-12 mb-2">
+              <lable className="form-lable">
+                Company Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("cmpId")}
+                  className={`form-select  ${
+                    formik.touched.cmpId && formik.errors.cmpId
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("companyName")}
-                />
-                {formik.touched.companyName && formik.errors.companyName && (
-                  <div className="invalid-feedback">
-                    {formik.errors.companyName}
-                  </div>
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {companyData &&
+                    companyData.map((cmpId) => (
+                      <option key={cmpId.id} value={cmpId.id}>
+                        {cmpId.cmpName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.cmpId && formik.errors.cmpId && (
+                  <div className="invalid-feedback">{formik.errors.cmpId}</div>
                 )}
               </div>
             </div>
@@ -243,9 +274,7 @@ function ExpenseAdd() {
             </div>
             <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
-                <lable className="form-lable">
-                  Remarks
-                </lable>
+                <lable className="form-lable">Remarks</lable>
                 <textarea
                   id="floatingTextarea2"
                   style={{ height: "100px" }}
@@ -260,4 +289,5 @@ function ExpenseAdd() {
     </div>
   );
 }
+
 export default ExpenseAdd;

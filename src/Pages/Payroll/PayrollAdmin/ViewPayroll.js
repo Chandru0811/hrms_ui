@@ -42,7 +42,7 @@ function Viewpayroll() {
           </div>
           <div className="container">
             <div className="row mt-5">
-              <div className="col-md-6 col-12">
+              {/* <div className="col-md-6 col-12">
                 <div className="row mb-2">
                   <div className="col-6 ">
                     <p className="fw-medium">Employee ID</p>
@@ -51,7 +51,7 @@ function Viewpayroll() {
                     <p className="text-muted text-sm">: {data.payrollEmpId}</p>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="col-md-6 col-12">
                 <div className="row mb-2">
                   <div className="col-6  ">
@@ -65,20 +65,20 @@ function Viewpayroll() {
               <div className="col-md-6 col-12">
                 <div className="row mb-2">
                   <div className="col-6 ">
-                    <p className="fw-medium">Company ID</p>
+                    <p className="fw-medium">Company Name</p>
                   </div>
                   <div className="col-6">
-                    <p className="text-muted text-sm">: {data.companyId}</p>
+                    <p className="text-muted text-sm">: {data.cmpId}</p>
                   </div>
                 </div>
               </div>
               <div className="col-md-6 col-12">
                 <div className="row mb-2">
                   <div className="col-6 ">
-                    <p className="fw-medium">Department ID</p>
+                    <p className="fw-medium">Department Name</p>
                   </div>
                   <div className="col-6">
-                    <p className="text-muted text-sm">: {data.departmentId}</p>
+                    <p className="text-muted text-sm">: {data.deptId}</p>
                   </div>
                 </div>
               </div>

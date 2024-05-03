@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function DeductionView() {
+  
   return (
     <div className="container ">
       <div className="row  mt-3">
@@ -14,7 +15,7 @@ function DeductionView() {
       <div>
         <div className="container">
           <div className="row mt-5 pb-3">
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <div className="row    mb-2">
                 <div className="col-6 ">
                   <p className="fw-medium">Employee ID </p>
@@ -23,7 +24,7 @@ function DeductionView() {
                   <p className="text-muted text-sm">: ECS01</p>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="col-md-6 col-12">
               <div className="row    mb-2">
                 <div className="col-6 ">
@@ -34,7 +35,7 @@ function DeductionView() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <div className="row  mb-2  ">
                 <div className="col-6  ">
                   <p className="fw-medium">Company ID</p>
@@ -43,7 +44,7 @@ function DeductionView() {
                   <p className="text-muted text-sm">: ECS74</p>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="col-md-6 col-12">
               <div className="row    mb-2">
                 <div className="col-6 ">
@@ -54,7 +55,7 @@ function DeductionView() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <div className="row    mb-2">
                 <div className="col-6 ">
                   <p className="fw-medium">Department ID</p>
@@ -63,7 +64,7 @@ function DeductionView() {
                   <p className="text-muted text-sm">: TechECS678</p>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="col-md-6 col-12">
               <div className="row    mb-2">
                 <div className="col-6 ">
