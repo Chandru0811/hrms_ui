@@ -80,6 +80,10 @@ import EditCompanyRegistration from "../Pages/Company_Registration/EditCompanyRe
 import ViewCompanyRegistration from "../Pages/Company_Registration/ViewCompanyRegistration";
 import { ToastContainer } from "react-toastify";
 import DownloadPDF from "../Pages/Payroll/EmployeePayslip/DownloadPDF";
+import Compliance from "../Pages/CompanyCompliance/Compliance";
+import ComplianceAdd from "../Pages/CompanyCompliance/ComplianceAdd";
+import ComplianceEdit from "../Pages/CompanyCompliance/ComplianceEdit";
+import ComplianceView from "../Pages/CompanyCompliance/ComplianceView";
 
 function Admin({ handleLogout }) {
   useEffect(() => {
@@ -105,6 +109,12 @@ function Admin({ handleLogout }) {
               <Route path="/" element={<Dashboard />} />
 
               <Route path="/downloadpdf" element={<DownloadPDF />} />
+
+              {/* Compliance  */}
+              <Route path="/compliance" element={<Compliance />} />
+              <Route path="/compliance/add" element={<ComplianceAdd />} />
+              <Route path="/compliance/edit" element={<ComplianceEdit />} />
+              <Route path="/compliance/view" element={<ComplianceView />} />
 
               {/* Exit Management */}
               <Route path="/exitmanagement" element={<ExitManagement />} />

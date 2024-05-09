@@ -15,6 +15,7 @@ function Sidebar() {
       isOpen: false,
       subMenus: [
         { title: "Company Registration", path: "/companyregisteration" },
+        { title: "Company Compliance", path: "/compliance" },
         { title: "HR Policy", path: "/policy" },
         { title: "Departments", path: "/departments" },
         { title: "Exit Management", path: "/exitmanagement" },

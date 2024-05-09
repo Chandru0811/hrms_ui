@@ -9,8 +9,8 @@ import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 
 function ExitManagementAdmin() {
   const navigate = useNavigate();
-  const [companyData, setCompanyData] = useState(null); 
-  const [employeeData, setEmployeeData] = useState(null); 
+  const [companyData, setCompanyData] = useState(null);
+  const [employeeData, setEmployeeData] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -108,7 +108,7 @@ function ExitManagementAdmin() {
               </div> */}
               <div className="col-md-6 col-12 mb-2">
                 <lable className="form-lable">
-                Employee Name<span className="text-danger">*</span>
+                  Employee Name<span className="text-danger">*</span>
                 </lable>
                 <div className="input-group mb-3">
                   <select
@@ -137,7 +137,7 @@ function ExitManagementAdmin() {
               </div>
               <div className="col-md-6 col-12 mb-2">
                 <lable className="form-lable">
-                Company Name<span className="text-danger">*</span>
+                  Company Name<span className="text-danger">*</span>
                 </lable>
                 <div className="input-group mb-3">
                   <select
@@ -227,7 +227,7 @@ function ExitManagementAdmin() {
                     </div>
                   )}
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+              <div className="col-md-6 col-12 mb-3">
                 <lable className="">Notice Period</lable>
                 <span className="text-danger">*</span>
                 <select
