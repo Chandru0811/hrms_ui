@@ -6,20 +6,34 @@ import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
 import api from "../../config/URL";
+import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
+import { toast } from "react-toastify";
 
 const Holiday = () => {
   const [viewAction, setViewAction] = useState(false);
   const userName = sessionStorage.getItem("userName");
+  const [companyData, setCompanyData] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const companyData = await fetchAllCompanyNamesWithId();
+      setCompanyData(companyData);
+      
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   useEffect(() => {
     if (userName === "Employee") {
       setViewAction(true);
     }
   }, [userName, setViewAction]);
+
   const tableRef = useRef(null);
   const [datas, setDatas] = useState([]);
-  // console.log(datas)
   const [loading, setLoading] = useState(true);
-
+  console.log("companyData",datas)
   useEffect(() => {
     const getData = async () => {
       try {
@@ -31,6 +45,7 @@ const Holiday = () => {
       }
     };
     getData();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -44,7 +59,6 @@ const Holiday = () => {
 
   const initializeDataTable = () => {
     if ($.fn.DataTable.isDataTable(tableRef.current)) {
-      // DataTable already initialized, no need to initialize again
       return;
     }
     $(tableRef.current).DataTable({
@@ -71,6 +85,14 @@ const Holiday = () => {
     }
     setLoading(false);
   };
+  
+  const getCompanyNameById = (pubHolidayCmpId) => {
+    if(companyData){
+    const company = companyData.find((company) => company.cmpId === pubHolidayCmpId);
+    console.log("name",datas.pubHolidayCmpId)
+    return  company ? company.cmpName : ""
+  }
+  };
 
   return (
     <section>
@@ -94,7 +116,6 @@ const Holiday = () => {
             <thead>
               <tr>
                 <th scope="col">S No</th>
-                <th scope="col">Company ID</th>
                 <th scope="col">Company Name</th>
                 <th scope="col">Holiday Name</th>
                 <th scope="col">Start Date</th>
@@ -105,10 +126,9 @@ const Holiday = () => {
               {datas.map((data, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{data.pubHolidayCmpId}</td>
-                  <td>{data.companyName}</td>
+                  <td>{getCompanyNameById(data.pubHolidayCmpId)}</td>
                   <td>{data.pubHolidayName}</td>
-                  <td>{data.startDate}</td>
+                  <td>{data.startDate && ((data.startDate.split('T')[0]).split('-').reverse().join('-'))}</td>
                   <td>
                     <div className="d-flex">
                       {viewAction ? (

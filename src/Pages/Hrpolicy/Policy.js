@@ -8,6 +8,8 @@ import Delete from "../../components/common/Delete";
 import api from "../../config/URL";
 
 const Policy = () => {
+  const userRole = sessionStorage.getItem("userName");
+
   const tableRef = useRef(null);
   const [datas, setDatas] = useState([]);
   // console.log(datas)
@@ -103,15 +105,15 @@ const Policy = () => {
                         <FaEye />
                       </button>
                     </Link>
-                    <Link to={`/policy/edit/${data.hrPolicyId}`}>
+                    {userRole==="Admin"&&<Link to={`/policy/edit/${data.hrPolicyId}`}>
                       <button className="btn btn-sm">
                         <FaEdit />
                       </button>
-                    </Link>
-                    <Delete
+                    </Link>}
+                    {userRole==="Admin"&&<Delete
                       onSuccess={refreshData}
                       path={`/deleteHRPolicyById/${data.hrPolicyId}`}
-                    />
+                    />}
                   </div>
                 </td>
               </tr>

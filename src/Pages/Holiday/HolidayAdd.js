@@ -13,44 +13,40 @@ function AddNewBublicHoliday() {
     try {
       const companyData = await fetchAllCompanyNamesWithId();
       setCompanyData(companyData);
+      console.log(companyData)
     } catch (error) {
       toast.error(error);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
 
   const navigate = useNavigate();
   const validationSchema = Yup.object({
-    // pubHolidayCmpId: Yup.string().required('*Company ID is required'),
-    companyName: Yup.string().required("*Company name is required"),
+    pubHolidayCmpId: Yup.string().required('*Company ID is required'),
+    // cmpId: Yup.string().required("*Company name is required"),
     pubHolidayName: Yup.string().required("*Holiday name is required"),
     pubHolidayType: Yup.string().required("*Select the holiday is required"),
     startDate: Yup.string().required("*Select the start date"),
     endDate: Yup.string().required("*Select the end date"),
-    pubHolidayCountryCode: Yup.string().required(),
-    mobileNo: Yup.number()
-      .required("*Country code is required")
-      .typeError("*Must be a number"),
+    pubHolidayCountryCode: Yup.string().required("*Select the country"),
+    
   });
 
   const formik = useFormik({
     initialValues: {
-      // pubHolidayCmpId: "",
-      companyName: "",
+      pubHolidayCmpId: "",
+      // cmpId: "",
       pubHolidayName: "",
       pubHolidayType: "",
       startDate: "",
       endDate: "",
       pubHolidayCountryCode: "",
-      mobileNo: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
-      values.hrPolicyCmpId = 106;
+      console.log("add",values);
       try {
         const response = await api.post("addPublicHolidays", values);
         // console.log(response)
@@ -85,38 +81,15 @@ function AddNewBublicHoliday() {
               </div>
             </div>
             <div className="row mt-3">
-              {/* <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                    Company ID<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="text"
-                    className={`form-control  ${
-                      formik.touched.pubHolidayCmpId &&
-                      formik.errors.pubHolidayCmpId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("pubHolidayCmpId")}
-                  />
-                  {formik.touched.pubHolidayCmpId &&
-                    formik.errors.pubHolidayCmpId && (
-                      <div className="invalid-feedback">
-                        {formik.errors.pubHolidayCmpId}
-                      </div>
-                    )}
-                </div>
-              </div> */}
               <div className="col-md-6 col-12 mb-2">
                 <lable className="form-lable">
                   Company Name<span className="text-danger">*</span>
                 </lable>
                 <div className="input-group mb-3">
                   <select
-                    {...formik.getFieldProps("cmpId")}
+                    {...formik.getFieldProps("pubHolidayCmpId")}
                     className={`form-select  ${
-                      formik.touched.cmpId && formik.errors.cmpId
+                      formik.touched.pubHolidayCmpId && formik.errors.pubHolidayCmpId
                         ? "is-invalid"
                         : ""
                     }`}
@@ -124,11 +97,12 @@ function AddNewBublicHoliday() {
                   >
                     <option selected></option>
                     {companyData &&
-                      companyData.map((cmpId) => (
-                        <option key={cmpId.id} value={cmpId.id}>
+                      companyData.map((cmpId) =>{
+                        return(
+                        <option key={cmpId.id} value={cmpId.cmpId}>
                           {cmpId.cmpName}
                         </option>
-                      ))}
+                      )})}
                   </select>
                   {formik.touched.cmpId && formik.errors.cmpId && (
                     <div className="invalid-feedback">
@@ -138,7 +112,7 @@ function AddNewBublicHoliday() {
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
+                <div className="text-start  mb-3">
                   <lable className="form-lable">
                     Holiday Name<span className="text-danger">*</span>
                   </lable>
@@ -234,11 +208,9 @@ function AddNewBublicHoliday() {
               <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start mt-2 mb-3">
                   <lable className="form-lable">
-                    Country Code<span className="text-danger">*</span>
+                    Country<span className="text-danger">*</span>
                   </lable>
-                  <div className="input-group" style={{ width: "100%" }}>
                     <select
-                      style={{ width: "20%" }}
                       className={`form-select ${
                         formik.touched.pubHolidayCountryCode &&
                         formik.errors.pubHolidayCountryCode
@@ -248,25 +220,14 @@ function AddNewBublicHoliday() {
                       {...formik.getFieldProps("pubHolidayCountryCode")}
                     >
                       <option></option>
-                      <option value="+91">+91</option>
-                      <option value="+65">+65</option>
+                      <option value="91">India</option>
+                      <option value="65">Singapore</option>
                     </select>
-                    <input
-                      type="tel"
-                      style={{ width: "80%" }}
-                      className={`form-control ${
-                        formik.touched.mobileNo && formik.errors.mobileNo
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      {...formik.getFieldProps("mobileNo")}
-                    />
-                    {formik.touched.mobileNo && formik.errors.mobileNo && (
-                      <div className="invalid-feedback">
-                        {formik.errors.mobileNo}
-                      </div>
-                    )}
-                  </div>
+                    {formik.touched.pubHolidayCountryCode && formik.errors.pubHolidayCountryCode && (
+                    <div className="invalid-feedback">
+                      {formik.errors.pubHolidayCountryCode}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
