@@ -2,16 +2,19 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import { toast } from "react-toastify";
 import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
+import api from '../../config/URL'
 
 function LeaveAdminEdit() {
+  const {id}=useParams()
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
+  const [ data,setData]=useState([])
 
   const fetchData = async () => {
     try {
@@ -25,8 +28,26 @@ function LeaveAdminEdit() {
       toast.error(error);
     }
   };
-
+  const fetchUserData = async () => {
+    try {
+      // setLoading(true);
+      const response = await api.get(
+        `getAllLeaveRequests/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            //Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setData(response.data);
+      // console.log("object",data)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } 
+  };
   useEffect(() => {
+    fetchUserData();
     fetchData();
   }, []);
 

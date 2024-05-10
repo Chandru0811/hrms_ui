@@ -1,8 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useParams, } from "react-router-dom";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
 
 
 function AttendancehrmsView() {
+  const [data, setData] = useState([]);
+  const { id } = useParams();
+  const [employeeData, setEmployeeData] = useState(null);
+  const [datas, setDatas] = useState([]);
+
+  const findEmployeeName = (attendanceId) => {
+    if (!employeeData) return 'Employee data not available';
+    const employee = employeeData.find(emp => emp.attendanceId === datas.attendanceId);
+    return employee ? `${employee.firstName} ${employee.lastName}` : '';
+  };
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/getAllDailyAttendanceById/${id}`);
+        setData(response.data);
+      } catch (error) {
+        toast.error("Error Fetching Data", error);
+      }
+    };
+    getData();
+  }, [id]);
+
   return (
     <div className="container ">
       <div className="row  mt-3">
@@ -21,7 +45,8 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Employee Name </p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Suriya</p>
+                  {/* {data.attendanceId || "--"} */}
+                  {findEmployeeName(datas.attendanceId)}
                 </div>
               </div>
             </div>
@@ -31,7 +56,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Date</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 2024-02-13</p>
+                  {data.attendanceDate || "--"}
                 </div>
               </div>
             </div>
@@ -41,7 +66,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Attendance Status </p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Present</p>
+                  {data.attendanceStatus || "--"}
                 </div>
               </div>
             </div>
@@ -51,7 +76,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Check In</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 09:00 AM</p>
+                  {data.attendanceCheckInTime || "--"}
                 </div>
               </div>
             </div>
@@ -61,7 +86,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Check Out</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 06:00 PM</p>
+                  {data.attendanceCheckOutTime || "--"}
                 </div>
               </div>
             </div>
@@ -71,7 +96,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Check In Mode</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Tap In</p>
+                  {data.attendanceCheckInMode || "--"}
                 </div>
               </div>
             </div>
@@ -81,7 +106,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Check Out Mode</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Tap In</p>
+                  {data.attendanceCheckOutMode || "--"}
                 </div>
               </div>
             </div>
@@ -91,7 +116,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">OT Start Time</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 06:01 PM</p>
+                  {data.attendanceOtStarttime || "--"}
                 </div>
               </div>
             </div>
@@ -101,7 +126,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">OT End Time</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 08:00 PM</p>
+                  {data.attendanceOtEndtime || "--"}
                 </div>
               </div>
             </div>
@@ -111,7 +136,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Hours Worked</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 11 Hrs</p>
+                  {data.attendanceOtEndtime || "--"}
                 </div>
               </div>
             </div>
@@ -121,7 +146,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Attendance Remark</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Good</p>
+                  {data.attendanceRemarks || "--"}
                 </div>
               </div>
             </div>

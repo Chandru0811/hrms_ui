@@ -9,6 +9,8 @@ import api from "../../config/URL";
 
 const Department = () => {
   const tableRef = useRef(null);
+  const userRole = sessionStorage.getItem("userName");
+
   const [datas, setDatas] = useState([]);
   // console.log(datas)
   const [loading, setLoading] = useState(true);
@@ -101,15 +103,15 @@ const Department = () => {
                      <FaEye />
                    </button>
                  </Link> 
-                 <Link to={`/departments/edit/${data.deptId}`}>
+                 {userRole==="Admin"&&<Link to={`/departments/edit/${data.deptId}`}>
                    <button className="btn btn-sm">
                      <FaEdit />
                    </button>
-                 </Link>
-                 <Delete 
+                 </Link>}
+                 {userRole==="Admin"&&<Delete 
                  onSuccess={refreshData} 
                  path={`/deleteDepartmentById/${data.deptId}`}
-                 />
+                 />}
                </td>
              </tr>
            ))}

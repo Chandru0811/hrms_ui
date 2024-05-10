@@ -27,22 +27,19 @@ function EditNewBublicHoliday() {
   const [loading, setLoading] = useState(true);
 
   const validationSchema = Yup.object({
-    // pubHolidayCmpId: Yup.string().required("*Company ID is required"),
-    cmpId: Yup.string().required("*Company name is required"),
+    pubHolidayCmpId: Yup.string().required("*Company ID is required"),
+    // cmpId: Yup.string().required("*Company name is required"),
     pubHolidayName: Yup.string().required("*Holiday name is required"),
     pubHolidayType: Yup.string().required("*Select the holiday is required"),
     startDate: Yup.string().required("*Select the start date"),
     endDate: Yup.string().required("*Select the end date"),
-    pubHolidayCountryCode: Yup.string().required(),
-    mobileNo: Yup.number()
-      .required("*Country code is required")
-      .typeError("*Must be a number"),
+    pubHolidayCountryCode: Yup.string().required("*Select the Country"),
   });
 
   const formik = useFormik({
     initialValues: {
-      // pubHolidayCmpId: "",
-      cmpId: "",
+      pubHolidayCmpId: "",
+      // cmpId: "",
       pubHolidayName: "",
       pubHolidayType: "",
       startDate: "",
@@ -52,7 +49,7 @@ function EditNewBublicHoliday() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      // console.log(values);
+      console.log("values", values);
       try {
         const response = await api.put(
           `updatePublicHolidaysById/${id}`,
@@ -79,7 +76,14 @@ function EditNewBublicHoliday() {
     const getData = async () => {
       try {
         const response = await api.get(`/getPublicHolidaysById/${id}`);
-        formik.setValues(response.data);
+        const startDate = response.data.startDate.split("T")[0];
+        const endDate = response.data.endDate.split("T")[0];
+        const values = {
+          ...response.data,
+          startDate: startDate,
+          endDate:endDate
+        };
+        formik.setValues(values);
         setLoading(false);
       } catch (error) {
         toast.error("Error Fetching Data ", error);
@@ -141,9 +145,10 @@ function EditNewBublicHoliday() {
                   </lable>
                   <div className="input-group mb-3">
                     <select
-                      {...formik.getFieldProps("cmpId")}
+                      {...formik.getFieldProps("pubHolidayCmpId")}
                       className={`form-select  ${
-                        formik.touched.cmpId && formik.errors.cmpId
+                        formik.touched.pubHolidayCmpId &&
+                        formik.errors.pubHolidayCmpId
                           ? "is-invalid"
                           : ""
                       }`}
@@ -152,7 +157,7 @@ function EditNewBublicHoliday() {
                       <option selected></option>
                       {companyData &&
                         companyData.map((cmpId) => (
-                          <option key={cmpId.id} value={cmpId.id}>
+                          <option key={cmpId.id} value={cmpId.cmpId}>
                             {cmpId.cmpName}
                           </option>
                         ))}
@@ -261,39 +266,27 @@ function EditNewBublicHoliday() {
                 <div className="col-lg-6 col-md-6 col-12">
                   <div className="text-start mt-2 mb-3">
                     <lable className="form-lable">
-                      Country Code<span className="text-danger">*</span>
+                      Country<span className="text-danger">*</span>
                     </lable>
-                    <div className="input-group" style={{ width: "100%" }}>
-                      <select
-                        style={{ width: "23%" }}
-                        className={`form-select ${
-                          formik.touched.pubHolidayCountryCode &&
-                          formik.errors.pubHolidayCountryCode
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                        {...formik.getFieldProps("pubHolidayCountryCode")}
-                      >
-                        <option></option>
-                        <option value="+91">+91</option>
-                        <option value="+65">+65</option>
-                      </select>
-                      <input
-                        type="tel"
-                        style={{ width: "77%" }}
-                        className={`form-control ${
-                          formik.touched.mobileNo && formik.errors.mobileNo
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                        {...formik.getFieldProps("mobileNo")}
-                      />
-                      {formik.touched.mobileNo && formik.errors.mobileNo && (
+                    <select
+                      className={`form-select ${
+                        formik.touched.pubHolidayCountryCode &&
+                        formik.errors.pubHolidayCountryCode
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                      {...formik.getFieldProps("pubHolidayCountryCode")}
+                    >
+                      <option></option>
+                      <option value="91">India</option>
+                      <option value="65">Singapore</option>
+                    </select>
+                    {formik.touched.pubHolidayCountryCode &&
+                      formik.errors.pubHolidayCountryCode && (
                         <div className="invalid-feedback">
-                          {formik.errors.mobileNo}
+                          {formik.errors.pubHolidayCountryCode}
                         </div>
                       )}
-                    </div>
                   </div>
                 </div>
               </div>

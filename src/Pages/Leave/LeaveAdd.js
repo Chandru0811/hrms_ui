@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
+import api from '../../config/URL'
 
 function LeaveAdd() {
   const [companyData, setCompanyData] = useState(null);
@@ -41,6 +42,9 @@ function LeaveAdd() {
     reasonForrequestedLeave: Yup.string().required(
       "*Reason for requested leave is required"
     ),
+    leaveReqType: Yup.string().required(
+      "*Reason for requested leave is required"
+    ),
   });
   const formik = useFormik({
     initialValues: {
@@ -52,11 +56,33 @@ function LeaveAdd() {
       cmpId: "",
       fromDate: "",
       toDate: "",
+      leaveReqType: "",
       reasonForrequestedLeave: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+      const payload={
+        leaveReqEmpId: values.employeeId,
+        leaveReqStartDate: values.fromDate,
+        leaveReqEndDate: values.toDate,
+        leaveReqRemarks : values.reasonForrequestedLeave,
+        leaveReqType:values.leaveReqType
+      }
+      try {
+        const response = await api.post(`addLeaveRequests`,payload,{
+            headers: {
+              "Content-Type": "application/json",
+              //Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if(response.status===201){
+        toast.success("created:") 
+      }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } 
     },
   });
 
@@ -228,7 +254,7 @@ function LeaveAdd() {
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
+                <div className="text-start  mb-3">
                   <lable className="form-lable">From Date</lable>
                   <span className="text-danger">*</span>
                   <input
@@ -265,6 +291,35 @@ function LeaveAdd() {
                       {formik.errors.toDate}
                     </div>
                   )}
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <lable className="form-lable">
+                  Leave Requested Type
+                  </lable>
+                  <span className="text-danger">*</span>
+                  <select
+                    type="text"
+                    className={`form-select ${
+                      formik.touched.leaveReqType &&
+                      formik.errors.leaveReqType
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("leaveReqType")}
+                  >
+                    <option value={""}></option>
+                    <option value={"Maternity leave"}>Maternity Leave</option>
+                    <option value={"Sick leave"}>Sick leave</option>
+                    <option value={"Casual leave"}>Casual leave</option>
+                  </select>
+                  {formik.touched.leaveReqType &&
+                    formik.errors.leaveReqType && (
+                      <div className="invalid-feedback">
+                        {formik.errors.leaveReqType}
+                      </div>
+                    )}
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
