@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 import { toast } from "react-toastify";
+import api from "../../config/URL";
 
 function ClaimAdminAdd() {
+  const navigate = useNavigate();
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
@@ -30,40 +32,70 @@ function ClaimAdminAdd() {
   }, []);
 
   const validationSchema = Yup.object({
-    // employeeID: Yup.string().required("*Employee id is required"),
-    employeeId: Yup.string().required("*Employee name is required"),
+    // claimsEmpId: Yup.string().required("*Employee id is required"),
+    claimsEmpId: Yup.string().required("*Employee name is required"),
     // companyID: Yup.string().required("*Company id is required"),
     cmpId: Yup.string().required("*Company name is required"),
     // departmentID: Yup.string().required("*Department id is required"),
     deptId: Yup.string().required("*Department name is required"),
-    date: Yup.string().required("*Date is required"),
-    type: Yup.string().required("*Select the type"),
-    amount: Yup.number()
-      .required("*Amount is required")
+    claimsDate: Yup.string().required("*claimsDate is required"),
+    claimsType: Yup.string().required("*Select the type"),
+    claimsAmt: Yup.number()
+      .required("*claimsAmt is required")
       .typeError("*Must be a number"),
-    attachment: Yup.string().required("*Attachment is required"),
+    claimsAttachment: Yup.string().required("*claimsAttachment is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      // employeeID: "",
-      employeeId: "",
+      // claimsEmpId: "",
+      claimsEmpId: "",
       // companyID: "",
       cmpId: "",
       // departmentID: "",
       deptId: "",
-      date: "",
-      type: "",
-      amount: "",
-      attachment: "",
+      claimsDate: "",
+      claimsType: "",
+      claimsAmt: "",
+      claimsAttachment: "",
       remarks: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+      const payload={
+        claimsEmpId:values.claimsEmpId,
+        cmpId:parseInt(values.cmpId),
+        deptId:parseInt(values.deptId),
+        claimsclaimsDate:values.claimsDate,
+        claimsType:values.type,
+        claimsAmt:parseInt(values.claimsAmt),
+        claimsclaimsAttachment:values.claimsAttachment,
+        remarks:values.remarks
+      }
+      try {
+       
+        const response = await api.post("/addClaims", payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("payload",payload);
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/claimadmin");
+          
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error(error);
+      }
     },
   });
-
+console.log("departmentData",departmentData)
+console.log("companyData",companyData)
+console.log("employeeData",employeeData)
   return (
     <div className="container-fluid">
       <div className="container py-3">
@@ -89,15 +121,15 @@ function ClaimAdminAdd() {
               <input
                 type="text"
                 className={`form-control  ${
-                  formik.touched.employeeID && formik.errors.employeeID
+                  formik.touched.claimsEmpId && formik.errors.claimsEmpId
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("employeeID")}
+                {...formik.getFieldProps("claimsEmpId")}
               />
-              {formik.touched.employeeID && formik.errors.employeeID && (
+              {formik.touched.claimsEmpId && formik.errors.claimsEmpId && (
                 <div className="invalid-feedback">
-                  {formik.errors.employeeID}
+                  {formik.errors.claimsEmpId}
                 </div>
               )}
             </div> */}
@@ -107,9 +139,9 @@ function ClaimAdminAdd() {
               </lable>
               <div className="input-group mb-3">
                 <select
-                  {...formik.getFieldProps("employeeId")}
+                  {...formik.getFieldProps("claimsEmpId")}
                   className={`form-select  ${
-                    formik.touched.employeeId && formik.errors.employeeId
+                    formik.touched.claimsEmpId && formik.errors.claimsEmpId
                       ? "is-invalid"
                       : ""
                   }`}
@@ -117,15 +149,15 @@ function ClaimAdminAdd() {
                 >
                   <option selected></option>
                   {employeeData &&
-                    employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.id}>
-                        {employeeId.firstName} {employeeId.lastName}
+                    employeeData.map((claimsEmpId) => (
+                      <option key={claimsEmpId.id} value={claimsEmpId.employeeId}>
+                        {claimsEmpId.firstName} {claimsEmpId.lastName}
                       </option>
                     ))}
                 </select>
-                {formik.touched.employeeId && formik.errors.employeeId && (
+                {formik.touched.claimsEmpId && formik.errors.claimsEmpId && (
                   <div className="invalid-feedback">
-                    {formik.errors.employeeId}
+                    {formik.errors.claimsEmpId}
                   </div>
                 )}
               </div>
@@ -166,7 +198,7 @@ function ClaimAdminAdd() {
                   <option selected></option>
                   {companyData &&
                     companyData.map((cmpId) => (
-                      <option key={cmpId.id} value={cmpId.id}>
+                      <option key={cmpId.id} value={cmpId.cmpId}>
                         {cmpId.cmpName}
                       </option>
                     ))}
@@ -212,7 +244,7 @@ function ClaimAdminAdd() {
                   <option selected></option>
                   {departmentData &&
                     departmentData.map((deptId) => (
-                      <option key={deptId.id} value={deptId.id}>
+                      <option key={deptId.id} value={deptId.deptId}>
                         {deptId.deptName}
                       </option>
                     ))}
@@ -224,17 +256,17 @@ function ClaimAdminAdd() {
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
-                Date<span className="text-danger">*</span>
+                ClaimsDate<span className="text-danger">*</span>
               </lable>
               <input
                 type="date"
                 className={`form-control  ${
-                  formik.touched.date && formik.errors.date ? "is-invalid" : ""
+                  formik.touched.claimsDate && formik.errors.claimsDate ? "is-invalid" : ""
                 }`}
-                {...formik.getFieldProps("date")}
+                {...formik.getFieldProps("claimsDate")}
               />
-              {formik.touched.date && formik.errors.date && (
-                <div className="invalid-feedback">{formik.errors.date}</div>
+              {formik.touched.claimsDate && formik.errors.claimsDate && (
+                <div className="invalid-feedback">{formik.errors.claimsDate}</div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
@@ -244,9 +276,9 @@ function ClaimAdminAdd() {
               <select
                 aria-label="Default select example"
                 className={`form-select  ${
-                  formik.touched.type && formik.errors.type ? "is-invalid" : ""
+                  formik.touched.claimsType && formik.errors.claimsType ? "is-invalid" : ""
                 }`}
-                {...formik.getFieldProps("type")}
+                {...formik.getFieldProps("claimsType")}
               >
                 <option selected></option>
                 <option value="Telephone">Telephone</option>
@@ -254,43 +286,43 @@ function ClaimAdminAdd() {
                 <option value="Hotel and Acc">Hotel and Acc</option>
                 <option value="Leave Enhance">Leave Enhance</option>
               </select>
-              {formik.touched.type && formik.errors.type && (
-                <div className="invalid-feedback">{formik.errors.type}</div>
+              {formik.touched.claimsType && formik.errors.claimsType && (
+                <div className="invalid-feedback">{formik.errors.claimsType}</div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
-                Amount<span className="text-danger">*</span>
+                claimsAmt<span className="text-danger">*</span>
               </lable>
               <input
                 type="text"
                 className={`form-control  ${
-                  formik.touched.amount && formik.errors.amount
+                  formik.touched.claimsAmt && formik.errors.claimsAmt
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("amount")}
+                {...formik.getFieldProps("claimsAmt")}
               />
-              {formik.touched.amount && formik.errors.amount && (
-                <div className="invalid-feedback">{formik.errors.amount}</div>
+              {formik.touched.claimsAmt && formik.errors.claimsAmt && (
+                <div className="invalid-feedback">{formik.errors.claimsAmt}</div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
-                Attachment<span className="text-danger">*</span>
+                claimsAttachment<span className="text-danger">*</span>
               </lable>
               <input
                 type="file"
                 className={`form-control  ${
-                  formik.touched.attachment && formik.errors.attachment
+                  formik.touched.claimsAttachment && formik.errors.claimsAttachment
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("attachment")}
+                {...formik.getFieldProps("claimsAttachment")}
               />
-              {formik.touched.attachment && formik.errors.attachment && (
+              {formik.touched.claimsAttachment && formik.errors.claimsAttachment && (
                 <div className="invalid-feedback">
-                  {formik.errors.attachment}
+                  {formik.errors.claimsAttachment}
                 </div>
               )}
             </div>

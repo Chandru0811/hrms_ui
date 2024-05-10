@@ -1,70 +1,73 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
+import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 
 const ClaimAdmin = () => {
   const tableRef = useRef(null);
+  const [ data,setData]=useState([])
+  const [ loading,setLoading]=useState([true])
+  const [employeeData, setEmployeeData] = useState(null);
+  console.log(data)
+  const findEmployeeName = (employeeId) => {
+    if (!employeeData) return 'Employee data not available'; 
+    const employee = employeeData.find(emp => emp.employeeId === employeeId);
+    return employee ? `${employee.firstName} ${employee.lastName}` : '';
+  };
 
-  const datas = [
-    {
-      id: 1,
-      employeeID: "12",
-      employeeName: "Vijayashree",
-      AppliedDate: "25/01/2024",
-      ClaimDate: "22/01/2024",
-      ClaimType: "Telephone",
-      ClaimAmount: "$120",
-      AppLvl1: "Approved",
-      AppLvl2: "Approved",
-    },
-    {
-      id: 2,
-      employeeID: "15",
-      employeeName: "Vijay",
-      AppliedDate: "25/01/2024",
-      ClaimDate: "22/01/2024",
-      ClaimType: "Taxi",
-      ClaimAmount: "$120",
-      AppLvl1: "Approved",
-      AppLvl2: "Pending",
-    },
-    {
-      id: 3,
-      employeeID: "20",
-      employeeName: "Raguvaran",
-      AppliedDate: "18/01/2024",
-      ClaimDate: "10/01/2024",
-      ClaimType: "Hotel and Acc",
-      ClaimAmount: "$60",
-      AppLvl1: "Rejected",
-      AppLvl2: "Rejected",
-    },
-    {
-      id: 4,
-      employeeID: "2",
-      employeeName: "Nalini Sri",
-      AppliedDate: "16/01/2024",
-      ClaimDate: "12/01/2024",
-      ClaimAmount: "$80",
-      ClaimType: "Leave Enhance",
-      AppLvl1: "Approved",
-      AppLvl2: "Pending",
-    },
-  ];
+  const fetchData1 = async () => {
+    try {
+     
+      const employeeData = await fetchAllEmployeeNamesWithId();
+      
+     
+      setEmployeeData(employeeData);
+      
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      // setLoading(true);
+      const response = await api.get(
+        `getAllClaims`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            //Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setData(response.data);
+      console.log("object",data)
+      setLoading(false)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      // setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const table = $(tableRef.current).DataTable({
-      responsive: true,
-    });
-
-    return () => {
-      table.destroy();
-    };
-  }, []);
+    fetchData();
+    fetchData1();
+    if (!loading) {
+      const table = $(tableRef.current).DataTable({
+        responsive: true,
+      });
+      return () => {
+        table.destroy();
+      };
+    }
+  }, [loading]);
 
   return (
     <div className="container my-4">
@@ -79,7 +82,7 @@ const ClaimAdmin = () => {
         <thead>
           <tr>
             <th scope="col">S No</th>
-            <th scope="col">Employee ID</th>
+            {/* <th scope="col">Employee ID</th> */}
             <th scope="col">Employee Name</th>
             {/* <th scope="col">Applied Date</th> */}
             {/* <th scope="col">Claim Date</th>
@@ -91,28 +94,28 @@ const ClaimAdmin = () => {
           </tr>
         </thead>
         <tbody>
-          {datas.map((data, index) => (
+          {data.map((data, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
-              <td>{data.employeeID}</td>
-              <td>{data.employeeName}</td>
+              {/* <td>{data.employeeID}</td> */}
+              <td> {findEmployeeName(data.claimsEmpId)}</td>
               {/* <td>{data.AppliedDate}</td> */}
               {/* <td>{data.ClaimDate}</td>
               <td>{data.ClaimType}</td> */}
-              <td>{data.ClaimAmount}</td>
+              <td>{data.claimsAmt}</td>
               <td>
-                {data.AppLvl1 === "Approved" ? (
+                {data.approvalStatusLv1 === "APPROVED" ? (
                   <span className="badge badges-Green">Approved</span>
-                ) : data.AppLvl1 === "Pending" ? (
+                ) : data.approvalNameLv1 === "Pending" ? (
                   <span className="badge badges-Blue">Pending</span>
                 ) : (
                   <span className="badge badges-Red">Rejected</span>
                 )}
               </td>
               <td>
-                {data.AppLvl2 === "Approved" ? (
+                {data.approvalStatusLv2 === "Approved" ? (
                   <span className="badge badges-Green">Approved</span>
-                ) : data.AppLvl2 === "Pending" ? (
+                ) : data.approvalNameLv2 === "Pending" ? (
                   <span className="badge badges-Blue">Pending</span>
                 ) : (
                   <span className="badge badges-Red">Rejected</span>
@@ -120,12 +123,12 @@ const ClaimAdmin = () => {
               </td>
               <td>
                 <div className="d-flex">
-                  <Link to="/claimadmin/view">
+                  <Link to={`/claimadmin/view/${data.claimsId}`}>
                     <button className="btn btn-sm">
                       <FaEye />
                     </button>
                   </Link>
-                  <Link to="/claimadmin/edit">
+                  <Link to={`/claimadmin/edit/${data.claimsId}`}>
                     <button className="btn btn-sm">
                       <FaEdit />
                     </button>
