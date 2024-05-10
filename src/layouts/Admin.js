@@ -180,13 +180,13 @@ function Admin({ handleLogout }) {
               {/* Leave */}
               <Route path="/leave" element={<Leave />}></Route>
               <Route path="/leave/add" element={<LeaveAdd />} />
-              <Route path="/leave/edit" element={<LeaveEdit />} />
-              <Route path="/leave/view" element={<LeaveView />} />
+              <Route path="/leave/edit/:id" element={<LeaveEdit />} />
+              <Route path="/leave/view/:id" element={<LeaveView />} />
 
               {/* Leave Admin */}
               <Route path="/leaveadmin" element={<LeaveAdmin />} />
-              <Route path="/leaveadmin/edit" element={<LeaveAdminEdit />} />
-              <Route path="/leaveadmin/view" element={<LeaveAdminView />} />
+              <Route path="/leaveadmin/edit/:id" element={<LeaveAdminEdit />} />
+              <Route path="/leaveadmin/view/:id" element={<LeaveAdminView />} />
 
               {/*Hrms Deduction */}
               <Route path="/deductions" element={<Deduction />} />
@@ -223,11 +223,11 @@ function Admin({ handleLogout }) {
                 element={<AttendancehrmsAdd />}
               />
               <Route
-                path="/attendancehrms/view"
+                path="/attendancehrms/view/:id"
                 element={<AttendancehrmsView />}
               />
               <Route
-                path="/attendancehrms/edit"
+                path="/attendancehrms/edit/:id"
                 element={<AttendancehrmsEdit />}
               />
 
@@ -255,14 +255,14 @@ function Admin({ handleLogout }) {
               {/* Claims Report */}
               <Route path="/claim" element={<Claim />} />
               <Route path="/claim/add" element={<ClaimAdd />} />
-              <Route path="/claim/edit" element={<ClaimEdit />} />
-              <Route path="/claim/view" element={<ClaimView />} />
+              <Route path="/claim/edit/:id" element={<ClaimEdit />} />
+              <Route path="/claim/view/:id" element={<ClaimView />} />
 
               {/* Claims Report Admin */}
               <Route path="/claimadmin" element={<ClaimAdmin />} />
               <Route path="/claimadmin/add" element={<ClaimAdminAdd />} />
-              <Route path="/claimadmin/edit" element={<ClaimAdminEdit />} />
-              <Route path="/claimadmin/view" element={<ClaimAdminView />} />
+              <Route path="/claimadmin/edit/:id" element={<ClaimAdminEdit />} />
+              <Route path="/claimadmin/view/:id" element={<ClaimAdminView />} />
 
               {/* Expensers Report */}
               <Route path="/expensesreport" element={<ExpensesReport />} />
