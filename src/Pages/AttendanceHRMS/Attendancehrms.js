@@ -15,17 +15,17 @@ const Attendancehrms = () => {
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [employeeData, setEmployeeData] = useState(null);
-  console.log(datas);
+  console.log(employeeData);
 
   const findEmployeeName = (attendanceId) => {
     if (!employeeData) return 'Employee data not available';
-    const employee = employeeData.find(emp => emp.attendanceId === datas.attendanceId);
+    const employee = employeeData.find(emp => emp.employeeId === attendanceId);
     return employee ? `${employee.firstName} ${employee.lastName}` : '';
   };
 
   const fetchData1 = async () => {
     try {
-       const employeeData = await fetchAllEmployeeNamesWithId();
+      const employeeData = await fetchAllEmployeeNamesWithId();
       setEmployeeData(employeeData);
 
     } catch (error) {
@@ -62,32 +62,25 @@ const Attendancehrms = () => {
 
   const tableRef = useRef(null);
 
-  // const datas = [
-  //   {
-  //     id: 1,
-  //     employeeid: "ECS01",
-  //     employeename: "Suriya",
-  //     date: "2024-2-11",
-  //     shift: " Day Shift",
-  //     status: "Present",
-  //   },
-  //   {
-  //     id: 2,
-  //     employeeid: "ECS17",
-  //     employeename: "Kumar",
-  //     date: "2024-2-11",
-  //     shift: " Night Shift",
-  //     status: "Absent",
-  //   },
-  //   {
-  //     id: 3,
-  //     employeeid: "ECS04",
-  //     employeename: "Kishore",
-  //     date: "2024-2-11",
-  //     shift: " Night Shift",
-  //     status: "Present",
-  //   },
-  // ];
+  const destroyDataTable = () => {
+    const table = $(tableRef.current).DataTable();
+    if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
+      table.destroy();
+    }
+  };
+  
+  const refreshData = async () => {
+    destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getAllDailyAttendanceById");
+      setDatas(response.data);
+      // initializeDataTable(); // Reinitialize DataTable after successful data update
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     fetchData();
@@ -106,79 +99,90 @@ const Attendancehrms = () => {
   //   };
 
   return (
-    <div className="container my-5">
-      {!viewAction && (
-        <div className="col-12 text-end mb-3">
-          <Link to="/attendancehrms/add">
-            <button type="button" className="btn btn-button btn-sm">
-              Add <i className="bx bx-plus"></i>
-            </button>
-          </Link>
+    <section>
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
         </div>
       )}
-      <table ref={tableRef} className="display">
-        <thead>
-          <tr>
-            <th scope="col">S No</th>
-            {/* <th scope="col">Employee ID</th> */}
-            <th scope="col">Employee Name</th>
-            <th scope="col">Date</th>
-            <th scope="col">Shift</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {datas.map((data, index) => (
-            <tr key={data.id}>
-              <td>{index + 1}</td>
-              {/* <td>{data.employeeid}</td> */}
-              <td> {findEmployeeName()}</td>
-              <td>{data.attendanceDate}</td>
-              <td>{data.attendanceShiftMode}</td>
-              <td>
-                {data.attendanceStatus === "Present" ? (
-                  <span
-                    className="badge badges-Green"
-                  >
-                    Present
-                  </span>
-                ) : (
-                  <span
-                    className="badge badges-Red"
-                  >
-                    Absent
-                  </span>
-                )}
-              </td>
-              <td>
-                {viewAction ? (
-                  <Link to={`/attendancehrms/view/${data.attendanceId}`}>
-                    <button className="btn btn-sm">
-                      <FaEye />
-                    </button>
-                  </Link>
-                ) : (
-                  <span>
-                    <Link to={`/attendancehrms/view/${data.attendanceId}`}>
-                      <button className="btn btn-sm">
-                        <FaEye />
-                      </button>
-                    </Link>
-                    <Link to={`/attendancehrms/edit/${data.attendanceId}`}>
-                      <button className="btn btn-sm">
-                        <FaEdit />
-                      </button>
-                    </Link>
-                    <Delete />
-                  </span>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      {!loading && (
+        <div className="container my-5">
+          {!viewAction && (
+            <div className="col-12 text-end mb-3">
+              <Link to="/attendancehrms/add">
+                <button type="button" className="btn btn-button btn-sm">
+                  Add <i className="bx bx-plus"></i>
+                </button>
+              </Link>
+            </div>
+          )}
+          <table ref={tableRef} className="display">
+            <thead>
+              <tr>
+                <th scope="col">S No</th>
+                {/* <th scope="col">Employee ID</th> */}
+                <th scope="col">Employee Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Shift</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {datas.map((data, index) => (
+                <tr key={data.id}>
+                  <td>{index + 1}</td>
+                  {/* <td>{data.employeeid}</td> */}
+                  <td> {findEmployeeName(data.dailyAttendanceEmpId)}</td>
+                   <td>{data.attendanceDate  && ((data.attendanceDate.split('T')[0]).split('-').reverse().join('-'))}</td>
+                  <td>{data.attendanceShiftMode}</td>
+                  <td>
+                    {data.attendanceStatus === "Present" ? (
+                      <span
+                        className="badge badges-Green"
+                      >
+                        Present
+                      </span>
+                    ) : (
+                      <span
+                        className="badge badges-Red"
+                      >
+                        Absent
+                      </span>
+                    )}
+                  </td>
+                  <td>
+                    {viewAction ? (
+                      <Link to={`/attendancehrms/view/${data.attendanceId}`}>
+                        <button className="btn btn-sm">
+                          <FaEye />
+                        </button>
+                      </Link>
+                    ) : (
+                      <span>
+                        <Link to={`/attendancehrms/view/${data.attendanceId}`}>
+                          <button className="btn btn-sm">
+                            <FaEye />
+                          </button>
+                        </Link>
+                        <Link to={`/attendancehrms/edit/${data.attendanceId}`}>
+                          <button className="btn btn-sm">
+                            <FaEdit
+                             />
+                          </button>
+                        </Link>
+                        <Delete  onSuccess={refreshData}
+                              path={`/deleteDailyAttendanceById/${data.attendanceId}`}/>
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
   );
 };
 

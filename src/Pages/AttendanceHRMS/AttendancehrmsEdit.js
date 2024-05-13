@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import api from "../../config/URL";
 
 function AttendancehrmsEdit() {
+  const navigate = useNavigate();
   const [employeeData, setEmployeeData] = useState(null);
   const [datas, setDatas] = useState([]);
   const { id } = useParams();
@@ -15,6 +16,7 @@ function AttendancehrmsEdit() {
     try {
       const employeeData = await fetchAllEmployeeNamesWithId();
       setEmployeeData(employeeData);
+      // console.log("name",employeeData)
     } catch (error) {
       toast.error(error);
     }
@@ -25,7 +27,7 @@ function AttendancehrmsEdit() {
   }, []);
 
   const validationSchema = Yup.object({
-    employeeId: Yup.string().required("*Employee name is required"),
+    dailyAttendanceEmpId: Yup.string().required("*Employee name is required"),
     attendanceDate: Yup.string().required("*Date is required"),
     attendanceStatus: Yup.string().required("*Attendance status is required"),
     attendanceShiftMode: Yup.string().required("*Mode of working is required"),
@@ -39,8 +41,7 @@ function AttendancehrmsEdit() {
   });
   const formik = useFormik({
     initialValues: {
-      employeeId: "",
-      employeeName: "",
+      dailyAttendanceEmpId: "",
       attendanceDate: "",
       attendanceStatus: "",
       attendanceShiftMode: "",
@@ -74,16 +75,39 @@ function AttendancehrmsEdit() {
             },
           }
         );
-        setDatas(response.data);
-        console.log(response.data)
+        console.log("values", values);
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/attendancehrms");
+        } else {
+          toast.error(response.data.message);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        // setLoading(false);
+        toast.error(error);
       }
-      console.log(values);
     },
   });
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/getAllDailyAttendanceById/${id}`);
+        if (response.status === 200) {
+        // console.log("data",response.data)
+        formik.setValues({
+          ...response.data,
+          attendanceCheckInTime: response.data.attendanceCheckInTime.split('T')[1].split('.')[0],
+          attendanceCheckOutTime: response.data.attendanceCheckOutTime.split('T')[1].split('.')[0],
+          attendanceOtStarttime: response.data.attendanceOtStarttime.split('T')[1].split('.')[0],
+          attendanceOtEndtime: response.data.attendanceOtEndtime.split('T')[1].split('.')[0],
+          attendanceDate:response.data.attendanceDate.split("T")[0]
+        });}
+      } catch (error) {
+        toast.error("Error fetching data:", error);
+      }
+    };
+
+    getData();
+  }, []);
   return (
     <section className="AttendanceEdit p-3">
     <div className="container-fluid">
@@ -92,10 +116,10 @@ function AttendancehrmsEdit() {
           <div className="row">
             <div className="col-12 text-end">
               <Link to="/attendancehrms">
-                <button className="btn btn-sm btn-border">Back</button>
+                <button  className="btn btn-sm btn-border">Back</button>
               </Link>
               &nbsp;&nbsp;
-              <button className="btn btn-sm btn-button">Save</button>
+              <button type="submit" className="btn btn-sm btn-button">Save</button>
             </div>
           </div>
           <div className="row mt-3">
@@ -105,9 +129,9 @@ function AttendancehrmsEdit() {
                 </lable>
                 <div className="input-group mb-3">
                   <select
-                    {...formik.getFieldProps("employeeId")}
+                    {...formik.getFieldProps("dailyAttendanceEmpId")}
                     className={`form-select  ${
-                      formik.touched.employeeId && formik.errors.employeeId
+                      formik.touched.dailyAttendanceEmpId && formik.errors.dailyAttendanceEmpId
                         ? "is-invalid"
                         : ""
                     }`}
@@ -116,14 +140,14 @@ function AttendancehrmsEdit() {
                     <option selected></option>
                     {employeeData &&
                       employeeData.map((employeeId) => (
-                        <option key={employeeId.id} value={employeeId.id}>
+                        <option key={employeeId.id} value={employeeId.employeeId}>
                           {employeeId.firstName} {employeeId.lastName}
                         </option>
                       ))}
                   </select>
-                  {formik.touched.employeeId && formik.errors.employeeId && (
+                  {formik.touched.dailyAttendanceEmpId && formik.errors.dailyAttendanceEmpId && (
                     <div className="invalid-feedback">
-                      {formik.errors.employeeId}
+                      {formik.errors.dailyAttendanceEmpId}
                     </div>
                   )}
                 </div>

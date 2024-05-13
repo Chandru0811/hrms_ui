@@ -26,7 +26,7 @@ function AttendancehrmsAdd() {
   }, []);
 
   const validationSchema = Yup.object({
-    employeeId: Yup.string().required("*Employee name is required"),
+    dailyAttendanceEmpId: Yup.string().required("*Employee name is required"),
     attendanceDate: Yup.string().required("*Date is required"),
     attendanceStatus: Yup.string().required("*Attendance status is required"),
     attendanceShiftMode: Yup.string().required("*Mode of working is required"),
@@ -40,8 +40,8 @@ function AttendancehrmsAdd() {
   });
   const formik = useFormik({
     initialValues: {
-      employeeId: "",
-      employeeName: "",
+      dailyAttendanceEmpId: "",
+      // employeeName: "",
       attendanceDate: "",
       attendanceStatus: "",
       attendanceShiftMode: "",
@@ -99,7 +99,7 @@ function AttendancehrmsAdd() {
                   <button className="btn btn-sm btn-border">Back</button>
                 </Link>
                 &nbsp;&nbsp;
-                <button className="btn btn-sm btn-button">Save</button>
+                <button type="submit" className="btn btn-sm btn-button">Save</button>
               </div>
             </div>
             <div className="row mt-3">
@@ -109,8 +109,8 @@ function AttendancehrmsAdd() {
                 </lable>
                 <div className="input-group mb-3">
                   <select
-                    {...formik.getFieldProps("employeeId")}
-                    className={`form-select  ${formik.touched.employeeId && formik.errors.employeeId
+                    {...formik.getFieldProps("dailyAttendanceEmpId")}
+                    className={`form-select  ${formik.touched.dailyAttendanceEmpId && formik.errors.dailyAttendanceEmpId
                       ? "is-invalid"
                       : ""
                       }`}
@@ -124,9 +124,9 @@ function AttendancehrmsAdd() {
                         </option>
                       ))}
                   </select>
-                  {formik.touched.employeeId && formik.errors.employeeId && (
+                  {formik.touched.dailyAttendanceEmpId && formik.errors.dailyAttendanceEmpId && (
                     <div className="invalid-feedback">
-                      {formik.errors.employeeId}
+                      {formik.errors.dailyAttendanceEmpId}
                     </div>
                   )}
                 </div>
