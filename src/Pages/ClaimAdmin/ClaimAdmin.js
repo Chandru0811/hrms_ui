@@ -11,7 +11,8 @@ import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 
 const ClaimAdmin = () => {
   const tableRef = useRef(null);
-  const [ data,setData]=useState([])
+  const [ data,setData]=useState([])  
+  // const [datas, setDatas] = useState([]);
   const [ loading,setLoading]=useState([true])
   const [employeeData, setEmployeeData] = useState(null);
   console.log(data)
@@ -54,6 +55,19 @@ const ClaimAdmin = () => {
     } finally {
       // setLoading(false);
     }
+  };
+
+  const refreshData = async () => {
+    // destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getClaimsById");
+      setData(response.data);
+      // initializeDataTable(); // Reinitialize DataTable after successful data update
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -106,19 +120,19 @@ const ClaimAdmin = () => {
               <td>
                 {data.approvalStatusLv1 === "APPROVED" ? (
                   <span className="badge badges-Green">Approved</span>
-                ) : data.approvalNameLv1 === "Pending" ? (
-                  <span className="badge badges-Blue">Pending</span>
-                ) : (
+                ) : data.approvalNameLv1 === "PENDING" ? (
                   <span className="badge badges-Red">Rejected</span>
+                ) : (
+                  <span className="badge badges-Blue">Pending</span>
                 )}
               </td>
               <td>
-                {data.approvalStatusLv2 === "Approved" ? (
+                {data.approvalStatusLv2 === "APPROVED" ? (
                   <span className="badge badges-Green">Approved</span>
                 ) : data.approvalNameLv2 === "Pending" ? (
-                  <span className="badge badges-Blue">Pending</span>
-                ) : (
                   <span className="badge badges-Red">Rejected</span>
+                ) : (
+                  <span className="badge badges-Blue">Pending</span>
                 )}
               </td>
               <td>
@@ -133,7 +147,7 @@ const ClaimAdmin = () => {
                       <FaEdit />
                     </button>
                   </Link>
-                  <Delete />
+                  <Delete path={`/deleteClaimsById/${data.claimsId}`}  onSuccess={refreshData}/>
                 </div>
               </td>
             </tr>

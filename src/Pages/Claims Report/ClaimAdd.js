@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
+import api from "../../config/URL";
 
 function ClaimAdd() {
+  const navigate = useNavigate();
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
@@ -31,38 +33,65 @@ function ClaimAdd() {
 
   const validationSchema = Yup.object({
     // employeeID: Yup.string().required('*Employee id is required'),
-    employeeId: Yup.string().required("*Employee name is required"),
+    claimsEmpId: Yup.string().required("*Employee name is required"),
     // companyID: Yup.string().required('*Company id is required'),
     cmpId: Yup.string().required("*Company name is required"),
     // departmentID: Yup.string().required('*Department id is required'),
     deptId: Yup.string().required("*Department name is required"),
-    date: Yup.string().required("*Date is required"),
-    type: Yup.string().required("*Select the type"),
-    amount: Yup.number()
+    claimsDate: Yup.string().required("*Date is required"),
+    claimsType: Yup.string().required("*Select the type"),
+    claimsAmt: Yup.number()
       .required("*Amount is required")
       .typeError("*Must be a number"),
-    attachment: Yup.string().required("*Attachment is required"),
+      // claimsAttachment: Yup.string().required("*Attachment is required"),
   });
 
   const formik = useFormik({
     initialValues: {
       // employeeID: "",
-      employeeId: "",
+      claimsEmpId: "",
       // companyID: "",
       cmpId: "",
       // departmentID: "",
       deptId: "",
-      date: "",
-      type: "",
-      amount: "",
-      attachment: "",
+      claimsDate: "",
+      claimsType: "",
+      claimsAmt: "",
+      claimsAttachment: "",
       remarks: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+      const payload={
+        ...values,
+        claimsEmpId:values.claimsEmpId,
+        cmpId:parseInt(values.cmpId),
+        deptId:parseInt(values.deptId)
+      }
+      try {
+       
+        const response = await api.post("/addClaims", payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("payload",payload);
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/claim");
+          
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error(error);
+      }
     },
   });
+console.log("departmentData",departmentData)
+console.log("companyData",companyData)
+console.log("employeeData",employeeData)
 
   return (
     <div className="container-fluid">
@@ -107,9 +136,9 @@ function ClaimAdd() {
                 </lable>
                 <div className="input-group mb-3">
                   <select
-                    {...formik.getFieldProps("employeeId")}
+                    {...formik.getFieldProps("claimsEmpId")}
                     className={`form-select  ${
-                      formik.touched.employeeId && formik.errors.employeeId
+                      formik.touched.claimsEmpId && formik.errors.claimsEmpId
                         ? "is-invalid"
                         : ""
                     }`}
@@ -123,9 +152,9 @@ function ClaimAdd() {
                         </option>
                       ))}
                   </select>
-                  {formik.touched.employeeId && formik.errors.employeeId && (
+                  {formik.touched.claimsEmpId && formik.errors.claimsEmpId && (
                     <div className="invalid-feedback">
-                      {formik.errors.employeeId}
+                      {formik.errors.claimsEmpId}
                     </div>
                   )}
                 </div>
@@ -233,12 +262,12 @@ function ClaimAdd() {
               <input
                 type="date"
                 className={`form-control  ${
-                  formik.touched.date && formik.errors.date ? "is-invalid" : ""
+                  formik.touched.claimsDate && formik.errors.claimsDate ? "is-invalid" : ""
                 }`}
-                {...formik.getFieldProps("date")}
+                {...formik.getFieldProps("claimsDate")}
               />
-              {formik.touched.date && formik.errors.date && (
-                <div className="invalid-feedback">{formik.errors.date}</div>
+              {formik.touched.claimsDate && formik.errors.claimsDate && (
+                <div className="invalid-feedback">{formik.errors.claimsDate}</div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
@@ -248,18 +277,18 @@ function ClaimAdd() {
               <select
                 aria-label="Default select example"
                 className={`form-select  ${
-                  formik.touched.type && formik.errors.type ? "is-invalid" : ""
+                  formik.touched.claimsType && formik.errors.claimsType ? "is-invalid" : ""
                 }`}
-                {...formik.getFieldProps("type")}
+                {...formik.getFieldProps("claimsType")}
               >
                 <option selected></option>
-                <option value="Telephone">Telephone</option>
-                <option value="Taxi">Taxi</option>
-                <option value="Hotel and Acc">Hotel and Acc</option>
-                <option value="Leave Enhance">Leave Enhance</option>
+                <option value="TELEPHONE">TELEPHONE</option>
+                <option value="TAXI">TAXI</option>
+                <option value="HOTEL_AND_ACC">HOTEL_AND_ACC</option>
+                <option value="LEAVE_ENHANCE">LEAVE_ENHANCE</option>
               </select>
-              {formik.touched.type && formik.errors.type && (
-                <div className="invalid-feedback">{formik.errors.type}</div>
+              {formik.touched.claimsType && formik.errors.claimsType && (
+                <div className="invalid-feedback">{formik.errors.claimsType}</div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
@@ -269,14 +298,14 @@ function ClaimAdd() {
               <input
                 type="text"
                 className={`form-control  ${
-                  formik.touched.amount && formik.errors.amount
+                  formik.touched.claimsAmt && formik.errors.claimsAmt
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("amount")}
+                {...formik.getFieldProps("claimsAmt")}
               />
-              {formik.touched.amount && formik.errors.amount && (
-                <div className="invalid-feedback">{formik.errors.amount}</div>
+              {formik.touched.claimsAmt && formik.errors.claimsAmt && (
+                <div className="invalid-feedback">{formik.errors.claimsAmt}</div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
@@ -286,15 +315,15 @@ function ClaimAdd() {
               <input
                 type="file"
                 className={`form-control  ${
-                  formik.touched.attachment && formik.errors.attachment
+                  formik.touched.claimsAttachment && formik.errors.claimsAttachment
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("attachment")}
+                {...formik.getFieldProps("claimsAttachment")}
               />
-              {formik.touched.attachment && formik.errors.attachment && (
+              {formik.touched.claimsAttachment && formik.errors.claimsAttachment && (
                 <div className="invalid-feedback">
-                  {formik.errors.attachment}
+                  {formik.errors.claimsAttachment}
                 </div>
               )}
             </div>

@@ -145,7 +145,9 @@ function ClaimView() {
                 <p className="fw-medium">Date</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: {data.claimsDate}</p>
+                <p className="text-muted text-sm">
+                   : {data.claimsDate ?((data.claimsDate.split("T")[0]).split('-').reverse().join('-')) : "--"}</p>
+                  
               </div>
             </div>
           </div>

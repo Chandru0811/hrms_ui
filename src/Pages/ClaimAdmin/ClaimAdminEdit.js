@@ -92,7 +92,11 @@ function ClaimAdminEdit() {
           },
         });
         console.log("values", values);
-        if (response.status === 201) {
+        if (response.status === 200) {
+          formik.setValues({
+            ...response.data,
+            claimsDate:response.data.claimsDate.split("T")[0]
+          })
           toast.success(response.data.message);
           navigate("/claimadmin");
         } else {

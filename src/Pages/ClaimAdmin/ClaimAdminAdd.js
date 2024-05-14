@@ -67,7 +67,7 @@ function ClaimAdminAdd() {
         claimsEmpId:values.claimsEmpId,
         cmpId:parseInt(values.cmpId),
         deptId:parseInt(values.deptId),
-        claimsclaimsDate:values.claimsDate,
+        claimsDate:values.claimsDate,
         claimsType:values.type,
         claimsAmt:parseInt(values.claimsAmt),
         claimsclaimsAttachment:values.claimsAttachment,
@@ -256,7 +256,7 @@ console.log("employeeData",employeeData)
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
-                ClaimsDate<span className="text-danger">*</span>
+                Date<span className="text-danger">*</span>
               </lable>
               <input
                 type="date"
@@ -292,7 +292,7 @@ console.log("employeeData",employeeData)
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
-                claimsAmt<span className="text-danger">*</span>
+                Amount<span className="text-danger">*</span>
               </lable>
               <input
                 type="text"
@@ -309,7 +309,7 @@ console.log("employeeData",employeeData)
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
-                claimsAttachment<span className="text-danger">*</span>
+                Attachment<span className="text-danger">*</span>
               </lable>
               <input
                 type="file"
