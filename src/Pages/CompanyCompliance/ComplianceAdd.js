@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import api from "../../config/URL";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import { toast } from "react-toastify";
 
@@ -21,6 +22,7 @@ function ComplianceAdd() {
     fetchData();
   }, []);
 
+  const navigate = useNavigate();
   const validationSchema = Yup.object({
     cmpId: Yup.string().required("*Company name is required"),
     compComplianceDesignationName: Yup.string().required(
@@ -50,7 +52,20 @@ function ComplianceAdd() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+      console.log("add", values);
+      values.compComplianceCmpId = values.cmpId;
+      try {
+        const response = await api.post("addCompanyComplianceInfo", values);
+        // console.log(response)
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/compliance");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error("Error Submiting Data, ", error);
+      }
     },
   });
 
@@ -90,7 +105,7 @@ function ComplianceAdd() {
                     <option selected></option>
                     {companyData &&
                       companyData.map((cmpId) => (
-                        <option key={cmpId.id} value={cmpId.id}>
+                        <option key={cmpId.id} value={cmpId.cmpId}>
                           {cmpId.cmpName}
                         </option>
                       ))}
