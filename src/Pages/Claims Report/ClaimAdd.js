@@ -69,6 +69,7 @@ function ClaimAdd() {
         cmpId:parseInt(values.cmpId),
         deptId:parseInt(values.deptId)
       }
+      console.log("object",payload)
       try {
        
         const response = await api.post("/addClaims", payload, {
@@ -147,7 +148,7 @@ console.log("employeeData",employeeData)
                     <option selected></option>
                     {employeeData &&
                       employeeData.map((employeeId) => (
-                        <option key={employeeId.id} value={employeeId.id}>
+                        <option key={employeeId.id} value={employeeId.employeeId}>
                           {employeeId.firstName} {employeeId.lastName}
                         </option>
                       ))}
@@ -195,7 +196,7 @@ console.log("employeeData",employeeData)
                     <option selected></option>
                     {companyData &&
                       companyData.map((cmpId) => (
-                        <option key={cmpId.id} value={cmpId.id}>
+                        <option key={cmpId.id} value={cmpId.cmpId}>
                           {cmpId.cmpName}
                         </option>
                       ))}
@@ -243,7 +244,7 @@ console.log("employeeData",employeeData)
                     <option selected></option>
                     {departmentData &&
                       departmentData.map((deptId) => (
-                        <option key={deptId.id} value={deptId.id}>
+                        <option key={deptId.id} value={deptId.deptId}>
                           {deptId.deptName}
                         </option>
                       ))}
@@ -284,8 +285,8 @@ console.log("employeeData",employeeData)
                 <option selected></option>
                 <option value="TELEPHONE">TELEPHONE</option>
                 <option value="TAXI">TAXI</option>
-                <option value="HOTEL_AND_ACC">HOTEL_AND_ACC</option>
-                <option value="LEAVE_ENHANCE">LEAVE_ENHANCE</option>
+                <option value="HOTEL_AND_ACC">HOTEL AND ACC</option>
+                <option value="LEAVE_ENHANCE">LEAVE ENHANCE</option>
               </select>
               {formik.touched.claimsType && formik.errors.claimsType && (
                 <div className="invalid-feedback">{formik.errors.claimsType}</div>

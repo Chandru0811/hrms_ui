@@ -136,7 +136,7 @@ function ClaimEdit() {
               </Link>
               &nbsp;&nbsp;
               <button type="submit" className="btn btn-sm btn-button">
-                UpclaimsDate
+                Update
               </button>
             </div>
           </div>
