@@ -8,9 +8,9 @@ import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 
 function EmployeeAdminAdd() {
-  const [companyData, setCompanyData] = useState(null); 
+  const [companyData, setCompanyData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
-  const [selectedIdType, setSelectedIdType] = useState('nric');
+  const [selectedIdType, setSelectedIdType] = useState("nric");
 
   const fetchData = async () => {
     try {
@@ -30,9 +30,9 @@ function EmployeeAdminAdd() {
   const validationSchema = Yup.object({
     firstName: Yup.string().required("*First name is required"),
     lastName: Yup.string().required("*Last name is required"),
-    primaryPhoneNumber: Yup.number().required(
-      "*Primary phone number is required"
-    ).typeError("*Must be a number"),
+    primaryPhoneNumber: Yup.number()
+      .required("*Primary phone number is required")
+      .typeError("*Must be a number"),
     primaryEmailID: Yup.string()
       .email("*Enter valid email")
       .required("*Primary email id is required"),
@@ -56,11 +56,11 @@ function EmployeeAdminAdd() {
     reportingManagerID: Yup.string().required(
       "*Reporting manager id is required"
     ),
-    ...(selectedIdType === 'nric' && {
+    ...(selectedIdType === "nric" && {
       nricFin: Yup.string().required("*NRIC fin is required"),
       nricType: Yup.string().required("*Select a NRIC type"),
     }),
-    ...(selectedIdType === 'aadhar' && {
+    ...(selectedIdType === "aadhar" && {
       aadharNumber: Yup.string().required("*Aadhar number is required"),
     }),
   });
@@ -90,7 +90,6 @@ function EmployeeAdminAdd() {
       console.log(values);
     },
   });
-
 
   const handleIdTypeChange = (event) => {
     setSelectedIdType(event.target.value);
@@ -126,10 +125,11 @@ function EmployeeAdminAdd() {
                 <input
                   type="text"
                   name="firstName"
-                  className={`form-control  ${formik.touched.firstName && formik.errors.firstName
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                  className={`form-control  ${
+                    formik.touched.firstName && formik.errors.firstName
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("firstName")}
@@ -149,10 +149,11 @@ function EmployeeAdminAdd() {
                 <input
                   type="text"
                   name="lastName"
-                  className={`form-control  ${formik.touched.lastName && formik.errors.lastName
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                  className={`form-control  ${
+                    formik.touched.lastName && formik.errors.lastName
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("lastName")}
@@ -172,11 +173,12 @@ function EmployeeAdminAdd() {
                 <input
                   type="email"
                   name="primaryEmailID"
-                  className={`form-control  ${formik.touched.primaryEmailID &&
+                  className={`form-control  ${
+                    formik.touched.primaryEmailID &&
                     formik.errors.primaryEmailID
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("primaryEmailID")}
@@ -198,10 +200,12 @@ function EmployeeAdminAdd() {
                   <input
                     type={showPassword ? "text" : "password"}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`form-control  ${formik.touched.primaryEmailPassword && formik.errors.primaryEmailPassword
-                      ? "is-invalid"
-                      : ""
-                      }`}
+                    className={`form-control  ${
+                      formik.touched.primaryEmailPassword &&
+                      formik.errors.primaryEmailPassword
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     {...formik.getFieldProps("primaryEmailPassword")}
                     style={{
                       borderRight: "none",
@@ -215,8 +219,11 @@ function EmployeeAdminAdd() {
                     id="basic-addon1"
                     onClick={togglePasswordVisibility}
                     style={{
-                      cursor: "pointer", borderRadius: "5px", borderLeft: "none", borderTopLeftRadius: "0px",
-                      borderBottomLeftRadius: "0px"
+                      cursor: "pointer",
+                      borderRadius: "5px",
+                      borderLeft: "none",
+                      borderTopLeftRadius: "0px",
+                      borderBottomLeftRadius: "0px",
                     }}
                   >
                     {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
@@ -238,11 +245,12 @@ function EmployeeAdminAdd() {
                 <input
                   type="text"
                   name="primaryPhoneNumber"
-                  className={`form-control  ${formik.touched.primaryPhoneNumber &&
+                  className={`form-control  ${
+                    formik.touched.primaryPhoneNumber &&
                     formik.errors.primaryPhoneNumber
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("primaryPhoneNumber")}
@@ -256,64 +264,60 @@ function EmployeeAdminAdd() {
               </div>
             </div>
             <div className="col-md-6 col-12 mb-2">
-                <lable className="form-lable">
+              <lable className="form-lable">
                 Company Name<span className="text-danger">*</span>
-                </lable>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("cmpId")}
-                    className={`form-select  ${
-                      formik.touched.cmpId && formik.errors.cmpId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    {companyData &&
-                      companyData.map((cmpId) => (
-                        <option key={cmpId.id} value={cmpId.id}>
-                          {cmpId.cmpName}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.cmpId && formik.errors.cmpId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.cmpId}
-                    </div>
-                  )}
-                </div>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("cmpId")}
+                  className={`form-select  ${
+                    formik.touched.cmpId && formik.errors.cmpId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {companyData &&
+                    companyData.map((cmpId) => (
+                      <option key={cmpId.id} value={cmpId.id}>
+                        {cmpId.cmpName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.cmpId && formik.errors.cmpId && (
+                  <div className="invalid-feedback">{formik.errors.cmpId}</div>
+                )}
               </div>
-              <div className="col-md-6 col-12 mb-2">
-                <lable className="form-lable">
+            </div>
+            <div className="col-md-6 col-12 mb-2">
+              <lable className="form-lable">
                 Department Name<span className="text-danger">*</span>
-                </lable>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("deptId")}
-                    className={`form-select  ${
-                      formik.touched.deptId && formik.errors.deptId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    {departmentData &&
-                      departmentData.map((deptId) => (
-                        <option key={deptId.id} value={deptId.id}>
-                          {deptId.deptName}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.deptId && formik.errors.deptId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.deptId}
-                    </div>
-                  )}
-                </div>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("deptId")}
+                  className={`form-select  ${
+                    formik.touched.deptId && formik.errors.deptId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {departmentData &&
+                    departmentData.map((deptId) => (
+                      <option key={deptId.id} value={deptId.id}>
+                        {deptId.deptName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.deptId && formik.errors.deptId && (
+                  <div className="invalid-feedback">{formik.errors.deptId}</div>
+                )}
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+            </div>
+            <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <lable for="exampleFormControlInput1" className="form-label">
                   Employee Designation<span className="text-danger">*</span>
@@ -321,11 +325,12 @@ function EmployeeAdminAdd() {
                 <input
                   type="text"
                   name="employeedesignation"
-                  className={`form-control  ${formik.touched.employeedesignation &&
+                  className={`form-control  ${
+                    formik.touched.employeedesignation &&
                     formik.errors.employeedesignation
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("employeedesignation")}
@@ -347,10 +352,12 @@ function EmployeeAdminAdd() {
                     name="idType"
                     id="nricRadio"
                     value="nric"
-                    checked={selectedIdType === 'nric'}
+                    checked={selectedIdType === "nric"}
                     onChange={handleIdTypeChange}
                   />
-                  <lable className="form-check-label" htmlFor="nricRadio">NRIC</lable>
+                  <lable className="form-check-label" htmlFor="nricRadio">
+                    NRIC
+                  </lable>
                 </div>
                 <div className="form-check form-check-inline mb-2">
                   <input
@@ -359,26 +366,32 @@ function EmployeeAdminAdd() {
                     name="idType"
                     id="aadharRadio"
                     value="aadhar"
-                    checked={selectedIdType === 'aadhar'}
+                    checked={selectedIdType === "aadhar"}
                     onChange={handleIdTypeChange}
                   />
-                  <lable className="form-check-label" htmlFor="aadharRadio">Aadhar</lable>
+                  <lable className="form-check-label" htmlFor="aadharRadio">
+                    Aadhar
+                  </lable>
                 </div>
               </div>
-              {selectedIdType === 'nric' && (
+              {selectedIdType === "nric" && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
                     <div className="mb-2">
-                      <lable for="exampleFormControlInput1" className="form-label">
+                      <lable
+                        for="exampleFormControlInput1"
+                        className="form-label"
+                      >
                         NRIC Fin<span className="text-danger">*</span>
                       </lable>
                       <input
                         type="text"
                         name="nricFin"
-                        className={`form-control  ${formik.touched.nricFin && formik.errors.nricFin
-                          ? "is-invalid"
-                          : ""
-                          }`}
+                        className={`form-control  ${
+                          formik.touched.nricFin && formik.errors.nricFin
+                            ? "is-invalid"
+                            : ""
+                        }`}
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                         {...formik.getFieldProps("nricFin")}
@@ -392,22 +405,29 @@ function EmployeeAdminAdd() {
                   </div>
                   <div className="col-md-6 col-12 mb-3 ">
                     <div className="mb-2">
-                      <lable for="exampleFormControlInput1" className="form-label">
+                      <lable
+                        for="exampleFormControlInput1"
+                        className="form-label"
+                      >
                         NRIC Type<span className="text-danger">*</span>
                       </lable>
                       <select
-                        className={`form-select  ${formik.touched.nricType && formik.errors.nricType
-                          ? "is-invalid"
-                          : ""
-                          }`}
-                        {...formik.getFieldProps("nricType")} >
+                        className={`form-select  ${
+                          formik.touched.nricType && formik.errors.nricType
+                            ? "is-invalid"
+                            : ""
+                        }`}
+                        {...formik.getFieldProps("nricType")}
+                      >
                         <option selected></option>
-                        <option value='Singapore Citizen' >Singapore Citizen</option>
-                        <option value='Singapore PR' >Singapore PR</option>
-                        <option value='Employment Pass' >Employment Pass</option>
-                        <option value='Dependant Pass' >Dependant Pass</option>
-                        <option value='S-Pass' >S-Pass</option>
-                        <option value='Work Permit' >Work Permit</option>
+                        <option value="Singapore Citizen">
+                          Singapore Citizen
+                        </option>
+                        <option value="Singapore PR">Singapore PR</option>
+                        <option value="Employment Pass">Employment Pass</option>
+                        <option value="Dependant Pass">Dependant Pass</option>
+                        <option value="S-Pass">S-Pass</option>
+                        <option value="Work Permit">Work Permit</option>
                       </select>
                       {formik.touched.nricType && formik.errors.nricType && (
                         <div className="invalid-feedback">
@@ -418,33 +438,39 @@ function EmployeeAdminAdd() {
                   </div>
                 </div>
               )}
-              {selectedIdType === 'aadhar' && (
+              {selectedIdType === "aadhar" && (
                 <div className="col-md-6 col-12 mb-3 ">
                   <div className="mb-2">
-                    <lable for="exampleFormControlInput1" className="form-label">
+                    <lable
+                      for="exampleFormControlInput1"
+                      className="form-label"
+                    >
                       Aadhar Number<span className="text-danger">*</span>
                     </lable>
                     <input
                       type="text"
                       name="aadharNumber"
-                      className={`form-control  ${formik.touched.aadharNumber && formik.errors.aadharNumber
-                        ? "is-invalid"
-                        : ""
-                        }`}
+                      className={`form-control  ${
+                        formik.touched.aadharNumber &&
+                        formik.errors.aadharNumber
+                          ? "is-invalid"
+                          : ""
+                      }`}
                       aria-label="Username"
                       aria-describedby="basic-addon1"
                       {...formik.getFieldProps("aadharNumber")}
                     />
-                    {formik.touched.aadharNumber && formik.errors.aadharNumber && (
-                      <div className="invalid-feedback">
-                        {formik.errors.aadharNumber}
-                      </div>
-                    )}
+                    {formik.touched.aadharNumber &&
+                      formik.errors.aadharNumber && (
+                        <div className="invalid-feedback">
+                          {formik.errors.aadharNumber}
+                        </div>
+                      )}
                   </div>
                 </div>
               )}
             </div>
-            
+
             <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <lable for="exampleFormControlInput1" className="form-label">
@@ -453,11 +479,12 @@ function EmployeeAdminAdd() {
                 <input
                   type="date"
                   name="employeeDateOfJoining"
-                  className={`form-control  ${formik.touched.employeeDateOfJoining &&
+                  className={`form-control  ${
+                    formik.touched.employeeDateOfJoining &&
                     formik.errors.employeeDateOfJoining
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("employeeDateOfJoining")}
@@ -475,10 +502,11 @@ function EmployeeAdminAdd() {
               <span className="text-danger">*</span>
               <select
                 {...formik.getFieldProps("employeeType")}
-                className={`form-select    ${formik.touched.employeeType && formik.errors.employeeType
-                  ? "is-invalid"
-                  : ""
-                  }`}
+                className={`form-select    ${
+                  formik.touched.employeeType && formik.errors.employeeType
+                    ? "is-invalid"
+                    : ""
+                }`}
                 aria-label="Default select example"
               >
                 <option selected></option>
@@ -500,10 +528,11 @@ function EmployeeAdminAdd() {
                 <input
                   type="text"
                   name="noticePeriod"
-                  className={`form-control  ${formik.touched.noticePeriod && formik.errors.noticePeriod
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                  className={`form-control  ${
+                    formik.touched.noticePeriod && formik.errors.noticePeriod
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("noticePeriod")}
@@ -518,41 +547,17 @@ function EmployeeAdminAdd() {
             <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <lable for="exampleFormControlInput1" className="form-label">
-                  Reporting Manager Name<span className="text-danger">*</span>
-                </lable>
-                <input
-                  type="text"
-                  name="reportingManagerName"
-                  className={`form-control  ${formik.touched.reportingManagerName &&
-                    formik.errors.reportingManagerName
-                    ? "is-invalid"
-                    : ""
-                    }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("reportingManagerName")}
-                />
-                {formik.touched.reportingManagerName &&
-                  formik.errors.reportingManagerName && (
-                    <div className="invalid-feedback">
-                      {formik.errors.reportingManagerName}
-                    </div>
-                  )}
-              </div>
-            </div>
-            <div className="col-md-6 col-12 mb-3 ">
-              <div className="mb-2">
-                <lable for="exampleFormControlInput1" className="form-label">
                   Reporting Manager ID<span className="text-danger">*</span>
                 </lable>
                 <input
                   type="text"
                   name="reportingManagerID"
-                  className={`form-control  ${formik.touched.reportingManagerID &&
+                  className={`form-control  ${
+                    formik.touched.reportingManagerID &&
                     formik.errors.reportingManagerID
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("reportingManagerID")}
@@ -561,6 +566,32 @@ function EmployeeAdminAdd() {
                   formik.errors.reportingManagerID && (
                     <div className="invalid-feedback">
                       {formik.errors.reportingManagerID}
+                    </div>
+                  )}
+              </div>
+            </div>
+            <div className="col-md-6 col-12 mb-3 ">
+              <div className="mb-2">
+                <lable for="exampleFormControlInput1" className="form-label">
+                  Reporting Manager Name<span className="text-danger">*</span>
+                </lable>
+                <input
+                  type="text"
+                  name="reportingManagerName"
+                  className={`form-control  ${
+                    formik.touched.reportingManagerName &&
+                    formik.errors.reportingManagerName
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                  {...formik.getFieldProps("reportingManagerName")}
+                />
+                {formik.touched.reportingManagerName &&
+                  formik.errors.reportingManagerName && (
+                    <div className="invalid-feedback">
+                      {formik.errors.reportingManagerName}
                     </div>
                   )}
               </div>

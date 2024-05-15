@@ -200,48 +200,6 @@ function ExitManagementEdit() {
                     )}
                   </div>
                 </div>
-                <div className="col-md-6 col-12 mb-3">
-                  <lable className="form-lable">
-                    Date Of Apply<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="date"
-                    className={`form-control  ${
-                      formik.touched.exitMgmtDateOfApply &&
-                      formik.errors.exitMgmtDateOfApply
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("exitMgmtDateOfApply")}
-                  />
-                  {formik.touched.exitMgmtDateOfApply &&
-                    formik.errors.exitMgmtDateOfApply && (
-                      <div className="invalid-feedback">
-                        {formik.errors.exitMgmtDateOfApply}
-                      </div>
-                    )}
-                </div>
-                <div className="col-md-6 col-12 mb-3">
-                  <lable className="form-lable">
-                    Notice Period<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="text"
-                    className={`form-control  ${
-                      formik.touched.exitMgmtNoticePeriod &&
-                      formik.errors.exitMgmtNoticePeriod
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("exitMgmtNoticePeriod")}
-                  />
-                  {formik.touched.exitMgmtNoticePeriod &&
-                    formik.errors.exitMgmtNoticePeriod && (
-                      <div className="invalid-feedback">
-                        {formik.errors.exitMgmtNoticePeriod}
-                      </div>
-                    )}
-                </div>
                 {/* <div className="col-md-6 col-12 mb-3">
                 <lable className="form-lable">
                   Current Date<span className="text-danger">*</span>
@@ -300,6 +258,48 @@ function ExitManagementEdit() {
                     formik.errors.dateOfRelieving && (
                       <div className="invalid-feedback">
                         {formik.errors.dateOfRelieving}
+                      </div>
+                    )}
+                </div>
+                <div className="col-md-6 col-12 mb-3">
+                  <lable className="form-lable">
+                    Date Of Apply<span className="text-danger">*</span>
+                  </lable>
+                  <input
+                    type="date"
+                    className={`form-control  ${
+                      formik.touched.exitMgmtDateOfApply &&
+                      formik.errors.exitMgmtDateOfApply
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("exitMgmtDateOfApply")}
+                  />
+                  {formik.touched.exitMgmtDateOfApply &&
+                    formik.errors.exitMgmtDateOfApply && (
+                      <div className="invalid-feedback">
+                        {formik.errors.exitMgmtDateOfApply}
+                      </div>
+                    )}
+                </div>
+                <div className="col-md-6 col-12 mb-3">
+                  <lable className="form-lable">
+                    Notice Period<span className="text-danger">*</span>
+                  </lable>
+                  <input
+                    type="text"
+                    className={`form-control  ${
+                      formik.touched.exitMgmtNoticePeriod &&
+                      formik.errors.exitMgmtNoticePeriod
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("exitMgmtNoticePeriod")}
+                  />
+                  {formik.touched.exitMgmtNoticePeriod &&
+                    formik.errors.exitMgmtNoticePeriod && (
+                      <div className="invalid-feedback">
+                        {formik.errors.exitMgmtNoticePeriod}
                       </div>
                     )}
                 </div>

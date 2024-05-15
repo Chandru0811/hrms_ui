@@ -1,8 +1,52 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../../config/URL";
+import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
+import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
+import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 
 function DeductionView() {
-  
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+  const [companyData, setCompanyData] = useState(null);
+  const [employeeData, setEmployeeData] = useState(null);
+  const [departmentData, setDepartmentData] = useState(null);
+
+  const findEmployeeName = (employeeId) => {
+    if (!employeeData) return "Employee data not available"; // Check if employeeData is null or undefined
+    const employee = employeeData.find((emp) => emp.employeeId === employeeId);
+    return employee
+      ? `${employee.firstName} ${employee.lastName}`
+      : "";
+  };
+
+  const fetchData = async () => {
+    try {
+      const companyData = await fetchAllCompanyNamesWithId();
+      const employeeData = await fetchAllEmployeeNamesWithId();
+      const departmentData = await fetchAllDepartmentNamesWithId();
+      setCompanyData(companyData);
+      setEmployeeData(employeeData);
+      setDepartmentData(departmentData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/getDeductionById/${id}`);
+        setData(response.data);
+      } catch (error) {
+        toast.error("Error Fetching Data ", error);
+      }
+    };
+    getData();
+    fetchData();
+  }, [id]);
+
   return (
     <div className="container ">
       <div className="row  mt-3">
@@ -31,7 +75,9 @@ function DeductionView() {
                   <p className="fw-medium">Employee Name </p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Suriya</p>
+                  <p className="text-muted text-sm">
+                    : {findEmployeeName(data.claimsEmpId)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -51,7 +97,17 @@ function DeductionView() {
                   <p className="fw-medium">Company Name </p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: ECS Cloud</p>
+                  <p className="text-muted text-sm">
+                    :{" "}
+                    {companyData &&
+                    companyData.find(
+                      (cmp) => cmp.cmpId === parseInt(data.cmpId)
+                    )
+                      ? companyData.find(
+                          (cmp) => cmp.cmpId === parseInt(data.cmpId)
+                        ).cmpName
+                      : ""}
+                  </p>
                 </div>
               </div>
             </div>
@@ -71,7 +127,17 @@ function DeductionView() {
                   <p className="fw-medium">Department Name</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: Developer</p>
+                  <p className="text-muted text-sm">
+                    :{" "}
+                    {departmentData &&
+                    departmentData.find(
+                      (dept) => dept.deptId === parseInt(data.deptId)
+                    )
+                      ? departmentData.find(
+                          (dept) => dept.deptId === parseInt(data.deptId)
+                        ).deptName
+                      : ""}
+                  </p>
                 </div>
               </div>
             </div>
@@ -81,7 +147,7 @@ function DeductionView() {
                   <p className="fw-medium">Deduction Name</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: CPF Contribution</p>
+                  <p className="text-muted text-sm">: {data.deductionName}</p>
                 </div>
               </div>
             </div>
@@ -91,7 +157,16 @@ function DeductionView() {
                   <p className="fw-medium">Deduction Month</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 2024-03-11</p>
+                  <p className="text-muted text-sm">
+                    :{" "}
+                    {data.deductionMonth
+                      ? data.deductionMonth
+                          .split("T")[0]
+                          .split("-")
+                          .reverse()
+                          .join("-")
+                      : "--"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -101,7 +176,7 @@ function DeductionView() {
                   <p className="fw-medium">Deduction Amount</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 350</p>
+                  <p className="text-muted text-sm">: {data.deductionAmt}</p>
                 </div>
               </div>
             </div>
@@ -111,7 +186,9 @@ function DeductionView() {
                   <p className="fw-medium">Total Deduction Amount</p>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted text-sm">: 1360</p>
+                  <p className="text-muted text-sm">
+                    : {data.totalDeductionAmt}
+                  </p>
                 </div>
               </div>
             </div>

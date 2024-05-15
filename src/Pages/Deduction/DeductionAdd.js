@@ -1,13 +1,15 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
+import api from "../../config/URL";
 
 function DeductionAdd() {
+  const navigate = useNavigate();
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
@@ -30,40 +32,66 @@ function DeductionAdd() {
   }, []);
 
   const validationSchema = Yup.object({
-    // employeeId: Yup.string().required("*Employee id is required"),
-    employeeId: Yup.string().required("*Employee name is required"),
+    // deductionEmpId: Yup.string().required("*Employee id is required"),
+    deductionEmpId: Yup.string().required("*Employee name is required"),
     // companyId: Yup.string().required("*Company id is required"),
     cmpId: Yup.string().required("*Company name is required"),
     // departmentId: Yup.string().required("*Department id is required"),
     deptId: Yup.string().required("*Department name is required"),
-    deductionName: Yup.array().required("*Select a deduction name"),
+    // deductionName: Yup.array().required("*Select a deduction name"),
     deductionMonth: Yup.string().required("*Deduction month is required"),
-    deductionAmount: Yup.number()
+    deductionAmt: Yup.number()
       .required("*Deduction amount is required")
       .typeError("*Must be a number"),
-    totalDeductiontAmount: Yup.number()
+    totalDeductionAmt: Yup.number()
       .required("*Total deduction amount is required")
       .typeError("*Must be a number"),
   });
 
   const formik = useFormik({
     initialValues: {
-      // employeeId: "",
-      employeeId: "",
+      // deductionEmpId: "",
+      deductionEmpId: "",
       // companyId: "",
       cmpId: "",
       // departmentId: "",
       deptId: "",
       deductionName: "",
       deductionMonth: "",
-      deductionAmount: "",
-      totalDeductiontAmount: "",
+      deductionAmt: "",
+      totalDeductionAmt: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+      const payload = {
+        ...values,
+        deductionEmpId: values.deductionEmpId,
+        cmpId: parseInt(values.cmpId),
+        deptId: parseInt(values.deptId),
+      };
+      console.log("object", payload);
+      try {
+        const response = await api.post("/addDeduction", payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("payload", payload);
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/deductions");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error(error);
+      }
     },
   });
+  console.log("departmentData", departmentData);
+  console.log("companyData", companyData);
+  console.log("employeeData", employeeData);
 
   return (
     <div className="container-fluid">
@@ -85,15 +113,15 @@ function DeductionAdd() {
               <input
                 type="text"
                 className={`form-control  ${
-                  formik.touched.employeeId && formik.errors.employeeId
+                  formik.touched.deductionEmpId && formik.errors.deductionEmpId
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("employeeId")}
+                {...formik.getFieldProps("deductionEmpId")}
               />
-              {formik.touched.employeeId && formik.errors.employeeId && (
+              {formik.touched.deductionEmpId && formik.errors.deductionEmpId && (
                 <div className="invalid-feedback">
-                  {formik.errors.employeeId}
+                  {formik.errors.deductionEmpId}
                 </div>
               )}
             </div> */}
@@ -103,9 +131,10 @@ function DeductionAdd() {
               </lable>
               <div className="input-group mb-3">
                 <select
-                  {...formik.getFieldProps("employeeId")}
+                  {...formik.getFieldProps("deductionEmpId")}
                   className={`form-select  ${
-                    formik.touched.employeeId && formik.errors.employeeId
+                    formik.touched.deductionEmpId &&
+                    formik.errors.deductionEmpId
                       ? "is-invalid"
                       : ""
                   }`}
@@ -114,16 +143,17 @@ function DeductionAdd() {
                   <option selected></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.id}>
+                      <option key={employeeId.id} value={employeeId.employeeId}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}
                 </select>
-                {formik.touched.employeeId && formik.errors.employeeId && (
-                  <div className="invalid-feedback">
-                    {formik.errors.employeeId}
-                  </div>
-                )}
+                {formik.touched.deductionEmpId &&
+                  formik.errors.deductionEmpId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.deductionEmpId}
+                    </div>
+                  )}
               </div>
             </div>
             {/* <div className="col-md-6 col-12 mb-3 ">
@@ -161,7 +191,7 @@ function DeductionAdd() {
                   <option selected></option>
                   {companyData &&
                     companyData.map((cmpId) => (
-                      <option key={cmpId.id} value={cmpId.id}>
+                      <option key={cmpId.id} value={cmpId.cmpId}>
                         {cmpId.cmpName}
                       </option>
                     ))}
@@ -206,7 +236,7 @@ function DeductionAdd() {
                   <option selected></option>
                   {departmentData &&
                     departmentData.map((deptId) => (
-                      <option key={deptId.id} value={deptId.id}>
+                      <option key={deptId.id} value={deptId.deptId}>
                         {deptId.deptName}
                       </option>
                     ))}
@@ -216,7 +246,7 @@ function DeductionAdd() {
                 )}
               </div>
             </div>
-            <div className="col-md-6 col-12 mb-3">
+            {/* <div className="col-md-6 col-12 mb-3">
               <lable className="form-lable">
                 Deduction Name<span className="text-danger">*</span>
               </lable>
@@ -290,6 +320,29 @@ function DeductionAdd() {
                   <small>{formik.errors.deductionName}</small>
                 </div>
               )}
+            </div> */}
+            <div className="col-md-6 col-12 mb-3">
+              <lable className="">Deduction Name</lable>
+              <span className="text-danger">*</span>
+              <select
+                className={`form-select ${
+                  formik.touched.deductionName && formik.errors.deductionName
+                    ? "is-invalid"
+                    : ""
+                }`}
+                {...formik.getFieldProps("deductionName")}
+                aria-label="Default select example"
+              >
+                <option selected></option>
+                <option value="CPF">CPF</option>
+                <option value="LOP">LOP</option>
+                <option value="Loan Interest">Loan Interest</option>
+              </select>
+              {formik.touched.deductionName && formik.errors.deductionName && (
+                <div className="invalid-feedback">
+                  {formik.errors.deductionName}
+                </div>
+              )}
             </div>
             <div className="col-md-6 col-12 mb-3 ">
               <lable className="">Deduction Month</lable>
@@ -316,19 +369,17 @@ function DeductionAdd() {
               <input
                 type="text"
                 className={`form-control  ${
-                  formik.touched.deductionAmount &&
-                  formik.errors.deductionAmount
+                  formik.touched.deductionAmt && formik.errors.deductionAmt
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("deductionAmount")}
+                {...formik.getFieldProps("deductionAmt")}
               />
-              {formik.touched.deductionAmount &&
-                formik.errors.deductionAmount && (
-                  <div className="invalid-feedback">
-                    {formik.errors.deductionAmount}
-                  </div>
-                )}
+              {formik.touched.deductionAmt && formik.errors.deductionAmt && (
+                <div className="invalid-feedback">
+                  {formik.errors.deductionAmt}
+                </div>
+              )}
             </div>
             <div className="col-md-6 col-12 mb-3 ">
               <lable className="">Total Deduction Amount</lable>
@@ -336,17 +387,17 @@ function DeductionAdd() {
               <input
                 type="text"
                 className={`form-control  ${
-                  formik.touched.totalDeductiontAmount &&
-                  formik.errors.totalDeductiontAmount
+                  formik.touched.totalDeductionAmt &&
+                  formik.errors.totalDeductionAmt
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("totalDeductiontAmount")}
+                {...formik.getFieldProps("totalDeductionAmt")}
               />
-              {formik.touched.totalDeductiontAmount &&
-                formik.errors.totalDeductiontAmount && (
+              {formik.touched.totalDeductionAmt &&
+                formik.errors.totalDeductionAmt && (
                   <div className="invalid-feedback">
-                    {formik.errors.totalDeductiontAmount}
+                    {formik.errors.totalDeductionAmt}
                   </div>
                 )}
             </div>

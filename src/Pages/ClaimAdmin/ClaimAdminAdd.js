@@ -43,7 +43,7 @@ function ClaimAdminAdd() {
     claimsAmt: Yup.number()
       .required("*Amount is required")
       .typeError("*Must be a number"),
-      // claimsAttachment: Yup.string().required("*Attachment is required"),
+    // claimsAttachment: Yup.string().required("*Attachment is required"),
   });
 
   const formik = useFormik({
@@ -63,25 +63,23 @@ function ClaimAdminAdd() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
-      const payload={
+      const payload = {
         ...values,
-        claimsEmpId:values.claimsEmpId,
-        cmpId:parseInt(values.cmpId),
-        deptId:parseInt(values.deptId)
-      }
-      console.log("object",payload)
+        claimsEmpId: values.claimsEmpId,
+        cmpId: parseInt(values.cmpId),
+        deptId: parseInt(values.deptId),
+      };
+      console.log("object", payload);
       try {
-       
         const response = await api.post("/addClaims", payload, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        console.log("payload",payload);
+        console.log("payload", payload);
         if (response.status === 201) {
           toast.success(response.data.message);
-          navigate("/claim");
-          
+          navigate("/claimadmin");
         } else {
           toast.error(response.data.message);
         }
@@ -90,9 +88,9 @@ function ClaimAdminAdd() {
       }
     },
   });
-console.log("departmentData",departmentData)
-console.log("companyData",companyData)
-console.log("employeeData",employeeData)
+  console.log("departmentData", departmentData);
+  console.log("companyData", companyData);
+  console.log("employeeData", employeeData);
 
   return (
     <div className="container-fluid">
@@ -132,34 +130,34 @@ console.log("employeeData",employeeData)
               )}
             </div> */}
             <div className="col-md-6 col-12 mb-2">
-                <lable className="form-lable">
-                  Employee Name<span className="text-danger">*</span>
-                </lable>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("claimsEmpId")}
-                    className={`form-select  ${
-                      formik.touched.claimsEmpId && formik.errors.claimsEmpId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    {employeeData &&
-                      employeeData.map((employeeId) => (
-                        <option key={employeeId.id} value={employeeId.employeeId}>
-                          {employeeId.firstName} {employeeId.lastName}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.claimsEmpId && formik.errors.claimsEmpId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.claimsEmpId}
-                    </div>
-                  )}
-                </div>
+              <lable className="form-lable">
+                Employee Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("claimsEmpId")}
+                  className={`form-select  ${
+                    formik.touched.claimsEmpId && formik.errors.claimsEmpId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {employeeData &&
+                    employeeData.map((employeeId) => (
+                      <option key={employeeId.id} value={employeeId.employeeId}>
+                        {employeeId.firstName} {employeeId.lastName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.claimsEmpId && formik.errors.claimsEmpId && (
+                  <div className="invalid-feedback">
+                    {formik.errors.claimsEmpId}
+                  </div>
+                )}
               </div>
+            </div>
             {/* <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
                 Company ID<span className="text-danger">*</span>
@@ -180,34 +178,32 @@ console.log("employeeData",employeeData)
               )}
             </div> */}
             <div className="col-md-6 col-12 mb-2">
-                <lable className="form-lable">
-                  Company Name<span className="text-danger">*</span>
-                </lable>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("cmpId")}
-                    className={`form-select  ${
-                      formik.touched.cmpId && formik.errors.cmpId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    {companyData &&
-                      companyData.map((cmpId) => (
-                        <option key={cmpId.id} value={cmpId.cmpId}>
-                          {cmpId.cmpName}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.cmpId && formik.errors.cmpId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.cmpId}
-                    </div>
-                  )}
-                </div>
+              <lable className="form-lable">
+                Company Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("cmpId")}
+                  className={`form-select  ${
+                    formik.touched.cmpId && formik.errors.cmpId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {companyData &&
+                    companyData.map((cmpId) => (
+                      <option key={cmpId.id} value={cmpId.cmpId}>
+                        {cmpId.cmpName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.cmpId && formik.errors.cmpId && (
+                  <div className="invalid-feedback">{formik.errors.cmpId}</div>
+                )}
               </div>
+            </div>
             {/* <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
                 Department ID<span className="text-danger">*</span>
@@ -228,34 +224,32 @@ console.log("employeeData",employeeData)
               )}
             </div> */}
             <div className="col-md-6 col-12 mb-2">
-                <lable className="form-lable">
-                  Department Name<span className="text-danger">*</span>
-                </lable>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("deptId")}
-                    className={`form-select  ${
-                      formik.touched.deptId && formik.errors.deptId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    {departmentData &&
-                      departmentData.map((deptId) => (
-                        <option key={deptId.id} value={deptId.deptId}>
-                          {deptId.deptName}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.deptId && formik.errors.deptId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.deptId}
-                    </div>
-                  )}
-                </div>
+              <lable className="form-lable">
+                Department Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("deptId")}
+                  className={`form-select  ${
+                    formik.touched.deptId && formik.errors.deptId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {departmentData &&
+                    departmentData.map((deptId) => (
+                      <option key={deptId.id} value={deptId.deptId}>
+                        {deptId.deptName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.deptId && formik.errors.deptId && (
+                  <div className="invalid-feedback">{formik.errors.deptId}</div>
+                )}
               </div>
+            </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
                 Date<span className="text-danger">*</span>
@@ -263,12 +257,16 @@ console.log("employeeData",employeeData)
               <input
                 type="date"
                 className={`form-control  ${
-                  formik.touched.claimsDate && formik.errors.claimsDate ? "is-invalid" : ""
+                  formik.touched.claimsDate && formik.errors.claimsDate
+                    ? "is-invalid"
+                    : ""
                 }`}
                 {...formik.getFieldProps("claimsDate")}
               />
               {formik.touched.claimsDate && formik.errors.claimsDate && (
-                <div className="invalid-feedback">{formik.errors.claimsDate}</div>
+                <div className="invalid-feedback">
+                  {formik.errors.claimsDate}
+                </div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
@@ -278,7 +276,9 @@ console.log("employeeData",employeeData)
               <select
                 aria-label="Default select example"
                 className={`form-select  ${
-                  formik.touched.claimsType && formik.errors.claimsType ? "is-invalid" : ""
+                  formik.touched.claimsType && formik.errors.claimsType
+                    ? "is-invalid"
+                    : ""
                 }`}
                 {...formik.getFieldProps("claimsType")}
               >
@@ -289,7 +289,9 @@ console.log("employeeData",employeeData)
                 <option value="LEAVE_ENHANCE">LEAVE ENHANCE</option>
               </select>
               {formik.touched.claimsType && formik.errors.claimsType && (
-                <div className="invalid-feedback">{formik.errors.claimsType}</div>
+                <div className="invalid-feedback">
+                  {formik.errors.claimsType}
+                </div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
@@ -306,7 +308,9 @@ console.log("employeeData",employeeData)
                 {...formik.getFieldProps("claimsAmt")}
               />
               {formik.touched.claimsAmt && formik.errors.claimsAmt && (
-                <div className="invalid-feedback">{formik.errors.claimsAmt}</div>
+                <div className="invalid-feedback">
+                  {formik.errors.claimsAmt}
+                </div>
               )}
             </div>
             <div class="col-md-6 col-12 mb-3">
@@ -316,17 +320,19 @@ console.log("employeeData",employeeData)
               <input
                 type="file"
                 className={`form-control  ${
-                  formik.touched.claimsAttachment && formik.errors.claimsAttachment
+                  formik.touched.claimsAttachment &&
+                  formik.errors.claimsAttachment
                     ? "is-invalid"
                     : ""
                 }`}
                 {...formik.getFieldProps("claimsAttachment")}
               />
-              {formik.touched.claimsAttachment && formik.errors.claimsAttachment && (
-                <div className="invalid-feedback">
-                  {formik.errors.claimsAttachment}
-                </div>
-              )}
+              {formik.touched.claimsAttachment &&
+                formik.errors.claimsAttachment && (
+                  <div className="invalid-feedback">
+                    {formik.errors.claimsAttachment}
+                  </div>
+                )}
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">Remarks</lable>

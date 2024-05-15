@@ -1,47 +1,98 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
+import { toast } from "react-toastify";
+import api from "../../config/URL";
+import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 
 const Deduction = () => {
   const tableRef = useRef(null);
-
-  const datas = [
-    {
-      id: 1,
-      EmployeeId: "345",
-      EmployeeName: "Suriya",
-      DeductionName: "CPF",
-      DeductionAmount: "$20",
-    },
-    {
-      id: 2,
-      EmployeeId: "567",
-      EmployeeName: "Chandru",
-      DeductionName: "Loss Of Pay",
-      DeductionAmount: "$15",
-    },
-    {
-      id: 3,
-      EmployeeId: "567",
-      EmployeeName: "Saravana",
-      DeductionName: "Loss Of Pay",
-      DeductionAmount: "$15",
-    },
-  ];
+  const [employeeData, setEmployeeData] = useState([]);
+  const [datas, setDatas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const table = $(tableRef.current).DataTable({
+    const fetchData = async () => {
+      try {
+        const employeeData = await fetchAllEmployeeNamesWithId();
+        setEmployeeData(employeeData);
+        console.log("Employee data fetched:", employeeData);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+
+    const getData = async () => {
+      try {
+        const response = await api.get("getAllDeduction");
+        setDatas(response.data);
+        setLoading(false);
+        console.log("Deduction data fetched:", response.data);
+      } catch (error) {
+        console.error("Error fetching data ", error);
+      }
+    };
+
+    fetchData();
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      initializeDataTable();
+    }
+    return () => {
+      destroyDataTable();
+    };
+  }, [loading]);
+
+  const initializeDataTable = () => {
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      return;
+    }
+    $(tableRef.current).DataTable({
       responsive: true,
     });
+  };
 
-    return () => {
+  const destroyDataTable = () => {
+    const table = $(tableRef.current).DataTable();
+    if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
       table.destroy();
-    };
-  }, []);
+    }
+  };
+
+  const refreshData = async () => {
+    destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getAllDeduction");
+      setDatas(response.data);
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+    setLoading(false);
+  };
+
+  const getEmployeeNameById = (deductionEmpId) => {
+    if (employeeData) {
+      const employee = employeeData.find(
+        (employee) => employee.employeeId === deductionEmpId
+      );
+      console.log(
+        "Finding employee for ID:",
+        deductionEmpId,
+        "Found:",
+        employee
+      );
+      return employee ? `${employee.firstName} ${employee.lastName}` : "";
+    }
+    return ""; // Return empty string if employeeData is not defined
+  };
 
   return (
     <div className="container my-4">
@@ -56,7 +107,6 @@ const Deduction = () => {
         <thead>
           <tr>
             <th scope="col">S No</th>
-            <th scope="col">Employee ID</th>
             <th scope="col">Employee Name</th>
             <th scope="col">Deduction Name</th>
             <th scope="col">Deduction Amount</th>
@@ -64,25 +114,24 @@ const Deduction = () => {
           </tr>
         </thead>
         <tbody>
-          {datas.map((data) => (
-            <tr key={data.id}>
-              <td>{data.id}</td>
-              <td>{data.EmployeeId}</td>
-              <td>{data.EmployeeName}</td>
-              <td>{data.DeductionName}</td>
-              <td>{data.DeductionAmount}</td>
+          {datas.map((data, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{getEmployeeNameById(data.employeeId)}</td>
+              <td>{data.deductionName}</td>
+              <td>{data.deductionAmt}</td>
               <td>
-                <Link to="/deductions/view">
+                <Link to={`/deductions/view/${data.deductionId}`}>
                   <button className="btn btn-sm">
                     <FaEye />
                   </button>
                 </Link>
-                <Link to="/deductions/edit">
+                <Link to={`/deductions/edit/${data.deductionId}`}>
                   <button className="btn btn-sm">
                     <FaEdit />
                   </button>
                 </Link>
-                <Delete />
+                <Delete path={`/deleteDeductionById/${data.deductionId}`}  onSuccess={refreshData}/>
               </td>
             </tr>
           ))}

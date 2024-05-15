@@ -13,7 +13,7 @@ function AddNewBublicHoliday() {
     try {
       const companyData = await fetchAllCompanyNamesWithId();
       setCompanyData(companyData);
-      console.log(companyData)
+      console.log(companyData);
     } catch (error) {
       toast.error(error);
     }
@@ -24,14 +24,13 @@ function AddNewBublicHoliday() {
 
   const navigate = useNavigate();
   const validationSchema = Yup.object({
-    pubHolidayCmpId: Yup.string().required('*Company ID is required'),
+    pubHolidayCmpId: Yup.string().required("*Company ID is required"),
     // cmpId: Yup.string().required("*Company name is required"),
     pubHolidayName: Yup.string().required("*Holiday name is required"),
     pubHolidayType: Yup.string().required("*Select the holiday is required"),
     startDate: Yup.string().required("*Select the start date"),
     endDate: Yup.string().required("*Select the end date"),
     pubHolidayCountryCode: Yup.string().required("*Select the country"),
-    
   });
 
   const formik = useFormik({
@@ -46,7 +45,7 @@ function AddNewBublicHoliday() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log("add",values);
+      console.log("add", values);
       try {
         const response = await api.post("addPublicHolidays", values);
         // console.log(response)
@@ -89,7 +88,8 @@ function AddNewBublicHoliday() {
                   <select
                     {...formik.getFieldProps("pubHolidayCmpId")}
                     className={`form-select  ${
-                      formik.touched.pubHolidayCmpId && formik.errors.pubHolidayCmpId
+                      formik.touched.pubHolidayCmpId &&
+                      formik.errors.pubHolidayCmpId
                         ? "is-invalid"
                         : ""
                     }`}
@@ -97,12 +97,13 @@ function AddNewBublicHoliday() {
                   >
                     <option selected></option>
                     {companyData &&
-                      companyData.map((cmpId) =>{
-                        return(
-                        <option key={cmpId.id} value={cmpId.cmpId}>
-                          {cmpId.cmpName}
-                        </option>
-                      )})}
+                      companyData.map((cmpId) => {
+                        return (
+                          <option key={cmpId.id} value={cmpId.cmpId}>
+                            {cmpId.cmpName}
+                          </option>
+                        );
+                      })}
                   </select>
                   {formik.touched.cmpId && formik.errors.cmpId && (
                     <div className="invalid-feedback">
@@ -210,24 +211,25 @@ function AddNewBublicHoliday() {
                   <lable className="form-lable">
                     Country<span className="text-danger">*</span>
                   </lable>
-                    <select
-                      className={`form-select ${
-                        formik.touched.pubHolidayCountryCode &&
-                        formik.errors.pubHolidayCountryCode
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      {...formik.getFieldProps("pubHolidayCountryCode")}
-                    >
-                      <option></option>
-                      <option value="91">India</option>
-                      <option value="65">Singapore</option>
-                    </select>
-                    {formik.touched.pubHolidayCountryCode && formik.errors.pubHolidayCountryCode && (
-                    <div className="invalid-feedback">
-                      {formik.errors.pubHolidayCountryCode}
-                    </div>
-                  )}
+                  <select
+                    className={`form-select ${
+                      formik.touched.pubHolidayCountryCode &&
+                      formik.errors.pubHolidayCountryCode
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("pubHolidayCountryCode")}
+                  >
+                    <option></option>
+                    <option value="91">India</option>
+                    <option value="65">Singapore</option>
+                  </select>
+                  {formik.touched.pubHolidayCountryCode &&
+                    formik.errors.pubHolidayCountryCode && (
+                      <div className="invalid-feedback">
+                        {formik.errors.pubHolidayCountryCode}
+                      </div>
+                    )}
                 </div>
               </div>
             </div>

@@ -18,7 +18,6 @@ const Holiday = () => {
     try {
       const companyData = await fetchAllCompanyNamesWithId();
       setCompanyData(companyData);
-      
     } catch (error) {
       toast.error(error);
     }
@@ -33,7 +32,7 @@ const Holiday = () => {
   const tableRef = useRef(null);
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("companyData",datas)
+  console.log("companyData", datas);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -85,13 +84,15 @@ const Holiday = () => {
     }
     setLoading(false);
   };
-  
+
   const getCompanyNameById = (pubHolidayCmpId) => {
-    if(companyData){
-    const company = companyData.find((company) => company.cmpId === pubHolidayCmpId);
-    console.log("name",datas.pubHolidayCmpId)
-    return  company ? company.cmpName : ""
-  }
+    if (companyData) {
+      const company = companyData.find(
+        (company) => company.cmpId === pubHolidayCmpId
+      );
+      console.log("name", datas.pubHolidayCmpId);
+      return company ? company.cmpName : "";
+    }
   };
 
   return (
@@ -104,13 +105,13 @@ const Holiday = () => {
       {!loading && (
         <div className="container my-5">
           {!viewAction && (
-          <div className="col-12 text-end mb-3">
-            <Link to="/Holiday/add">
-              <button type="button" className="btn btn-sm btn-button">
-                Add <i class="bx bx-plus"></i>
-              </button>
-            </Link>
-          </div>
+            <div className="col-12 text-end mb-3">
+              <Link to="/Holiday/add">
+                <button type="button" className="btn btn-sm btn-button">
+                  Add <i class="bx bx-plus"></i>
+                </button>
+              </Link>
+            </div>
           )}
           <table ref={tableRef} className="display">
             <thead>
@@ -128,7 +129,14 @@ const Holiday = () => {
                   <td>{index + 1}</td>
                   <td>{getCompanyNameById(data.pubHolidayCmpId)}</td>
                   <td>{data.pubHolidayName}</td>
-                  <td>{data.startDate && ((data.startDate.split('T')[0]).split('-').reverse().join('-'))}</td>
+                  <td>
+                    {data.startDate &&
+                      data.startDate
+                        .split("T")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")}
+                  </td>
                   <td>
                     <div className="d-flex">
                       {viewAction ? (
@@ -153,7 +161,8 @@ const Holiday = () => {
                           </Link>
                           <Delete
                             onSuccess={refreshData}
-                            path={`/deletePublicHolidaysById/${data.pubHolidayId}`} />
+                            path={`/deletePublicHolidaysById/${data.pubHolidayId}`}
+                          />
                         </span>
                       )}
                     </div>

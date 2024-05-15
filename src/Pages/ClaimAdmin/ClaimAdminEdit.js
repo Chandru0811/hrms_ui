@@ -84,7 +84,6 @@ function ClaimAdminEdit() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
-
       try {
         const response = await api.put(`/updateClaimsById/${id}`, values, {
           headers: {
@@ -95,8 +94,8 @@ function ClaimAdminEdit() {
         if (response.status === 200) {
           formik.setValues({
             ...response.data,
-            claimsDate:response.data.claimsDate.split("T")[0]
-          })
+            claimsDate: response.data.claimsDate.split("T")[0],
+          });
           toast.success(response.data.message);
           navigate("/claimadmin");
         } else {

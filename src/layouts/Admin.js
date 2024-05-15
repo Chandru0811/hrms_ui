@@ -113,8 +113,8 @@ function Admin({ handleLogout }) {
               {/* Compliance  */}
               <Route path="/compliance" element={<Compliance />} />
               <Route path="/compliance/add" element={<ComplianceAdd />} />
-              <Route path="/compliance/edit" element={<ComplianceEdit />} />
-              <Route path="/compliance/view" element={<ComplianceView />} />
+              <Route path="/compliance/edit/:id" element={<ComplianceEdit />} />
+              <Route path="/compliance/view/:id" element={<ComplianceView />} />
 
               {/* Exit Management */}
               <Route path="/exitmanagement" element={<ExitManagement />} />
@@ -191,8 +191,8 @@ function Admin({ handleLogout }) {
               {/*Hrms Deduction */}
               <Route path="/deductions" element={<Deduction />} />
               <Route path="/deductions/add" element={<DeductionAdd />} />
-              <Route path="/deductions/edit" element={<DeductionEdit />} />
-              <Route path="/deductions/view" element={<DeductionView />} />
+              <Route path="/deductions/edit/:id" element={<DeductionEdit />} />
+              <Route path="/deductions/view/:id" element={<DeductionView />} />
 
               {/* Performance */}
               <Route path="/performance" element={<PerformanceAppraisal />} />
