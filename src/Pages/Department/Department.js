@@ -70,54 +70,60 @@ const Department = () => {
 
   return (
     <section>
-     {loading && (
+      {loading && (
         <div className="loader-container">
           <div className="loader"></div>
         </div>
       )}
       {!loading && (
-        <div className="container my-4">
-        <div className="my-3 d-flex align-items-end justify-content-end">
-         <Link to="/departments/add">
-           <button type="button" className="btn btn-button btn-sm">
-             Add <i class="bx bx-plus"></i>
-           </button>
-         </Link>
-       </div>
-       <table ref={tableRef} className="display">
-         <thead>
-           <tr>
-             <th scope="col">S No</th>
-             <th scope="col">Department List </th>
-             <th scope="col">Action</th>
-           </tr>
-         </thead>
-         <tbody>
-           {datas.map((data, index) => (
-             <tr key={index}>
-               <th scope="row">{index + 1}</th>
-               <td>{data.deptName}</td>
-               <td>
-                <Link to={`/departments/view/${data.deptId}`}>
-                   <button className="btn btn-sm">
-                     <FaEye />
-                   </button>
-                 </Link> 
-                 {userRole==="Admin"&&<Link to={`/departments/edit/${data.deptId}`}>
-                   <button className="btn btn-sm">
-                     <FaEdit />
-                   </button>
-                 </Link>}
-                 {userRole==="Admin"&&<Delete 
-                 onSuccess={refreshData} 
-                 path={`/deleteDepartmentById/${data.deptId}`}
-                 />}
-               </td>
-             </tr>
-           ))}
-         </tbody>
-       </table>
-     </div>
+        <div className="container my-5">
+          {userRole === "Admin" && (
+            <div className="my-3 d-flex align-items-end justify-content-end">
+              <Link to="/departments/add">
+                <button type="button" className="btn btn-button btn-sm">
+                  Add <i class="bx bx-plus"></i>
+                </button>
+              </Link>
+            </div>
+          )}
+          <table ref={tableRef} className="display">
+            <thead>
+              <tr>
+                <th scope="col">S No</th>
+                <th scope="col">Department List </th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {datas.map((data, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{data.deptName}</td>
+                  <td>
+                    <Link to={`/departments/view/${data.deptId}`}>
+                      <button className="btn btn-sm">
+                        <FaEye />
+                      </button>
+                    </Link>
+                    {userRole === "Admin" && (
+                      <Link to={`/departments/edit/${data.deptId}`}>
+                        <button className="btn btn-sm">
+                          <FaEdit />
+                        </button>
+                      </Link>
+                    )}
+                    {userRole === "Admin" && (
+                      <Delete
+                        onSuccess={refreshData}
+                        path={`/deleteDepartmentById/${data.deptId}`}
+                      />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   );

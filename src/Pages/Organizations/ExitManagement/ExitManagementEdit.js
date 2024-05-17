@@ -30,8 +30,8 @@ function ExitManagementEdit() {
   }, []);
 
   const validationSchema = Yup.object({
-    exitMgmtEmpName: Yup.string().required("*Employee name is required"),
-    cmpId: Yup.string().required("*Company name is required"),
+    exitMgmtEmpId: Yup.string().required("*Employee name is required"),
+    exitMgmtCmpId: Yup.string().required("*Company name is required"),
     exitMgmtDateOfApply: Yup.string().required("*Select the date of apply"),
     exitMgmtNoticePeriod: Yup.string().required("*Notice period is required"),
     // currentDate: Yup.string().required("*Select the current date"),
@@ -53,8 +53,8 @@ function ExitManagementEdit() {
 
   const formik = useFormik({
     initialValues: {
-      cmpId: "",
-      exitMgmtEmpName: "",
+      exitMgmtCmpId: "",
+      exitMgmtEmpId: "",
       exitMgmtDateOfApply: "",
       exitMgmtNoticePeriod: "",
       reasonForRelieving: "",
@@ -156,7 +156,6 @@ function ExitManagementEdit() {
                       }`}
                       aria-label="Default select example"
                     >
-                      <option selected></option>
                       {employeeData &&
                         employeeData.map((employeeId) => (
                           <option key={employeeId.id} value={employeeId.id}>
@@ -185,7 +184,6 @@ function ExitManagementEdit() {
                       }`}
                       aria-label="Default select example"
                     >
-                      <option selected></option>
                       {companyData &&
                         companyData.map((cmpId) => (
                           <option key={cmpId.id} value={cmpId.id}>

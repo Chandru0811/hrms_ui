@@ -14,11 +14,13 @@ function ClaimView() {
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const findEmployeeName = (employeeId) => {
-    if (!employeeData) return 'Employee data not available'; // Check if employeeData is null or undefined
-    const employee = employeeData.find(emp => emp.employeeId === employeeId);
-    return employee ? `${employee.firstName} ${employee.lastName}` : 'Employee not found';
+    if (!employeeData) return "Employee data not available"; // Check if employeeData is null or undefined
+    const employee = employeeData.find((emp) => emp.employeeId === employeeId);
+    return employee
+      ? `${employee.firstName} ${employee.lastName}`
+      : "";
   };
-  
+
   const fetchData = async () => {
     try {
       const companyData = await fetchAllCompanyNamesWithId();
@@ -44,7 +46,7 @@ function ClaimView() {
     getData();
     fetchData();
   }, [id]);
-  
+
   return (
     <div className="container">
       <div className="row mt-3">
@@ -75,8 +77,7 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                : {findEmployeeName(data.claimsEmpId)}
-                  
+                  : {findEmployeeName(data.claimsEmpId)}
                 </p>
               </div>
             </div>
@@ -98,7 +99,7 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                  :
+                  :{" "}
                   {companyData &&
                   companyData.find((cmp) => cmp.cmpId === parseInt(data.cmpId))
                     ? companyData.find(
@@ -126,7 +127,7 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                  :
+                  :{" "}
                   {departmentData &&
                   departmentData.find(
                     (dept) => dept.deptId === parseInt(data.deptId)
@@ -146,8 +147,15 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                   : {data.claimsDate ?((data.claimsDate.split("T")[0]).split('-').reverse().join('-')) : "--"}</p>
-                  
+                  :{" "}
+                  {data.claimsDate
+                    ? data.claimsDate
+                        .split("T")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")
+                    : "--"}
+                </p>
               </div>
             </div>
           </div>

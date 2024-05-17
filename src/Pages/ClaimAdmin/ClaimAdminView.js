@@ -13,12 +13,13 @@ function ClaimView() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
+
   const findEmployeeName = (employeeId) => {
     if (!employeeData) return "Employee data not available"; // Check if employeeData is null or undefined
     const employee = employeeData.find((emp) => emp.employeeId === employeeId);
     return employee
       ? `${employee.firstName} ${employee.lastName}`
-      : "Employee not found";
+      : "";
   };
 
   const fetchData = async () => {
@@ -99,7 +100,7 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                  :
+                  :{" "}
                   {companyData &&
                   companyData.find((cmp) => cmp.cmpId === parseInt(data.cmpId))
                     ? companyData.find(
@@ -127,7 +128,7 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                  :
+                  :{" "}
                   {departmentData &&
                   departmentData.find(
                     (dept) => dept.deptId === parseInt(data.deptId)

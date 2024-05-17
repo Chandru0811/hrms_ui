@@ -6,12 +6,31 @@ import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../../components/common/Delete";
 import api from "../../../config/URL";
+import fetchAllEmployeeNamesWithId from "../../List/EmployeeNameList";
+import { toast } from "react-toastify";
 
 const ExitManagement = () => {
   const tableRef = useRef(null);
   const [datas, setDatas] = useState([]);
-  console.log(datas)
   const [loading, setLoading] = useState(true);
+  const [employeeData, setEmployeeData] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const employeeData = await fetchAllEmployeeNamesWithId();
+      setEmployeeData(employeeData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const findEmployeeName = (attendanceId) => {
+    if (!employeeData) return "Employee data not available";
+    const employee = employeeData.find(
+      (emp) => emp.employeeId === attendanceId
+    );
+    return employee ? `${employee.firstName} ${employee.lastName}` : "";
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -24,6 +43,7 @@ const ExitManagement = () => {
       }
     };
     getData();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -73,68 +93,66 @@ const ExitManagement = () => {
         </div>
       )}
       {!loading && (
-        <div className="container">
-        <div className="my-3 d-flex align-items-end justify-content-end">
-          {/* <button type="button" className="btn btn-button btn-sm">
+        <div className="container my-5">
+          <div className="my-3 d-flex align-items-end justify-content-end">
+            {/* <button type="button" className="btn btn-button btn-sm">
               Add <i class="bx bx-plus"></i>
             </button> */}
-        </div>
-        <table ref={tableRef} className="display">
-          <thead>
-            <tr>
-              <th scope="col" style={{ whiteSpace: "nowrap" }}>
-                S No
-              </th>
-              {/* <th scope="col">Employee ID</th> */}
-              <th scope="col">Employee Name</th>
-              <th scope="col">Reason For Relieving</th>
-              <th scope="col">Notice Period</th>
-              <th scope="col">Approval Status</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {datas.map((data, index) => (
-              <tr key={index}>
-                <th scope="row">{index + 1}</th>
-                {/* <td>{data.exitMgmtEmpId}</td> */}
-                <td>{data.exitMgmtEmpName}</td>
-                <td>{data.reasonForRelieving}</td>
-                <td>{data.exitMgmtNoticePeriod}</td>
-                <td>
-                  {
-                   data.relievingApprovalStatus === "Pending" ? (
-                    <span className="badge text-bg-warning">Pending</span>
-                  ) : data.relievingApprovalStatus === "Approved" ? (
-                    <span className="badge text-bg-success">Approved</span>
-                  ) : (
-                    <span className="badge text-bg-danger">Rejected</span>
-                  )}
-                </td>
-  
-                <td>
-                  <div className="d-flex">
-                    <Link to={`/exitmanagement/view/${data.exitMgmtId}`}>
-                      <button className="btn btn-sm">
-                        <FaEye />
-                      </button>
-                    </Link>
-                    <Link to={`/exitmanagement/edit/${data.exitMgmtId}`}>
-                      <button className="btn btn-sm">
-                        <FaEdit />
-                      </button>
-                    </Link>
-                    <Delete
-                      onSuccess={refreshData}
-                      path={`/deleteExitManagementById/${data.exitMgmtId}`}
-                    />
-                  </div>
-                </td>
+          </div>
+          <table ref={tableRef} className="display">
+            <thead>
+              <tr>
+                <th scope="col" style={{ whiteSpace: "nowrap" }}>
+                  S No
+                </th>
+                {/* <th scope="col">Employee ID</th> */}
+                <th scope="col">Employee Name</th>
+                <th scope="col">Reason For Relieving</th>
+                <th scope="col">Notice Period</th>
+                <th scope="col">Approval Status</th>
+                <th scope="col">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {datas.map((data, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  {/* <td>{data.exitMgmtEmpId}</td> */}
+                  <td> {findEmployeeName(data.exitMgmtEmpId)}</td>
+                  <td>{data.reasonForRelieving}</td>
+                  <td>{data.exitMgmtNoticePeriod}</td>
+                  <td>
+                    {data.relievingApprovalStatus === "Approved" ? (
+                      <span className="badge text-bg-success">Approved</span>
+                    ) : data.relievingApprovalStatus === "Rejected" ? (
+                      <span className="badge text-bg-danger">Rejected</span>
+                    ) : (
+                      <span className="badge text-bg-warning">Pending</span>
+                    )}
+                  </td>
+                  <td>
+                    <div className="d-flex">
+                      <Link to={`/exitmanagement/view/${data.exitMgmtId}`}>
+                        <button className="btn btn-sm">
+                          <FaEye />
+                        </button>
+                      </Link>
+                      <Link to={`/exitmanagement/edit/${data.exitMgmtId}`}>
+                        <button className="btn btn-sm">
+                          <FaEdit />
+                        </button>
+                      </Link>
+                      <Delete
+                        onSuccess={refreshData}
+                        path={`/deleteExitManagementById/${data.exitMgmtId}`}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   );

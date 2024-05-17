@@ -2,11 +2,53 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
+import fetchAllEmployeeNamesWithId from "../../List/EmployeeNameList";
+import fetchAllCompanyNamesWithId from "../../List/CompanyNameList";
 
 function ExitManagementView() {
-  const [data, setData] = useState([]);
   const { id } = useParams();
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [employeeData, setEmployeeData] = useState(null);
+  const [companyData, setCompanyData] = useState(null);
+  // const [datas, setDatas] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const employeeData = await fetchAllEmployeeNamesWithId();
+      const companyData = await fetchAllCompanyNamesWithId();
+      setEmployeeData(employeeData);
+      setCompanyData(companyData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const findEmployeeName = (exitMgmtId) => {
+    console.log(employeeData);
+    if (employeeData) {
+      const employee = employeeData.find(
+        (emp) => emp.employeeId === exitMgmtId
+      );
+      return employee ? `${employee.firstName} ${employee.lastName}` : "";
+    }
+  };
+
+  // const findCompanyName = (companyId) => {
+  //   if (companyData) {
+  //     const company = companyData.find((cmp) => cmp.companyId === companyId);
+  //     return company ? company.companyName : "";
+  //   }
+  //   return "";
+  // };
+
+  const findCompanyName = (exitMgmtCmpId) => {
+    if (companyData) {
+      const company = companyData.find((cmp) => cmp.cmpId === exitMgmtCmpId);
+      return company ? company.cmpName : "Company not found";
+    }
+    return "";
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -20,6 +62,7 @@ function ExitManagementView() {
       }
     };
     getData();
+    fetchData();
   }, [id]);
 
   return (
@@ -60,7 +103,7 @@ function ExitManagementView() {
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.exitMgmtEmpId}
+                        : {findEmployeeName(data.exitMgmtEmpId)}
                       </p>
                     </div>
                   </div>
@@ -72,7 +115,7 @@ function ExitManagementView() {
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.exitMgmtCmpId}
+                        : {findCompanyName(data.exitMgmtCmpId)}
                       </p>
                     </div>
                   </div>
@@ -172,7 +215,12 @@ function ExitManagementView() {
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.assetsReturned ? "Yes" : "No"}
+                        :{" "}
+                        {data.assetsReturned === null
+                          ? ""
+                          : data.assetsReturned
+                          ? "Yes"
+                          : "No"}
                       </p>
                     </div>
                   </div>

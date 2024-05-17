@@ -37,7 +37,6 @@ function AttendancehrmsEdit() {
     attendanceCheckOutMode: Yup.string().required("*Check out mode is required"),
     attendanceOtStarttime: Yup.string().required("*OT start time is required"),
     attendanceOtEndtime: Yup.string().required("*OT end time is required"),
-    attendanceRemarks: Yup.string().required("*Attendance remark is required"),
   });
   const formik = useFormik({
     initialValues: {
@@ -333,7 +332,6 @@ function AttendancehrmsEdit() {
             <div className="col-md-6 col-12">
               <div className="text-start mt-2">
                 <lable className="form-lable">Attendance Remark</lable>
-                <span className="text-danger">*</span>
                 <textarea
                   id="floatingTextarea2"
                   style={{ height: "100px" }}

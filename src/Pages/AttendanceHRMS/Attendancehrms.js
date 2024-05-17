@@ -10,45 +10,42 @@ import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import { toast } from "react-toastify";
 
 const Attendancehrms = () => {
-  const [viewAction, setViewAction] = useState(false);
-  const userName = sessionStorage.getItem("userName");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [viewAction, setViewAction] = useState(false);
+  const userName = sessionStorage.getItem("userName");
   const [employeeData, setEmployeeData] = useState(null);
-  console.log(employeeData);
+  // console.log(employeeData);
 
   const findEmployeeName = (attendanceId) => {
-    if (!employeeData) return 'Employee data not available';
-    const employee = employeeData.find(emp => emp.employeeId === attendanceId);
-    return employee ? `${employee.firstName} ${employee.lastName}` : '';
+    if (!employeeData) return "Employee data not available";
+    const employee = employeeData.find(
+      (emp) => emp.employeeId === attendanceId
+    );
+    return employee ? `${employee.firstName} ${employee.lastName}` : "";
   };
 
   const fetchData1 = async () => {
     try {
       const employeeData = await fetchAllEmployeeNamesWithId();
       setEmployeeData(employeeData);
-
     } catch (error) {
       toast.error(error);
     }
   };
 
-
   const fetchData = async () => {
     try {
       // setLoading(true);
-      const response = await api.get(
-        `getAllDailyAttendance`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            //Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get(`getAllDailyAttendance`, {
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: `Bearer ${token}`,
+        },
+      });
       setDatas(response.data);
-      console.log(response.data)
-      setLoading(false)
+      console.log(response.data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -57,8 +54,7 @@ const Attendancehrms = () => {
     if (userName === "Employee") {
       setViewAction(true);
     }
-  },
-    [userName, setViewAction,]);
+  }, [userName, setViewAction]);
 
   const tableRef = useRef(null);
 
@@ -68,7 +64,7 @@ const Attendancehrms = () => {
       table.destroy();
     }
   };
-  
+
   const refreshData = async () => {
     destroyDataTable();
     setLoading(true);
@@ -134,21 +130,20 @@ const Attendancehrms = () => {
                   <td>{index + 1}</td>
                   {/* <td>{data.employeeid}</td> */}
                   <td> {findEmployeeName(data.dailyAttendanceEmpId)}</td>
-                   <td>{data.attendanceDate  && ((data.attendanceDate.split('T')[0]).split('-').reverse().join('-'))}</td>
+                  <td>
+                    {data.attendanceDate &&
+                      data.attendanceDate
+                        .split("T")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")}
+                  </td>
                   <td>{data.attendanceShiftMode}</td>
                   <td>
                     {data.attendanceStatus === "Present" ? (
-                      <span
-                        className="badge badges-Green"
-                      >
-                        Present
-                      </span>
+                      <span className="badge badges-Green">Present</span>
                     ) : (
-                      <span
-                        className="badge badges-Red"
-                      >
-                        Absent
-                      </span>
+                      <span className="badge badges-Red">Absent</span>
                     )}
                   </td>
                   <td>
@@ -167,12 +162,13 @@ const Attendancehrms = () => {
                         </Link>
                         <Link to={`/attendancehrms/edit/${data.attendanceId}`}>
                           <button className="btn btn-sm">
-                            <FaEdit
-                             />
+                            <FaEdit />
                           </button>
                         </Link>
-                        <Delete  onSuccess={refreshData}
-                              path={`/deleteDailyAttendanceById/${data.attendanceId}`}/>
+                        <Delete
+                          onSuccess={refreshData}
+                          path={`/deleteDailyAttendanceById/${data.attendanceId}`}
+                        />
                       </span>
                     )}
                   </td>

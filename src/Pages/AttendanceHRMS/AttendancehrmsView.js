@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../../config/URL";
 import { toast } from "react-toastify";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 
 function AttendancehrmsView() {
-  const [data, setData] = useState([]);
   const { id } = useParams();
+  const [data, setData] = useState([]);
   const [employeeData, setEmployeeData] = useState(null);
   // const [datas, setDatas] = useState([]);
 
-  const fetchData1 = async () => {
+  const fetchData = async () => {
     try {
-       const employeeData = await fetchAllEmployeeNamesWithId();
+      const employeeData = await fetchAllEmployeeNamesWithId();
       setEmployeeData(employeeData);
-
     } catch (error) {
       toast.error(error);
     }
   };
+
   const findEmployeeName = (attendanceId) => {
-    console.log(employeeData)
-    if (employeeData){
-    const employee = employeeData.find(emp => emp.employeeId === attendanceId );
-     return employee ? `${employee.firstName} ${employee.lastName}` : '';
+    console.log(employeeData);
+    if (employeeData) {
+      const employee = employeeData.find(
+        (emp) => emp.employeeId === attendanceId
+      );
+      return employee ? `${employee.firstName} ${employee.lastName}` : "";
     }
   };
 
@@ -37,9 +39,10 @@ function AttendancehrmsView() {
       }
     };
     getData();
-    fetchData1()
+    fetchData();
   }, [id]);
- console.log(data)
+  // console.log(data);
+  
   return (
     <div className="container ">
       <div className="row  mt-3">
@@ -58,8 +61,8 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Employee Name </p>
                 </div>
                 <div className="col-6">
-                  {/* {data.attendanceId || "--"} */}
-                  : {findEmployeeName(data.dailyAttendanceEmpId)}
+                  {/* {data.attendanceId || "--"} */}:{" "}
+                  {findEmployeeName(data.dailyAttendanceEmpId)}
                 </div>
               </div>
             </div>
@@ -69,8 +72,14 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Date</p>
                 </div>
                 <div className="col-6">
-                : {data.attendanceDate ?((data.attendanceDate.split("T")[0]).split('-').reverse().join('-')) : "--"}
-                 
+                  :{" "}
+                  {data.attendanceDate
+                    ? data.attendanceDate
+                        .split("T")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")
+                    : "--"}
                 </div>
               </div>
             </div>
@@ -79,9 +88,7 @@ function AttendancehrmsView() {
                 <div className="col-6 ">
                   <p className="fw-medium">Attendance Status </p>
                 </div>
-                <div className="col-6">
-                  : {data.attendanceStatus || "--"}
-                </div>
+                <div className="col-6">: {data.attendanceStatus || "--"}</div>
               </div>
             </div>
             <div className="col-md-6 col-12">
@@ -90,7 +97,10 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Check In</p>
                 </div>
                 <div className="col-6">
-                 : {data.attendanceCheckInTime ?((data.attendanceCheckInTime.split("T")[1]).split('.')[0]) : "--"}
+                  :{" "}
+                  {data.attendanceCheckInTime
+                    ? data.attendanceCheckInTime.split("T")[1].split(".")[0]
+                    : "--"}
                 </div>
               </div>
             </div>
@@ -100,7 +110,10 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Check Out</p>
                 </div>
                 <div className="col-6">
-                 : {data.attendanceCheckOutTime ?((data.attendanceCheckOutTime.split("T")[1]).split('.')[0]) : "--"}
+                  :{" "}
+                  {data.attendanceCheckOutTime
+                    ? data.attendanceCheckOutTime.split("T")[1].split(".")[0]
+                    : "--"}
                 </div>
               </div>
             </div>
@@ -110,7 +123,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Check In Mode</p>
                 </div>
                 <div className="col-6">
-                 : {data.attendanceCheckInMode || "--"}
+                  : {data.attendanceCheckInMode || "--"}
                 </div>
               </div>
             </div>
@@ -120,7 +133,7 @@ function AttendancehrmsView() {
                   <p className="fw-medium">Check Out Mode</p>
                 </div>
                 <div className="col-6">
-                 : {data.attendanceCheckOutMode || "--"}
+                  : {data.attendanceCheckOutMode || "--"}
                 </div>
               </div>
             </div>
@@ -130,7 +143,10 @@ function AttendancehrmsView() {
                   <p className="fw-medium">OT Start Time</p>
                 </div>
                 <div className="col-6">
-                 : {data.attendanceOtStarttime ?((data.attendanceOtStarttime.split("T")[1]).split('.')[0]) : "--"}
+                  :{" "}
+                  {data.attendanceOtStarttime
+                    ? data.attendanceOtStarttime.split("T")[1].split(".")[0]
+                    : "--"}
                 </div>
               </div>
             </div>
@@ -140,7 +156,10 @@ function AttendancehrmsView() {
                   <p className="fw-medium">OT End Time</p>
                 </div>
                 <div className="col-6">
-                 : {data.attendanceOtEndtime ?((data.attendanceOtEndtime.split("T")[1]).split('.')[0]) : "--"}
+                  :{" "}
+                  {data.attendanceOtEndtime
+                    ? data.attendanceOtEndtime.split("T")[1].split(".")[0]
+                    : "--"}
                 </div>
               </div>
             </div>
@@ -155,15 +174,13 @@ function AttendancehrmsView() {
                 </div>
               </div>
             </div> */}
-            
+
             <div className="col-md-6 col-12">
               <div className="row    mb-2">
                 <div className="col-6 ">
                   <p className="fw-medium">Attendance Remark</p>
                 </div>
-                <div className="col-6">
-                 : {data.attendanceRemarks || "--"}
-                </div>
+                <div className="col-6">: {data.attendanceRemarks || "--"}</div>
               </div>
             </div>
           </div>

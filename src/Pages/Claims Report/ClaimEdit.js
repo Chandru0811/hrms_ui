@@ -44,21 +44,21 @@ function ClaimEdit() {
     claimsAmt: Yup.number()
       .required("*claimsAmt is required")
       .typeError("*Must be a number"),
-    attachment: Yup.string().required("*attachment is required"),
-    claimsApprovalLv1Id: Yup.string().required(
-      "*Approver id(lvl 1) is required"
-    ),
-    approvalNameLv1: Yup.string().required("*Approver name(lvl 1) is required"),
-    approvalStatusLv1: Yup.string().required(
-      "*Select the approver status(lvl 1)"
-    ),
-    claimsApprovalLv2Id: Yup.string().required(
-      "*Approver id(lvl 2) is required"
-    ),
-    approvalNameLv2: Yup.string().required("*Approver name(lvl 2) is required"),
-    approvalStatusLv2: Yup.string().required(
-      "*Select the approver status(lvl 2)"
-    ),
+    // attachment: Yup.string().required("*attachment is required"),
+    // claimsApprovalLv1Id: Yup.string().required(
+    //   "*Approver id(lvl 1) is required"
+    // ),
+    // approvalNameLv1: Yup.string().required("*Approver name(lvl 1) is required"),
+    // approvalStatusLv1: Yup.string().required(
+    //   "*Select the approver status(lvl 1)"
+    // ),
+    // claimsApprovalLv2Id: Yup.string().required(
+    //   "*Approver id(lvl 2) is required"
+    // ),
+    // approvalNameLv2: Yup.string().required("*Approver name(lvl 2) is required"),
+    // approvalStatusLv2: Yup.string().required(
+    //   "*Select the approver status(lvl 2)"
+    // ),
   });
 
   const formik = useFormik({
@@ -93,10 +93,6 @@ function ClaimEdit() {
         });
         console.log("values", values);
         if (response.status === 201) {
-          formik.setValues({
-            ...response.data,
-            claimsDate: response.data.claimsDate.split("T")[0]
-          })
           toast.success(response.data.message);
           navigate("/claim");
         } else {
@@ -167,10 +163,11 @@ function ClaimEdit() {
               <div className="input-group mb-3">
                 <select
                   {...formik.getFieldProps("claimsEmpId")}
-                  className={`form-select  ${formik.touched.claimsEmpId && formik.errors.claimsEmpId
+                  className={`form-select  ${
+                    formik.touched.claimsEmpId && formik.errors.claimsEmpId
                       ? "is-invalid"
                       : ""
-                    }`}
+                  }`}
                   aria-label="Default select example"
                 >
                   <option selected></option>
@@ -217,10 +214,11 @@ function ClaimEdit() {
               <div className="input-group mb-3">
                 <select
                   {...formik.getFieldProps("cmpId")}
-                  className={`form-select  ${formik.touched.cmpId && formik.errors.cmpId
+                  className={`form-select  ${
+                    formik.touched.cmpId && formik.errors.cmpId
                       ? "is-invalid"
                       : ""
-                    }`}
+                  }`}
                   aria-label="Default select example"
                 >
                   <option selected></option>
@@ -262,10 +260,11 @@ function ClaimEdit() {
               <div className="input-group mb-3">
                 <select
                   {...formik.getFieldProps("deptId")}
-                  className={`form-select  ${formik.touched.deptId && formik.errors.deptId
+                  className={`form-select  ${
+                    formik.touched.deptId && formik.errors.deptId
                       ? "is-invalid"
                       : ""
-                    }`}
+                  }`}
                   aria-label="Default select example"
                 >
                   <option selected></option>
@@ -287,10 +286,11 @@ function ClaimEdit() {
               </lable>
               <input
                 type="date"
-                className={`form-control  ${formik.touched.claimsDate && formik.errors.claimsDate
+                className={`form-control  ${
+                  formik.touched.claimsDate && formik.errors.claimsDate
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("claimsDate")}
               />
               {formik.touched.claimsDate && formik.errors.claimsDate && (
@@ -305,16 +305,17 @@ function ClaimEdit() {
               </lable>
               <select
                 aria-label="Default select example"
-                className={`form-select  ${formik.touched.claimsType && formik.errors.claimsType
+                className={`form-select  ${
+                  formik.touched.claimsType && formik.errors.claimsType
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("claimsType")}
               >
                 <option value="TELEPHONE">TELEPHONE</option>
                 <option value="TAXI">TAXI</option>
-                <option value="Hotel and Acc">Hotel and Acc</option>
-                <option value="Leave Enhance">Leave Enhance</option>
+                <option value="HOTEL_AND_ACC">HOTEL AND ACC</option>
+                <option value="LEAVE_ENHANCE">LEAVE ENHANCE</option>
               </select>
               {formik.touched.claimsType && formik.errors.claimsType && (
                 <div className="invalid-feedback">
@@ -328,10 +329,11 @@ function ClaimEdit() {
               </lable>
               <input
                 type="text"
-                className={`form-control  ${formik.touched.claimsAmt && formik.errors.claimsAmt
+                className={`form-control  ${
+                  formik.touched.claimsAmt && formik.errors.claimsAmt
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("claimsAmt")}
               />
               {formik.touched.claimsAmt && formik.errors.claimsAmt && (
@@ -346,10 +348,11 @@ function ClaimEdit() {
               </lable>
               <input
                 type="file"
-                className={`form-control  ${formik.touched.attachment && formik.errors.attachment
+                className={`form-control  ${
+                  formik.touched.attachment && formik.errors.attachment
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 onChange={(event) => {
                   formik.setFieldValue(
                     "attachment",
@@ -364,18 +367,18 @@ function ClaimEdit() {
                 </div>
               )}
             </div>
-
-            <div class="col-md-6 col-12 mb-3">
+            {/* <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
                 Approver ID(Lvl 1)<span className="text-danger">*</span>
               </lable>
               <input
                 type="text"
-                className={`form-control  ${formik.touched.claimsApprovalLv1Id &&
-                    formik.errors.claimsApprovalLv1Id
+                className={`form-control  ${
+                  formik.touched.claimsApprovalLv1Id &&
+                  formik.errors.claimsApprovalLv1Id
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("claimsApprovalLv1Id")}
               />
               {formik.touched.claimsApprovalLv1Id &&
@@ -391,11 +394,12 @@ function ClaimEdit() {
               </lable>
               <input
                 type="text"
-                className={`form-control  ${formik.touched.approvalNameLv1 &&
-                    formik.errors.approvalNameLv1
+                className={`form-control  ${
+                  formik.touched.approvalNameLv1 &&
+                  formik.errors.approvalNameLv1
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("approvalNameLv1")}
               />
               {formik.touched.approvalNameLv1 &&
@@ -410,11 +414,12 @@ function ClaimEdit() {
                 Approver Status(Lvl 1)<span className="text-danger">*</span>
               </lable>
               <select
-                className={`form-select  ${formik.touched.approvalStatusLv1 &&
-                    formik.errors.approvalStatusLv1
+                className={`form-select  ${
+                  formik.touched.approvalStatusLv1 &&
+                  formik.errors.approvalStatusLv1
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("approvalStatusLv1")}
               >
                 <option value="PENDING">PENDING</option>
@@ -434,11 +439,12 @@ function ClaimEdit() {
               </lable>
               <input
                 type="text"
-                className={`form-control  ${formik.touched.claimsApprovalLv2Id &&
-                    formik.errors.claimsApprovalLv2Id
+                className={`form-control  ${
+                  formik.touched.claimsApprovalLv2Id &&
+                  formik.errors.claimsApprovalLv2Id
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("claimsApprovalLv2Id")}
               />
               {formik.touched.claimsApprovalLv2Id &&
@@ -454,11 +460,12 @@ function ClaimEdit() {
               </lable>
               <input
                 type="text"
-                className={`form-control  ${formik.touched.approvalNameLv2 &&
-                    formik.errors.approvalNameLv2
+                className={`form-control  ${
+                  formik.touched.approvalNameLv2 &&
+                  formik.errors.approvalNameLv2
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("approvalNameLv2")}
               />
               {formik.touched.approvalNameLv2 &&
@@ -473,11 +480,12 @@ function ClaimEdit() {
                 Approver Status(Lvl 2)<span className="text-danger">*</span>
               </lable>
               <select
-                className={`form-select  ${formik.touched.approvalStatusLv2 &&
-                    formik.errors.approvalStatusLv2
+                className={`form-select  ${
+                  formik.touched.approvalStatusLv2 &&
+                  formik.errors.approvalStatusLv2
                     ? "is-invalid"
                     : ""
-                  }`}
+                }`}
                 {...formik.getFieldProps("approvalStatusLv2")}
               >
                 <option value="PENDING">PENDING</option>
@@ -490,7 +498,7 @@ function ClaimEdit() {
                     {formik.errors.approvalStatusLv2}
                   </div>
                 )}
-            </div>
+            </div> */}
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">Remarks</lable>
               <textarea

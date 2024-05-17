@@ -119,7 +119,7 @@ const Claim = () => {
               <td>
                 {data.approvalStatusLv1 === "APPROVED" ? (
                   <span className="badge badges-Green">Approved</span>
-                ) : data.approvalNameLv1 === "PENDING" ? (
+                ) : data.approvalNameLv1 === "REJECTED" ? (
                   <span className="badge badges-Red">Rejected</span>
                 ) : (
                   <span className="badge badges-Blue">Pending</span>
@@ -128,7 +128,7 @@ const Claim = () => {
               <td>
                 {data.approvalStatusLv2 === "APPROVED" ? (
                   <span className="badge badges-Green">Approved</span>
-                ) : data.approvalNameLv2 === "Pending" ? (
+                ) : data.approvalNameLv2 === "REJECTED" ? (
                   <span className="badge badges-Red">Rejected</span>
                 ) : (
                   <span className="badge badges-Blue">Pending</span>

@@ -5,69 +5,30 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
-import api from '../../config/URL'
-import axios from "axios";
+import api from "../../config/URL";
+// import axios from "axios";
 
 const LeaveAdmin = () => {
   const tableRef = useRef(null);
-  const [ data,setData]=useState([])
+  const [data, setData] = useState([]);
   const [loading, setloading] = useState(true);
 
   const fetchData = async () => {
     try {
       // setLoading(true);
-      const response = await api.get(
-        `getAllLeaveRequests`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            //Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get(`getAllLeaveRequests`, {
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: `Bearer ${token}`,
+        },
+      });
       setData(response.data);
-      setloading(false)
-      console.log("object",data)
+      setloading(false);
+      console.log("object", data);
     } catch (error) {
       console.error("Error fetching data:", error);
-    } 
+    }
   };
-
- {/* const datas = [
-    {
-      id: 1,
-      employename: "Sathish",
-      department: "Health Department",
-      reasonforleave: "Fever",
-      // fromdate: "25-02-2024",
-      // todate: "30-02-2024",
-      // approvalid: "12",
-      approvername: "Meena",
-      status: "active",
-    },
-    {
-      id: 2,
-      employename: "Deepak",
-      department: "Product Department",
-      reasonforleave: "Causal leave",
-      // fromdate: "21-01-2024",
-      // todate: "30-01-2024",
-      // approvalid: "15",
-      approvername: "Dilip",
-      status: "in_active",
-    },
-    {
-      id: 3,
-      employename: "Deepak",
-      department: "Product Department",
-      reasonforleave: "Relative marriage",
-      // fromdate: "21-01-2024",
-      // todate: "30-01-2024",
-      // approvalid: "15",
-      approvername: "",
-      status: "pending",
-    },
-  ];*/}
 
   useEffect(() => {
     fetchData();
@@ -83,8 +44,7 @@ const LeaveAdmin = () => {
 
   return (
     <div className="container my-4">
-      <div className="my-5 d-flex justify-content-between">
-      </div>
+      <div className="my-5 d-flex justify-content-between"></div>
 
       <table ref={tableRef} className="display">
         <thead>
@@ -132,10 +92,10 @@ const LeaveAdmin = () => {
                   </Link>
                   <Link to="/leaveadmin/edit">
                     <button className="btn btn-sm">
-                      <FaEdit/>
+                      <FaEdit />
                     </button>
                   </Link>
-                  
+
                   <Delete />
                 </div>
               </td>

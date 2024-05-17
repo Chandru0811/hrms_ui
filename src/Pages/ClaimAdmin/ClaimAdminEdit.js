@@ -44,7 +44,7 @@ function ClaimAdminEdit() {
     claimsAmt: Yup.number()
       .required("*claimsAmt is required")
       .typeError("*Must be a number"),
-    attachment: Yup.string().required("*attachment is required"),
+    // attachment: Yup.string().required("*attachment is required"),
     claimsApprovalLv1Id: Yup.string().required(
       "*Approver id(lvl 1) is required"
     ),
@@ -91,11 +91,7 @@ function ClaimAdminEdit() {
           },
         });
         console.log("values", values);
-        if (response.status === 200) {
-          formik.setValues({
-            ...response.data,
-            claimsDate: response.data.claimsDate.split("T")[0],
-          });
+        if (response.status === 201) {
           toast.success(response.data.message);
           navigate("/claimadmin");
         } else {
@@ -285,7 +281,7 @@ function ClaimAdminEdit() {
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
-                claimsDate<span className="text-danger">*</span>
+                Claims Date<span className="text-danger">*</span>
               </lable>
               <input
                 type="date"
@@ -315,10 +311,10 @@ function ClaimAdminEdit() {
                 }`}
                 {...formik.getFieldProps("claimsType")}
               >
-                <option value="Telephone">Telephone</option>
-                <option value="Taxi">Taxi</option>
-                <option value="Hotel and Acc">Hotel and Acc</option>
-                <option value="Leave Enhance">Leave Enhance</option>
+                <option value="TELEPHONE">TELEPHONE</option>
+                <option value="TAXI">TAXI</option>
+                <option value="HOTEL_AND_ACC">HOTEL AND ACC</option>
+                <option value="LEAVE_ENHANCE">LEAVE ENHANCE</option>
               </select>
               {formik.touched.claimsType && formik.errors.claimsType && (
                 <div className="invalid-feedback">
@@ -328,7 +324,7 @@ function ClaimAdminEdit() {
             </div>
             <div class="col-md-6 col-12 mb-3">
               <lable className="form-lable">
-                claimsAmt<span className="text-danger">*</span>
+                Amount<span className="text-danger">*</span>
               </lable>
               <input
                 type="text"
