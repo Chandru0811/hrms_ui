@@ -86,17 +86,20 @@ export default function PolicyEdit() {
                     <span className="text-danger">*</span>
                     <input
                       type="text"
-                      className={`form-control  ${formik.touched.hrPolicyList && formik.errors.hrPolicyList
+                      className={`form-control  ${
+                        formik.touched.hrPolicyList &&
+                        formik.errors.hrPolicyList
                           ? "is-invalid"
                           : ""
-                        }`}
+                      }`}
                       {...formik.getFieldProps("hrPolicyList")}
                     />
-                    {formik.touched.hrPolicyList && formik.errors.hrPolicyList && (
-                      <div className="invalid-feedback">
-                        {formik.errors.hrPolicyList}
-                      </div>
-                    )}
+                    {formik.touched.hrPolicyList &&
+                      formik.errors.hrPolicyList && (
+                        <div className="invalid-feedback">
+                          {formik.errors.hrPolicyList}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-6 col-12">
@@ -104,11 +107,12 @@ export default function PolicyEdit() {
                     <lable className="form-lable">Policy Description</lable>
                     <span className="text-danger">*</span>
                     <textarea
-                      className={`form-control  ${formik.touched.hrPolicyDescr &&
-                          formik.errors.hrPolicyDescr
+                      className={`form-control  ${
+                        formik.touched.hrPolicyDescr &&
+                        formik.errors.hrPolicyDescr
                           ? "is-invalid"
                           : ""
-                        }`}
+                      }`}
                       rows="3"
                       {...formik.getFieldProps("hrPolicyDescr")}
                     ></textarea>

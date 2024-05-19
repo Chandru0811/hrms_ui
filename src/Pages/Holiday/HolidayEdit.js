@@ -27,7 +27,7 @@ function EditNewBublicHoliday() {
   const [loading, setLoading] = useState(true);
 
   const validationSchema = Yup.object({
-    pubHolidayCmpId: Yup.string().required("*Company ID is required"),
+    pubHolidayCmpId: Yup.string().required("*Company name is required"),
     // cmpId: Yup.string().required("*Company name is required"),
     pubHolidayName: Yup.string().required("*Holiday name is required"),
     pubHolidayType: Yup.string().required("*Select the holiday is required"),
@@ -154,7 +154,6 @@ function EditNewBublicHoliday() {
                       }`}
                       aria-label="Default select example"
                     >
-                      <option selected></option>
                       {companyData &&
                         companyData.map((cmpId) => (
                           <option key={cmpId.id} value={cmpId.cmpId}>

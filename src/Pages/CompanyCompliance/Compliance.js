@@ -10,6 +10,9 @@ import Delete from "../../components/common/Delete";
 import { toast } from "react-toastify";
 
 const Compliance = () => {
+  const tableRef = useRef(null);
+  const [datas, setDatas] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [viewAction, setViewAction] = useState(false);
   const userName = sessionStorage.getItem("userName");
   const [companyData, setCompanyData] = useState(null);
@@ -29,16 +32,10 @@ const Compliance = () => {
     }
   }, [userName, setViewAction]);
 
-  const tableRef = useRef(null);
-  const [datas, setDatas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  console.log("companyData", datas);
-
   useEffect(() => {
     const table = $(tableRef.current).DataTable({
       responsive: true,
     });
-
     return () => {
       table.destroy();
     };

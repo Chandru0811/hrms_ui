@@ -148,9 +148,9 @@ function ExitManagementEdit() {
                   </lable>
                   <div className="input-group mb-3">
                     <select
-                      {...formik.getFieldProps("employeeId")}
+                      {...formik.getFieldProps("exitMgmtEmpId")}
                       className={`form-select  ${
-                        formik.touched.employeeId && formik.errors.employeeId
+                        formik.touched.exitMgmtEmpId && formik.errors.exitMgmtEmpId
                           ? "is-invalid"
                           : ""
                       }`}
@@ -158,7 +158,7 @@ function ExitManagementEdit() {
                     >
                       {employeeData &&
                         employeeData.map((employeeId) => (
-                          <option key={employeeId.id} value={employeeId.id}>
+                          <option key={employeeId.id} value={employeeId.employeeId}>
                             {employeeId.firstName} {employeeId.lastName}
                           </option>
                         ))}
@@ -176,9 +176,9 @@ function ExitManagementEdit() {
                   </lable>
                   <div className="input-group mb-3">
                     <select
-                      {...formik.getFieldProps("cmpId")}
+                      {...formik.getFieldProps("exitMgmtCmpId")}
                       className={`form-select  ${
-                        formik.touched.cmpId && formik.errors.cmpId
+                        formik.touched.exitMgmtCmpId && formik.errors.exitMgmtCmpId
                           ? "is-invalid"
                           : ""
                       }`}
@@ -186,7 +186,7 @@ function ExitManagementEdit() {
                     >
                       {companyData &&
                         companyData.map((cmpId) => (
-                          <option key={cmpId.id} value={cmpId.id}>
+                          <option key={cmpId.id} value={cmpId.cmpId}>
                             {cmpId.cmpName}
                           </option>
                         ))}
@@ -354,9 +354,10 @@ function ExitManagementEdit() {
                         className="form-check-input"
                         value="true"
                         name="assetsReturned"
+                        id="inlineRadio1"
                         type="radio"
-                        onChange={formik.handleChange}
-                        checked={formik.values.assetsReturned === "true"}
+                        onChange={() => formik.setFieldValue("assetsReturned", true)}
+                        checked={formik.values.assetsReturned === true}
                       />
                       <label className="form-check-label">Yes</label>
                     </div>
@@ -365,9 +366,10 @@ function ExitManagementEdit() {
                         className="form-check-input"
                         value="false"
                         name="assetsReturned"
+                        id="inlineRadio2"
                         type="radio"
-                        onChange={formik.handleChange}
-                        checked={formik.values.assetsReturned === "false"}
+                        onChange={() => formik.setFieldValue("assetsReturned", false)}
+                        checked={formik.values.assetsReturned === false}
                       />
                       <label className="form-check-label">No</label>
                     </div>

@@ -103,13 +103,20 @@ function ClaimEdit() {
       }
     },
   });
+
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await api.get(`/getClaimsById/${id}`);
-        formik.setValues({
+        const formattedData = {
           ...response.data,
-        });
+          claimsDate: response.data.claimsDate
+            ? new Date(response.data.claimsDate)
+                .toISOString()
+                .substring(0, 10)
+            : null,
+        };
+        formik.setValues(formattedData);
       } catch (error) {
         toast.error("Error fetching data:", error);
       }

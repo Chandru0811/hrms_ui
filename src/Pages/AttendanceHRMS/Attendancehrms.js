@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
-import $, { data } from "jquery";
+import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
@@ -15,7 +15,7 @@ const Attendancehrms = () => {
   const [viewAction, setViewAction] = useState(false);
   const userName = sessionStorage.getItem("userName");
   const [employeeData, setEmployeeData] = useState(null);
-  // console.log(employeeData);
+  const tableRef = useRef(null);
 
   const findEmployeeName = (attendanceId) => {
     if (!employeeData) return "Employee data not available";
@@ -36,27 +36,24 @@ const Attendancehrms = () => {
 
   const fetchData = async () => {
     try {
-      // setLoading(true);
       const response = await api.get(`getAllDailyAttendance`, {
         headers: {
           "Content-Type": "application/json",
-          //Authorization: `Bearer ${token}`,
         },
       });
       setDatas(response.data);
-      console.log(response.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setLoading(false);
     }
   };
+
   useEffect(() => {
     if (userName === "Employee") {
       setViewAction(true);
     }
-  }, [userName, setViewAction]);
-
-  const tableRef = useRef(null);
+  }, [userName]);
 
   const destroyDataTable = () => {
     const table = $(tableRef.current).DataTable();
@@ -69,7 +66,7 @@ const Attendancehrms = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllDailyAttendanceById");
+      const response = await api.get("getAllDailyAttendance");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -81,6 +78,9 @@ const Attendancehrms = () => {
   useEffect(() => {
     fetchData();
     fetchData1();
+  }, []);
+
+  useEffect(() => {
     if (!loading) {
       const table = $(tableRef.current).DataTable({
         responsive: true,
@@ -90,9 +90,6 @@ const Attendancehrms = () => {
       };
     }
   }, [loading]);
-  //   const handleStatusChange = (id, value) => {
-  //     setStatus({ ...status, [id]: value });
-  //   };
 
   return (
     <section>
@@ -116,7 +113,6 @@ const Attendancehrms = () => {
             <thead>
               <tr>
                 <th scope="col">S No</th>
-                {/* <th scope="col">Employee ID</th> */}
                 <th scope="col">Employee Name</th>
                 <th scope="col">Date</th>
                 <th scope="col">Shift</th>
@@ -128,8 +124,7 @@ const Attendancehrms = () => {
               {datas.map((data, index) => (
                 <tr key={data.id}>
                   <td>{index + 1}</td>
-                  {/* <td>{data.employeeid}</td> */}
-                  <td> {findEmployeeName(data.dailyAttendanceEmpId)}</td>
+                  <td>{findEmployeeName(data.dailyAttendanceEmpId)}</td>
                   <td>
                     {data.attendanceDate &&
                       data.attendanceDate
@@ -147,30 +142,32 @@ const Attendancehrms = () => {
                     )}
                   </td>
                   <td>
-                    {viewAction ? (
-                      <Link to={`/attendancehrms/view/${data.attendanceId}`}>
-                        <button className="btn btn-sm">
-                          <FaEye />
-                        </button>
-                      </Link>
-                    ) : (
-                      <span>
+                    <div className="d-flex">
+                      {viewAction ? (
                         <Link to={`/attendancehrms/view/${data.attendanceId}`}>
                           <button className="btn btn-sm">
                             <FaEye />
                           </button>
                         </Link>
-                        <Link to={`/attendancehrms/edit/${data.attendanceId}`}>
-                          <button className="btn btn-sm">
-                            <FaEdit />
-                          </button>
-                        </Link>
-                        <Delete
-                          onSuccess={refreshData}
-                          path={`/deleteDailyAttendanceById/${data.attendanceId}`}
-                        />
-                      </span>
-                    )}
+                      ) : (
+                        <span>
+                          <Link to={`/attendancehrms/view/${data.attendanceId}`}>
+                            <button className="btn btn-sm">
+                              <FaEye />
+                            </button>
+                          </Link>
+                          <Link to={`/attendancehrms/edit/${data.attendanceId}`}>
+                            <button className="btn btn-sm">
+                              <FaEdit />
+                            </button>
+                          </Link>
+                          <Delete
+                            onSuccess={refreshData}
+                            path={`/deleteDailyAttendanceById/${data.attendanceId}`}
+                          />
+                        </span>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

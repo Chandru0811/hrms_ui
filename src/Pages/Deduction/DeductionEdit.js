@@ -34,25 +34,25 @@ function DeductionEdit() {
 
   const validationSchema = Yup.object({
     // employeeId: Yup.string().required("*Employee id is required"),
-    // employeeId: Yup.string().required("*Employee name is required"),
+    deductionEmpId: Yup.string().required("*Employee name is required"),
     // companyId: Yup.string().required("*Company id is required"),
-    // cmpId: Yup.string().required("*Company name is required"),
+    cmpId: Yup.string().required("*Company name is required"),
     // departmentId: Yup.string().required("*Department id is required"),
-    // deptId: Yup.string().required("*Department name is required"),
-    // deductionName: Yup.string().required("*Select a deduction name"),
-    // deductionMonth: Yup.string().required("*Deduction month is required"),
-    // deductionAmt: Yup.number()
-    //   .required("*Deduction amount is required")
-    //   .typeError("*Must be a number"),
-    // totalDeductionAmt: Yup.number()
-    //   .required("*Total deduction amount is required")
-    //   .typeError("*Must be a number"),
+    deptId: Yup.string().required("*Department name is required"),
+    deductionName: Yup.string().required("*Select a deduction name"),
+    deductionMonth: Yup.string().required("*Deduction month is required"),
+    deductionAmt: Yup.number()
+      .required("*Deduction amount is required")
+      .typeError("*Must be a number"),
+    totalDeductionAmt: Yup.number()
+      .required("*Total deduction amount is required")
+      .typeError("*Must be a number"),
   });
 
   const formik = useFormik({
     initialValues: {
       // employeeId: "ECS23",
-      employeeId: "",
+      deductionEmpId: "",
       // companyId: "ECS678",
       cmpId: "",
       // departmentId: "Tech234",
@@ -137,9 +137,9 @@ function DeductionEdit() {
               </lable>
               <div className="input-group mb-3">
                 <select
-                  {...formik.getFieldProps("employeeId")}
+                  {...formik.getFieldProps("deductionEmpId")}
                   className={`form-select  ${
-                    formik.touched.employeeId && formik.errors.employeeId
+                    formik.touched.deductionEmpId && formik.errors.deductionEmpId
                       ? "is-invalid"
                       : ""
                   }`}
@@ -147,7 +147,7 @@ function DeductionEdit() {
                 >
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.id}>
+                      <option key={employeeId.id} value={employeeId.employeeId}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}
@@ -193,7 +193,7 @@ function DeductionEdit() {
                 >
                   {companyData &&
                     companyData.map((cmpId) => (
-                      <option key={cmpId.id} value={cmpId.id}>
+                      <option key={cmpId.id} value={cmpId.cmpId}>
                         {cmpId.cmpName}
                       </option>
                     ))}
@@ -237,7 +237,7 @@ function DeductionEdit() {
                 >
                   {departmentData &&
                     departmentData.map((deptId) => (
-                      <option key={deptId.id} value={deptId.id}>
+                      <option key={deptId.id} value={deptId.deptId}>
                         {deptId.deptName}
                       </option>
                     ))}
