@@ -10,12 +10,13 @@ import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import { toast } from "react-toastify";
 
 const Attendancehrms = () => {
+  const tableRef = useRef(null);
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewAction, setViewAction] = useState(false);
   const userName = sessionStorage.getItem("userName");
   const [employeeData, setEmployeeData] = useState(null);
-  const tableRef = useRef(null);
+
 
   const findEmployeeName = (attendanceId) => {
     if (!employeeData) return "Employee data not available";

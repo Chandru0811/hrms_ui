@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import api from "../../config/URL";
 
- function PolicyAdd() {
+function PolicyAdd() {
   const navigate = useNavigate();
   const validationSchema = Yup.object({
     // hrPolicyCmpId: Yup.string().required("*Company id is required"),
@@ -15,14 +15,14 @@ import api from "../../config/URL";
 
   const formik = useFormik({
     initialValues: {
-      hrPolicyCmpId: "",
+      // hrPolicyCmpId: "",
       hrPolicyList: "",
       hrPolicyDescr: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       // console.log(values);
-      values.hrPolicyCmpId = 106;
+      // values.hrPolicyCmpId = 106;
       try {
         const response = await api.post("addHRPolicy", values);
         // console.log(response)

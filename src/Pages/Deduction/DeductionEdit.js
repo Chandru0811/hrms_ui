@@ -145,6 +145,7 @@ function DeductionEdit() {
                   }`}
                   aria-label="Default select example"
                 >
+                  <option value=""></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
                       <option key={employeeId.id} value={employeeId.employeeId}>
@@ -191,6 +192,7 @@ function DeductionEdit() {
                   }`}
                   aria-label="Default select example"
                 >
+                  <option value=""></option>
                   {companyData &&
                     companyData.map((cmpId) => (
                       <option key={cmpId.id} value={cmpId.cmpId}>
@@ -235,6 +237,7 @@ function DeductionEdit() {
                   }`}
                   aria-label="Default select example"
                 >
+                  <option value=""></option>
                   {departmentData &&
                     departmentData.map((deptId) => (
                       <option key={deptId.id} value={deptId.deptId}>
