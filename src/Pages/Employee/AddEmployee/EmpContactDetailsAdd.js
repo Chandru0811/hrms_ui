@@ -12,7 +12,7 @@ import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 const validationSchema = Yup.object().shape({
   dob: Yup.string().required("*Date of birth is required"),
   gender: Yup.string().required("*Select a gender"),
-  martialStatus: Yup.string().required("*Martial status is required "),
+  maritalStatus: Yup.string().required("*Select a marital status"),
   religion: Yup.string().required("*Religion is required "),
   address: Yup.string().required("*Address is required "),
   city: Yup.string().required("*City is required "),
@@ -48,7 +48,7 @@ const EmpContactDetailsAdd = forwardRef(
       initialValues: {
         dob: formData.dob || "",
         gender: formData.gender || "",
-        martialStatus: formData.martialStatus || "",
+        maritalStatus: formData.maritalStatus || "",
         religion: formData.religion || "",
         address: formData.address || "",
         city: formData.city || "",
@@ -152,24 +152,54 @@ const EmpContactDetailsAdd = forwardRef(
                       )}
                     </div>
                   </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      Marital Status<span className="text-danger">*</span>
-                    </lable>
-                    <input
-                      className="form-control  form-contorl-sm"
-                      name="martialStatus"
-                      type="text"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.martialStatus}
-                    />
-                    {formik.touched.martialStatus &&
-                      formik.errors.martialStatus && (
-                        <div className="error text-danger ">
-                          <small>{formik.errors.martialStatus}</small>
-                        </div>
-                      )}
+                  <div className="col-md-6 col-12">
+                    <div className="mb-3">
+                      <div className="mb-2">
+                        <lable
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
+                          Marital Status<span className="text-danger">*</span>
+                        </lable>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="marital"
+                          id="inlineRadio1"
+                          value="yes"
+                          onChange={formik.handleChange}
+                          checked={formik.values.gender === "yes"}
+                        />
+                        <lable className="form-check-label" for="inlineRadio1">
+                          Single
+                        </lable>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="marital"
+                          id="inlineRadio2"
+                          value="no"
+                          onChange={formik.handleChange}
+                          checked={formik.values.maritalStatus === "no"}
+                        />
+                        <lable className="form-check-label" for="inlineRadio2">
+                          Married
+                        </lable>
+                      </div>
+                      {formik.errors.maritalStatus &&
+                        formik.touched.maritalStatus && (
+                          <div
+                            className="text-danger  "
+                            style={{ fontSize: ".875em" }}
+                          >
+                            {formik.errors.maritalStatus}
+                          </div>
+                        )}
+                    </div>
                   </div>
                   <div className="col-md-6 col-12 mb-3">
                     <lable className="form-lable">
