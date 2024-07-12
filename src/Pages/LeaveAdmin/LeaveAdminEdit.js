@@ -7,14 +7,14 @@ import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import { toast } from "react-toastify";
 import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
-import api from '../../config/URL'
+import api from "../../config/URL";
 
 function LeaveAdminEdit() {
-  const {id}=useParams()
+  const { id } = useParams();
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
-  const [ data,setData]=useState([])
+  const [data, setData] = useState([]);
 
   const fetchData = async () => {
     try {
@@ -31,20 +31,17 @@ function LeaveAdminEdit() {
   const fetchUserData = async () => {
     try {
       // setLoading(true);
-      const response = await api.get(
-        `getAllLeaveRequests/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            //Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get(`getAllLeaveRequests/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: `Bearer ${token}`,
+        },
+      });
       setData(response.data);
       // console.log("object",data)
     } catch (error) {
       console.error("Error fetching data:", error);
-    } 
+    }
   };
   useEffect(() => {
     fetchUserData();
@@ -62,6 +59,9 @@ function LeaveAdminEdit() {
     toDate: Yup.string().required("*To date is required"),
     reasonForrequestedLeave: Yup.string().required(
       "*Reason for requested leave is required"
+    ),
+    leaveReqType: Yup.string().required(
+      "*Leave request type is required"
     ),
     // approverId: Yup.string().required("*Approver id is required"),
     approverName: Yup.string().required("*Approver name is required"),
@@ -82,6 +82,7 @@ function LeaveAdminEdit() {
       fromDate: "2020-02-10",
       toDate: "2020-02-15",
       reasonForrequestedLeave: "Fever",
+      leaveReqType: "Sick leave",
       // approverId: "",
       approverName: "",
       status: "",
@@ -327,6 +328,32 @@ function LeaveAdminEdit() {
                       {formik.errors.toDate}
                     </div>
                   )}
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <lable className="form-lable">Leave Requested Type</lable>
+                  <span className="text-danger">*</span>
+                  <select
+                    type="text"
+                    className={`form-select ${
+                      formik.touched.leaveReqType && formik.errors.leaveReqType
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("leaveReqType")}
+                  >
+                    <option value={""}></option>
+                    <option value={"Maternity leave"}>Maternity Leave</option>
+                    <option value={"Sick leave"}>Sick leave</option>
+                    <option value={"Casual leave"}>Casual leave</option>
+                  </select>
+                  {formik.touched.leaveReqType &&
+                    formik.errors.leaveReqType && (
+                      <div className="invalid-feedback">
+                        {formik.errors.leaveReqType}
+                      </div>
+                    )}
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">

@@ -43,7 +43,7 @@ function LeaveAdd() {
       "*Reason for requested leave is required"
     ),
     leaveReqType: Yup.string().required(
-      "*Reason for requested leave is required"
+      "*Leave request type is required"
     ),
   });
   const formik = useFormik({

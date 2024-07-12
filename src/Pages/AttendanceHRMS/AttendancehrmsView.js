@@ -42,7 +42,7 @@ function AttendancehrmsView() {
     fetchData();
   }, [id]);
   // console.log(data);
-  
+
   return (
     <div className="container ">
       <div className="row  mt-3">
@@ -84,7 +84,7 @@ function AttendancehrmsView() {
               </div>
             </div>
             <div className="col-md-6 col-12">
-              <div className="row    mb-2">
+              <div className="row mb-2">
                 <div className="col-6 ">
                   <p className="fw-medium">Attendance Status </p>
                 </div>
@@ -92,7 +92,17 @@ function AttendancehrmsView() {
               </div>
             </div>
             <div className="col-md-6 col-12">
-              <div className="row    mb-2">
+              <div className="row mb-2">
+                <div className="col-6 ">
+                  <p className="fw-medium">Mode of Working</p>
+                </div>
+                <div className="col-6">
+                  : {data.attendanceModeOfWorking || "--"}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-12">
+              <div className="row mb-2">
                 <div className="col-6 ">
                   <p className="fw-medium">Check In</p>
                 </div>

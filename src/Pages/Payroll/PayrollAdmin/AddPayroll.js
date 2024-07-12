@@ -35,7 +35,7 @@ function AddPayroll() {
     employeeId: Yup.string().required("*Employee name is required"),
     cmpId: Yup.string().required("*Company name is required"),
     deptId: Yup.string().required("*Department name is required"),
-    grossPay: Yup.string().required("*Gross pay is required"),
+    basicSalary: Yup.string().required("*Basic pay is required"),
     bonus: Yup.string().required("*Bonus is required"),
     deduction: Yup.string().required("*Deduction is required"),
     netPay: Yup.string().required("*Net pay is required"),
@@ -49,7 +49,7 @@ function AddPayroll() {
       employeeId: "",
       cmpId: "",
       deptId: "",
-      grossPay: "",
+      basicSalary: "",
       bonus: "",
       deduction: "",
       netPay: "",
@@ -116,36 +116,7 @@ function AddPayroll() {
                 )}
               </div>
             </div> */}
-            <div className="col-md-6 col-12 mb-2">
-              <lable className="form-lable">
-                Employee Name<span className="text-danger">*</span>
-              </lable>
-              <div className="input-group mb-3">
-                <select
-                  {...formik.getFieldProps("employeeId")}
-                  className={`form-select  ${
-                    formik.touched.employeeId && formik.errors.employeeId
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  aria-label="Default select example"
-                >
-                  <option selected></option>
-                  {employeeData &&
-                    employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.id}>
-                        {employeeId.firstName} {employeeId.lastName}
-                      </option>
-                    ))}
-                </select>
-                {formik.touched.employeeId && formik.errors.employeeId && (
-                  <div className="invalid-feedback">
-                    {formik.errors.employeeId}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="col-md-6 col-12 mb-2">
+             <div className="col-md-6 col-12 mb-2">
               <lable className="form-lable">
                 Company Name<span className="text-danger">*</span>
               </lable>
@@ -199,25 +170,54 @@ function AddPayroll() {
                 )}
               </div>
             </div>
+            <div className="col-md-6 col-12 mb-2">
+              <lable className="form-lable">
+                Employee Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("employeeId")}
+                  className={`form-select  ${
+                    formik.touched.employeeId && formik.errors.employeeId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {employeeData &&
+                    employeeData.map((employeeId) => (
+                      <option key={employeeId.id} value={employeeId.id}>
+                        {employeeId.firstName} {employeeId.lastName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.employeeId && formik.errors.employeeId && (
+                  <div className="invalid-feedback">
+                    {formik.errors.employeeId}
+                  </div>
+                )}
+              </div>
+            </div>
             <div className="  col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">
-                  Gross Pay<span className="text-danger">*</span>
+                  Basic Pay<span className="text-danger">*</span>
                 </lable>
                 <input
                   type="text"
                   className={`form-control  ${
-                    formik.touched.grossPay && formik.errors.grossPay
+                    formik.touched.basicSalary && formik.errors.basicSalary
                       ? "is-invalid"
                       : ""
                   }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("grossPay")}
+                  {...formik.getFieldProps("basicSalary")}
                 />
-                {formik.touched.grossPay && formik.errors.grossPay && (
+                {formik.touched.basicSalary && formik.errors.basicSalary && (
                   <div className="invalid-feedback">
-                    {formik.errors.grossPay}
+                    {formik.errors.basicSalary}
                   </div>
                 )}
               </div>

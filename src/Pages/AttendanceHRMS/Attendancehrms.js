@@ -116,7 +116,7 @@ const Attendancehrms = () => {
                 <th scope="col">S No</th>
                 <th scope="col">Employee Name</th>
                 <th scope="col">Date</th>
-                <th scope="col">Shift</th>
+                <th scope="col">Mode of Working</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
@@ -134,7 +134,7 @@ const Attendancehrms = () => {
                         .reverse()
                         .join("-")}
                   </td>
-                  <td>{data.attendanceShiftMode}</td>
+                  <td>{data.attendanceModeOfWorking}</td>
                   <td>
                     {data.attendanceStatus === "Present" ? (
                       <span className="badge badges-Green">Present</span>

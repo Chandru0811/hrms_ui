@@ -321,7 +321,7 @@ function ExpensesEdit() {
                 )}
               </div>
             </div>
-            <div className="col-md-6 col-12">
+            {/* <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">
                   Approver ID<span className="text-danger">*</span>
@@ -366,7 +366,7 @@ function ExpensesEdit() {
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
             <div className="col-md-6 col-12 mb-4">
               <lable className="form-lable fw-medium">Status</lable>
               <span className="text-danger ">*</span>

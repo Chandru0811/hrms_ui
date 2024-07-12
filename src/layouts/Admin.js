@@ -185,7 +185,7 @@ function Admin({ handleLogout }) {
 
               {/* Leave Admin */}
               <Route path="/leaveadmin" element={<LeaveAdmin />} />
-              <Route path="/leaveadmin/edit/:id" element={<LeaveAdminEdit />} />
+              <Route path="/leaveadmin/edit" element={<LeaveAdminEdit />} />
               <Route path="/leaveadmin/view/:id" element={<LeaveAdminView />} />
 
               {/*Hrms Deduction */}

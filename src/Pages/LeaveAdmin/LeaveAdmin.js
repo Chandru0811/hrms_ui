@@ -96,7 +96,7 @@ const LeaveAdmin = () => {
                     </button>
                   </Link>
 
-                  <Delete />
+                  {/* <Delete /> */}
                 </div>
               </td>
             </tr>

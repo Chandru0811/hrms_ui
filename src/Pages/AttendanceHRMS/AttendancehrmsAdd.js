@@ -29,7 +29,7 @@ function AttendancehrmsAdd() {
     dailyAttendanceEmpId: Yup.string().required("*Employee name is required"),
     attendanceDate: Yup.string().required("*Date is required"),
     attendanceStatus: Yup.string().required("*Attendance status is required"),
-    attendanceShiftMode: Yup.string().required("*Mode of working is required"),
+    attendanceModeOfWorking: Yup.string().required("*Mode of working is required"),
     attendanceCheckInTime: Yup.string().required("*Check-in is required"),
     attendanceCheckOutTime: Yup.string().required("*Check-out is required"),
     attendanceCheckInMode: Yup.string().required("*Check-in mode is required"),
@@ -185,12 +185,12 @@ function AttendancehrmsAdd() {
                 <span className="text-danger">*</span>
                 <select
                   className={`form-select ${
-                    formik.touched.attendanceShiftMode &&
-                    formik.errors.attendanceShiftMode
+                    formik.touched.attendanceModeOfWorking &&
+                    formik.errors.attendanceModeOfWorking
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("attendanceShiftMode")}
+                  {...formik.getFieldProps("attendanceModeOfWorking")}
                   aria-label="Default select example"
                 >
                   <option selected></option>
@@ -198,10 +198,10 @@ function AttendancehrmsAdd() {
                   <option value="Work From Office">Work From Office</option>
                   <option value="Onsite">Onsite</option>
                 </select>
-                {formik.touched.attendanceShiftMode &&
-                  formik.errors.attendanceShiftMode && (
+                {formik.touched.attendanceModeOfWorking &&
+                  formik.errors.attendanceModeOfWorking && (
                     <div className="invalid-feedback">
-                      {formik.errors.attendanceShiftMode}
+                      {formik.errors.attendanceModeOfWorking}
                     </div>
                   )}
               </div>

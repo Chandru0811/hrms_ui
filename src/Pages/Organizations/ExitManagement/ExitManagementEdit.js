@@ -42,9 +42,6 @@ function ExitManagementEdit() {
     relievingApproverName: Yup.string().required(
       "*Relieving approver name is required"
     ),
-    relievingApproverId: Yup.string().required(
-      "*Relieving approver id is required"
-    ),
     relievingApprovalStatus: Yup.string().required(
       "*Select the approval status"
     ),
@@ -144,45 +141,19 @@ function ExitManagementEdit() {
               <div className="row mt-3">
                 <div className="col-md-6 col-12 mb-2">
                   <lable className="form-lable">
-                    Employee Name<span className="text-danger">*</span>
-                  </lable>
-                  <div className="input-group mb-3">
-                    <select
-                      {...formik.getFieldProps("exitMgmtEmpId")}
-                      className={`form-select  ${
-                        formik.touched.exitMgmtEmpId && formik.errors.exitMgmtEmpId
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      aria-label="Default select example"
-                    >
-                      {employeeData &&
-                        employeeData.map((employeeId) => (
-                          <option key={employeeId.id} value={employeeId.employeeId}>
-                            {employeeId.firstName} {employeeId.lastName}
-                          </option>
-                        ))}
-                    </select>
-                    {formik.touched.employeeId && formik.errors.employeeId && (
-                      <div className="invalid-feedback">
-                        {formik.errors.employeeId}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="col-md-6 col-12 mb-2">
-                  <lable className="form-lable">
                     Company Name<span className="text-danger">*</span>
                   </lable>
                   <div className="input-group mb-3">
                     <select
                       {...formik.getFieldProps("exitMgmtCmpId")}
                       className={`form-select  ${
-                        formik.touched.exitMgmtCmpId && formik.errors.exitMgmtCmpId
+                        formik.touched.exitMgmtCmpId &&
+                        formik.errors.exitMgmtCmpId
                           ? "is-invalid"
                           : ""
                       }`}
                       aria-label="Default select example"
+                      disabled
                     >
                       {companyData &&
                         companyData.map((cmpId) => (
@@ -194,6 +165,39 @@ function ExitManagementEdit() {
                     {formik.touched.cmpId && formik.errors.cmpId && (
                       <div className="invalid-feedback">
                         {formik.errors.cmpId}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="col-md-6 col-12 mb-2">
+                  <lable className="form-lable">
+                    Employee Name<span className="text-danger">*</span>
+                  </lable>
+                  <div className="input-group mb-3">
+                    <select
+                      {...formik.getFieldProps("exitMgmtEmpId")}
+                      className={`form-select  ${
+                        formik.touched.exitMgmtEmpId &&
+                        formik.errors.exitMgmtEmpId
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                      aria-label="Default select example"
+                      disabled
+                    >
+                      {employeeData &&
+                        employeeData.map((employeeId) => (
+                          <option
+                            key={employeeId.id}
+                            value={employeeId.employeeId}
+                          >
+                            {employeeId.firstName} {employeeId.lastName}
+                          </option>
+                        ))}
+                    </select>
+                    {formik.touched.employeeId && formik.errors.employeeId && (
+                      <div className="invalid-feedback">
+                        {formik.errors.employeeId}
                       </div>
                     )}
                   </div>
@@ -230,6 +234,7 @@ function ExitManagementEdit() {
                         : ""
                     }`}
                     {...formik.getFieldProps("reasonForRelieving")}
+                    disabled
                   />
                   {formik.touched.reasonForRelieving &&
                     formik.errors.reasonForRelieving && (
@@ -251,6 +256,7 @@ function ExitManagementEdit() {
                         : ""
                     }`}
                     {...formik.getFieldProps("dateOfRelieving")}
+                    disabled
                   />
                   {formik.touched.dateOfRelieving &&
                     formik.errors.dateOfRelieving && (
@@ -272,6 +278,7 @@ function ExitManagementEdit() {
                         : ""
                     }`}
                     {...formik.getFieldProps("exitMgmtDateOfApply")}
+                    disabled
                   />
                   {formik.touched.exitMgmtDateOfApply &&
                     formik.errors.exitMgmtDateOfApply && (
@@ -284,41 +291,25 @@ function ExitManagementEdit() {
                   <lable className="form-lable">
                     Notice Period<span className="text-danger">*</span>
                   </lable>
-                  <input
+                  <select
                     type="text"
-                    className={`form-control  ${
+                    className={`form-select  ${
                       formik.touched.exitMgmtNoticePeriod &&
                       formik.errors.exitMgmtNoticePeriod
                         ? "is-invalid"
                         : ""
                     }`}
                     {...formik.getFieldProps("exitMgmtNoticePeriod")}
-                  />
+                  >
+                    <option selected></option>
+                    <option value="30 days">30 days</option>
+                    <option value="60 days">60 days</option>
+                    <option value="90 days">90 days</option>
+                  </select>
                   {formik.touched.exitMgmtNoticePeriod &&
                     formik.errors.exitMgmtNoticePeriod && (
                       <div className="invalid-feedback">
                         {formik.errors.exitMgmtNoticePeriod}
-                      </div>
-                    )}
-                </div>
-                <div className="col-md-6 col-12 mb-3">
-                  <lable className="form-lable">
-                    Relieving Approver ID<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="text"
-                    className={`form-control  ${
-                      formik.touched.relievingApproverId &&
-                      formik.errors.relievingApproverId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("relievingApproverId")}
-                  />
-                  {formik.touched.relievingApproverId &&
-                    formik.errors.relievingApproverId && (
-                      <div className="invalid-feedback">
-                        {formik.errors.relievingApproverId}
                       </div>
                     )}
                 </div>
@@ -356,7 +347,9 @@ function ExitManagementEdit() {
                         name="assetsReturned"
                         id="inlineRadio1"
                         type="radio"
-                        onChange={() => formik.setFieldValue("assetsReturned", true)}
+                        onChange={() =>
+                          formik.setFieldValue("assetsReturned", true)
+                        }
                         checked={formik.values.assetsReturned === true}
                       />
                       <label className="form-check-label">Yes</label>
@@ -368,7 +361,9 @@ function ExitManagementEdit() {
                         name="assetsReturned"
                         id="inlineRadio2"
                         type="radio"
-                        onChange={() => formik.setFieldValue("assetsReturned", false)}
+                        onChange={() =>
+                          formik.setFieldValue("assetsReturned", false)
+                        }
                         checked={formik.values.assetsReturned === false}
                       />
                       <label className="form-check-label">No</label>

@@ -96,6 +96,18 @@ function ExitManagementView() {
                     </div>
                   </div>
                 </div> */}
+                   <div className="col-md-6 col-12">
+                  <div className="row  mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Company Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {findCompanyName(data.exitMgmtCmpId)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <div className="col-md-6 col-12">
                   <div className="row   mb-2">
                     <div className="col-6 ">
@@ -104,18 +116,6 @@ function ExitManagementView() {
                     <div className="col-6">
                       <p className="text-muted text-sm">
                         : {findEmployeeName(data.exitMgmtEmpId)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-12">
-                  <div className="row  mb-2">
-                    <div className="col-6 ">
-                      <p className="fw-medium">Company Name</p>
-                    </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">
-                        : {findCompanyName(data.exitMgmtCmpId)}
                       </p>
                     </div>
                   </div>
@@ -184,18 +184,6 @@ function ExitManagementView() {
                   </div>
                 </div>
               </div> */}
-                <div className="col-md-6 col-12">
-                  <div className="row  mb-2">
-                    <div className="col-6  ">
-                      <p className="fw-medium">Relieving Approval ID</p>
-                    </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">
-                        : {data.relievingApproverId}
-                      </p>
-                    </div>
-                  </div>
-                </div>
                 <div className="col-md-6 col-12">
                   <div className="row  mb-2">
                     <div className="col-6">
