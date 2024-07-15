@@ -11,6 +11,7 @@ function EmployeeAdminAdd() {
   const [companyData, setCompanyData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const [selectedIdType, setSelectedIdType] = useState("nric");
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -88,6 +89,7 @@ function EmployeeAdminAdd() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+      setLoading(true);
     },
   });
 
@@ -111,9 +113,21 @@ function EmployeeAdminAdd() {
                 <button className="btn btn-sm btn-border">Back</button>
               </Link>
               &nbsp;&nbsp;
-              <button type="submit" className="btn btn-button btn-sm">
-                Save
-              </button>
+              <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
             </div>
           </div>
           <div className="row mt-3">

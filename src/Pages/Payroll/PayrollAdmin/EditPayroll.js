@@ -9,6 +9,7 @@ import fetchAllEmployeeNamesWithId from "../../List/EmployeeNameList";
 import fetchAllCompanyNamesWithId from "../../List/CompanyNameList";
 
 function EditPayroll() {
+  
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
@@ -63,6 +64,7 @@ function EditPayroll() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       // console.log(values);
+      setLoading(true);
       try {
         const response = await api.put(`updatePayrollById/${id}`, values, {
           headers: {
@@ -77,6 +79,8 @@ function EditPayroll() {
         }
       } catch (error) {
         toast.error(error);
+      }finally{
+        setLoading(false);
       }
     },
   });
@@ -114,8 +118,20 @@ function EditPayroll() {
                     </button>
                   </Link>
                   &nbsp;&nbsp;
-                  <button type="submit" className="btn btn-sm btn-button">
-                    Update
+                  <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
                   </button>
                 </div>
               </div>

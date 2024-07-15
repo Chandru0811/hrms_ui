@@ -9,6 +9,8 @@ import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 function ExpensesEdit() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
 
   const fetchData = async () => {
     try {
@@ -65,6 +67,7 @@ function ExpensesEdit() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(values);
+      setLoading(true);
     },
   });
   const [status, setStatus] = useState("Pending");
@@ -108,9 +111,21 @@ function ExpensesEdit() {
                 </button>
               </Link>
               &nbsp;&nbsp;
-              <button type="submit" className="btn btn-sm btn-button">
-                Update
-              </button>
+              <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
             </div>
           </div>
           <div className="row mt-3">
@@ -139,6 +154,33 @@ function ExpensesEdit() {
                 )}
               </div>
             </div> */}
+             <div className="col-md-6 col-12 mb-2">
+              <lable className="form-lable">
+                Company Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("cmpId")}
+                  className={`form-select  ${
+                    formik.touched.cmpId && formik.errors.cmpId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {companyData &&
+                    companyData.map((cmpId) => (
+                      <option key={cmpId.id} value={cmpId.id}>
+                        {cmpId.cmpName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.cmpId && formik.errors.cmpId && (
+                  <div className="invalid-feedback">{formik.errors.cmpId}</div>
+                )}
+              </div>
+            </div>
             <div className="col-md-6 col-12 mb-2">
               <lable className="form-lable">
                 Employee Name<span className="text-danger">*</span>
@@ -193,33 +235,7 @@ function ExpensesEdit() {
                 )}
               </div>
             </div> */}
-            <div className="col-md-6 col-12 mb-2">
-              <lable className="form-lable">
-                Company Name<span className="text-danger">*</span>
-              </lable>
-              <div className="input-group mb-3">
-                <select
-                  {...formik.getFieldProps("cmpId")}
-                  className={`form-select  ${
-                    formik.touched.cmpId && formik.errors.cmpId
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  aria-label="Default select example"
-                >
-                  <option selected></option>
-                  {companyData &&
-                    companyData.map((cmpId) => (
-                      <option key={cmpId.id} value={cmpId.id}>
-                        {cmpId.cmpName}
-                      </option>
-                    ))}
-                </select>
-                {formik.touched.cmpId && formik.errors.cmpId && (
-                  <div className="invalid-feedback">{formik.errors.cmpId}</div>
-                )}
-              </div>
-            </div>
+           
             <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">

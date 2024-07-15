@@ -9,7 +9,7 @@ function DepartmentEdit() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
     deptName: Yup.string().required("*Department name is required"),
@@ -24,6 +24,7 @@ function DepartmentEdit() {
     validationSchema: validationSchema, // Assign the validation schema
     onSubmit: async (values) => {
       // console.log(values);
+      setLoading(true);
       try {
         const response = await api.put(`updateDepartmentById/${id}`, values, {
           headers: {
@@ -38,6 +39,8 @@ function DepartmentEdit() {
         }
       } catch (error) {
         toast.error(error);
+      }finally{
+        setLoading(false);
       }
     },
   });
@@ -58,12 +61,8 @@ function DepartmentEdit() {
 
   return (
     <section>
-      {loading && (
-        <div className="loader-container">
-          <div className="loader"></div>
-        </div>
-      )}
-      {!loading && (
+      
+     
         <div className="container-fluid">
         <div className="container py-3">
           <form onSubmit={formik.handleSubmit}>
@@ -75,9 +74,21 @@ function DepartmentEdit() {
                   </button>
                 </Link>
                 &nbsp;&nbsp;
-                <button type="submit" className="btn btn-sm btn-button">
-                  Update
-                </button>
+                <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Update</span>
+                  </button>
               </div>
             </div>
             <div className="row mt-3">
@@ -132,7 +143,7 @@ function DepartmentEdit() {
           </form>
         </div>
       </div>
-      )}
+      
     </section>
   );
 }

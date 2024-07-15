@@ -24,7 +24,8 @@ function EditNewBublicHoliday() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadings, setLoadings] = useState(false);
 
   const validationSchema = Yup.object({
     pubHolidayCmpId: Yup.string().required("*Company name is required"),
@@ -51,6 +52,7 @@ function EditNewBublicHoliday() {
     onSubmit: async (values) => {
       console.log("values", values);
       try {
+        setLoadings(true);
         const response = await api.put(
           `updatePublicHolidaysById/${id}`,
           values,
@@ -68,6 +70,8 @@ function EditNewBublicHoliday() {
         }
       } catch (error) {
         toast.error(error);
+      }finally{
+        setLoadings(false);
       }
     },
   });
@@ -84,7 +88,7 @@ function EditNewBublicHoliday() {
           endDate:endDate
         };
         formik.setValues(values);
-        setLoading(false);
+        
       } catch (error) {
         toast.error("Error Fetching Data ", error);
       }
@@ -112,8 +116,20 @@ function EditNewBublicHoliday() {
                     </button>
                   </Link>
                   &nbsp;&nbsp;
-                  <button type="submit" className="btn btn-sm btn-button">
-                    Update
+                  <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loadings}
+                  >
+                    {loadings ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
                   </button>
                 </div>
               </div>
@@ -288,6 +304,28 @@ function EditNewBublicHoliday() {
                       )}
                   </div>
                 </div>
+                <div className="col-lg-12 col-md-12 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <lable className="form-lable">
+                    Remark<span className="text-danger">*</span>
+                  </lable>
+                  <textarea
+                    type="text"
+                    rows={5}
+                    className={`form-control  ${
+                      formik.touched.holidayDescription && formik.errors.holidayDescription
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("holidayDescription")}
+                  />
+                  {formik.touched.holidayDescription && formik.errors.holidayDescription && (
+                    <div className="invalid-feedback">
+                      {formik.errors.holidayDescription}
+                    </div>
+                  )}
+                </div>
+              </div>
               </div>
             </form>
           </div>

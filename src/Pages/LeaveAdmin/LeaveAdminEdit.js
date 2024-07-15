@@ -163,6 +163,64 @@ function LeaveAdminEdit() {
                 )}
               </div>
             </div> */}
+               <div className="col-md-6 col-12 mb-2">
+                <lable className="form-lable">
+                  Company Name<span className="text-danger">*</span>
+                </lable>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("cmpId")}
+                    className={`form-select  ${
+                      formik.touched.cmpId && formik.errors.cmpId
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    aria-label="Default select example"
+                  >
+                    <option selected></option>
+                    {companyData &&
+                      companyData.map((cmpId) => (
+                        <option key={cmpId.id} value={cmpId.id}>
+                          {cmpId.cmpName}
+                        </option>
+                      ))}
+                  </select>
+                  {formik.touched.cmpId && formik.errors.cmpId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.cmpId}
+                    </div>
+                  )}
+                </div>
+              </div>
+             <div className="col-md-6 col-12 mb-2">
+                <lable className="form-lable">
+                  Department Name<span className="text-danger">*</span>
+                </lable>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("deptId")}
+                    className={`form-select  ${
+                      formik.touched.deptId && formik.errors.deptId
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    aria-label="Default select example"
+                  >
+                    <option selected></option>
+                    {departmentData &&
+                      departmentData.map((deptId) => (
+                        <option key={deptId.id} value={deptId.id}>
+                          {deptId.deptName}
+                        </option>
+                      ))}
+                  </select>
+                  {formik.touched.deptId && formik.errors.deptId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.deptId}
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className="col-md-6 col-12 mb-2">
                 <lable className="form-lable">
                   Employee Name<span className="text-danger">*</span>
@@ -212,35 +270,7 @@ function LeaveAdminEdit() {
                 )}
               </div>
             </div> */}
-              <div className="col-md-6 col-12 mb-2">
-                <lable className="form-lable">
-                  Department Name<span className="text-danger">*</span>
-                </lable>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("deptId")}
-                    className={`form-select  ${
-                      formik.touched.deptId && formik.errors.deptId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    {departmentData &&
-                      departmentData.map((deptId) => (
-                        <option key={deptId.id} value={deptId.id}>
-                          {deptId.deptName}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.deptId && formik.errors.deptId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.deptId}
-                    </div>
-                  )}
-                </div>
-              </div>{" "}
+             {" "}
               {/* <div className="col-lg-6 col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">Company ID</lable>

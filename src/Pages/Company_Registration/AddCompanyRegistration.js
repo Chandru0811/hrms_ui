@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 function AddCompanyRegistration() {
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const validationSchema = Yup.object({
     cmpName: Yup.string().required("*Company name is required"),
     cmpAddr: Yup.string().required("*Company address is required"),
@@ -38,7 +39,7 @@ function AddCompanyRegistration() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+      setLoading(true);
 
       try {
         const response = await api.post("addCompanyReg", values);
@@ -51,6 +52,8 @@ function AddCompanyRegistration() {
         }
       } catch (error) {
         toast.error("Error Submiting Data, ", error);
+      }finally {
+        setLoading(false);
       }
     
     },
@@ -69,9 +72,21 @@ function AddCompanyRegistration() {
                   </button>
                 </Link>
                 &nbsp;&nbsp;
-                <button type="submit" className="btn btn-sm btn-button">
-                  Save
-                </button>
+                <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
               </div>
             </div>
             <div className="row mt-3">

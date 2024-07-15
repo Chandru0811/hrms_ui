@@ -112,6 +112,7 @@ const ClaimAdmin = () => {
               <tr>
                 <th scope="col">S No</th>
                 {/* <th scope="col">Employee ID</th> */}
+                <th scope="col">Employee Id</th>
                 <th scope="col">Employee Name</th>
                 {/* <th scope="col">Applied Date</th> */}
                 {/* <th scope="col">Claim Date</th>
@@ -127,6 +128,7 @@ const ClaimAdmin = () => {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   {/* <td>{data.employeeID}</td> */}
+                  <td> {findEmployeeName(data.claimsId)}</td>
                   <td> {findEmployeeName(data.claimsEmpId)}</td>
                   {/* <td>{data.AppliedDate}</td> */}
                   {/* <td>{data.ClaimDate}</td>

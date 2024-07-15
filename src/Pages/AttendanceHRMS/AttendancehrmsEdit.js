@@ -11,6 +11,7 @@ function AttendancehrmsEdit() {
   const [employeeData, setEmployeeData] = useState(null);
   const [datas, setDatas] = useState([]);
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -64,7 +65,7 @@ function AttendancehrmsEdit() {
       }
       console.log("object",payload.attendanceCheckInTime)
       try {
-        // setLoading(true);
+        setLoading(true);
         const response = await api.put(
           `updateDailyAttendanceById/${id}`,payload,
           {
@@ -83,6 +84,8 @@ function AttendancehrmsEdit() {
         }
       } catch (error) {
         toast.error(error);
+      }finally {
+        setLoading(false);
       }
     },
   });
@@ -118,7 +121,21 @@ function AttendancehrmsEdit() {
                 <button  className="btn btn-sm btn-border">Back</button>
               </Link>
               &nbsp;&nbsp;
-              <button type="submit" className="btn btn-sm btn-button">Save</button>
+              <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
             </div>
           </div>
           <div className="row mt-3">

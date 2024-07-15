@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -8,6 +8,7 @@ import api from "../../config/URL";
 function DepartmentAdd() {
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const validationSchema = Yup.object({
     deptName: Yup.string().required('*Department name is required'),
     deptDesc: Yup.string().required('*Department description is required')
@@ -23,6 +24,7 @@ function DepartmentAdd() {
      
       // values.deptCmpId = 106;
        console.log(values);
+       setLoading(true);
       try {
         const response = await api.post("addDepartment", values);
         // console.log(response)
@@ -34,6 +36,8 @@ function DepartmentAdd() {
         }
       } catch (error) {
         toast.error("Error Submiting Data, ", error);
+      }finally{
+        setLoading(false);
       }
     },
   });
@@ -48,7 +52,21 @@ function DepartmentAdd() {
                 <button type="button" className="btn btn-sm btn-border">Back</button>
               </Link>
               &nbsp;&nbsp;
-              <button type="submit" className="btn btn-sm btn-button">Save</button>
+              <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
             </div>
           </div>
           <div className="row mt-3">

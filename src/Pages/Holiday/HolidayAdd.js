@@ -8,7 +8,7 @@ import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 
 function AddNewBublicHoliday() {
   const [companyData, setCompanyData] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const fetchData = async () => {
     try {
       const companyData = await fetchAllCompanyNamesWithId();
@@ -46,6 +46,7 @@ function AddNewBublicHoliday() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log("add", values);
+      setLoading(true);
       try {
         const response = await api.post("addPublicHolidays", values);
         // console.log(response)
@@ -57,6 +58,8 @@ function AddNewBublicHoliday() {
         }
       } catch (error) {
         toast.error("Error Submiting Data, ", error);
+      }finally {
+        setLoading(false);
       }
     },
   });
@@ -74,9 +77,21 @@ function AddNewBublicHoliday() {
                   </button>
                 </Link>
                 &nbsp;&nbsp;
-                <button type="submit" className="btn btn-sm btn-button">
-                  Save
-                </button>
+                <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
               </div>
             </div>
             <div className="row mt-3">
@@ -230,6 +245,28 @@ function AddNewBublicHoliday() {
                         {formik.errors.pubHolidayCountryCode}
                       </div>
                     )}
+                </div>
+              </div>
+              <div className="col-lg-12 col-md-12 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <lable className="form-lable">
+                    Remark<span className="text-danger">*</span>
+                  </lable>
+                  <textarea
+                    type="text"
+                    rows={5}
+                    className={`form-control  ${
+                      formik.touched.holidayDescription && formik.errors.holidayDescription
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("holidayDescription")}
+                  />
+                  {formik.touched.holidayDescription && formik.errors.holidayDescription && (
+                    <div className="invalid-feedback">
+                      {formik.errors.holidayDescription}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

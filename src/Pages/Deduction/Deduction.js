@@ -107,7 +107,10 @@ const Deduction = () => {
         <thead>
           <tr>
             <th scope="col">S No</th>
+            <th scope="col">Employee Id</th>
             <th scope="col">Employee Name</th>
+          
+            <th scope="col">Deduction Id</th>
             <th scope="col">Deduction Name</th>
             <th scope="col">Deduction Amount</th>
             <th scope="col">Action</th>
@@ -117,7 +120,9 @@ const Deduction = () => {
           {datas.map((data, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
+              <td>{data.deductionId}</td>
               <td>{getEmployeeNameById(data.employeeId)}</td>
+              <td>{data.deductionId}</td>
               <td>{data.deductionName}</td>
               <td>{data.deductionAmt}</td>
               <td>

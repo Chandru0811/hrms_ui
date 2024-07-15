@@ -9,7 +9,7 @@ function EditCompanyRegistration() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
 
   const validationSchema = Yup.object({
@@ -43,7 +43,7 @@ function EditCompanyRegistration() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
-
+     setLoading(true);
       try {
         const response = await api.put(
           `updateCompanyRegById/${id}`,
@@ -54,7 +54,7 @@ function EditCompanyRegistration() {
             },
           }
         );
-        if (response.status === 200) {
+        if (response.status === 201) {
           toast.success(response.data.message);
           navigate("/companyregisteration");
         } else {
@@ -62,6 +62,8 @@ function EditCompanyRegistration() {
         }
       } catch (error) {
         toast.error(error);
+      }finally{
+        setLoading(false);
       }
     },
   });
@@ -98,9 +100,21 @@ function EditCompanyRegistration() {
                   </button>
                 </Link>
                 &nbsp;&nbsp;
-                <button type="submit" className="btn btn-sm btn-button">
-                  Save
-                </button>
+                <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
               </div>
             </div>
             <div className="row mt-3">

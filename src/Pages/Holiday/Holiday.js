@@ -117,6 +117,7 @@ const Holiday = () => {
             <thead>
               <tr>
                 <th scope="col">S No</th>
+                <th scope="col">Company Id</th>
                 <th scope="col">Company Name</th>
                 <th scope="col">Holiday Name</th>
                 <th scope="col">Start Date</th>
@@ -127,6 +128,7 @@ const Holiday = () => {
               {datas.map((data, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
+                  <td>{getCompanyNameById(data.pubHolidayId)}</td>
                   <td>{getCompanyNameById(data.pubHolidayCmpId)}</td>
                   <td>{data.pubHolidayName}</td>
                   <td>

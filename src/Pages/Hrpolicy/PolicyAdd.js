@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -7,6 +7,7 @@ import api from "../../config/URL";
 
 function PolicyAdd() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const validationSchema = Yup.object({
     // hrPolicyCmpId: Yup.string().required("*Company id is required"),
     hrPolicyList: Yup.string().required("*Policy name is required"),
@@ -23,6 +24,7 @@ function PolicyAdd() {
     onSubmit: async (values) => {
       // console.log(values);
       // values.hrPolicyCmpId = 106;
+      setLoading(true);
       try {
         const response = await api.post("addHRPolicy", values);
         // console.log(response)
@@ -34,6 +36,8 @@ function PolicyAdd() {
         }
       } catch (error) {
         toast.error("Error Submiting Data, ", error);
+      }finally{
+        setLoading(false);
       }
     },
   });
@@ -50,9 +54,21 @@ function PolicyAdd() {
                 </button>
               </Link>
               &nbsp;&nbsp;
-              <button type="submit" className="btn btn-sm btn-button">
-                Save
-              </button>
+              <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
             </div>
           </div>
           <div className="row mt-3">

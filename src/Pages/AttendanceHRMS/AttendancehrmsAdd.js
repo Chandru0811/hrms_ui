@@ -10,6 +10,7 @@ function AttendancehrmsAdd() {
   const [employeeData, setEmployeeData] = useState(null);
   // const [datas, setDatas] = useState([]);
   const [companyData, setCompanyData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
@@ -65,7 +66,7 @@ function AttendancehrmsAdd() {
       };
       console.log("object", payload.attendanceCheckInTime);
       try {
-        // setLoading(true);
+        setLoading(true);
         const response = await api.post(`addDailyAttendance`, payload, {
           headers: {
             "Content-Type": "application/json",
@@ -79,7 +80,7 @@ function AttendancehrmsAdd() {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
       console.log(values);
     },
@@ -95,9 +96,21 @@ function AttendancehrmsAdd() {
                   <button className="btn btn-sm btn-border">Back</button>
                 </Link>
                 &nbsp;&nbsp;
-                <button type="submit" className="btn btn-sm btn-button">
-                  Save
-                </button>
+                <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
               </div>
             </div>
             <div className="row mt-3">

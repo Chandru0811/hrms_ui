@@ -105,7 +105,7 @@ const ExitManagement = () => {
                 <th scope="col" style={{ whiteSpace: "nowrap" }}>
                   S No
                 </th>
-                {/* <th scope="col">Employee ID</th> */}
+                <th scope="col">Employee ID</th>
                 <th scope="col">Employee Name</th>
                 <th scope="col">Reason For Relieving</th>
                 <th scope="col">Notice Period</th>
@@ -117,7 +117,7 @@ const ExitManagement = () => {
               {datas.map((data, index) => (
                 <tr key={index}>
                   <th scope="row">{index + 1}</th>
-                  {/* <td>{data.exitMgmtEmpId}</td> */}
+                  <td>{data.exitMgmtEmpId}</td>
                   <td> {findEmployeeName(data.exitMgmtEmpId)}</td>
                   <td>{data.reasonForRelieving}</td>
                   <td>{data.exitMgmtNoticePeriod}</td>

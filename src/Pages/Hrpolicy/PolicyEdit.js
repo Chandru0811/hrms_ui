@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,7 +8,7 @@ import api from "../../config/URL";
 export default function PolicyEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const validationSchema = Yup.object({
     hrPolicyList: Yup.string().required("*Policy name is required"),
     hrPolicyDescr: Yup.string().required("*Policy description is required"),
@@ -22,6 +22,7 @@ export default function PolicyEdit() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       // console.log(values);
+      setLoading(true);
       try {
         const response = await api.put(`updateHRPolicyById/${id}`, values, {
           headers: {
@@ -36,6 +37,8 @@ export default function PolicyEdit() {
         }
       } catch (error) {
         toast.error("Error Submiting Data:", error);
+      }finally{
+        setLoading(false);
       }
     },
   });
@@ -68,9 +71,21 @@ export default function PolicyEdit() {
                   </button>
                 </Link>
                 &nbsp;&nbsp;
-                <button type="submit" className="btn btn-sm btn-button">
-                  Update
-                </button>
+                <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Update</span>
+                  </button>
               </div>
             </div>
             <div className="row mt-3">
