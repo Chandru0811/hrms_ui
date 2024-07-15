@@ -1,33 +1,73 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
+import api from "../../config/URL";
 
 const CompanyRegistration = () => {
   const tableRef = useRef(null);
+  const [datas, setDatas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const datas = [
-    {
-      id: 1,
-      companyID: "01",
-      companyName: "Cloud ECS Infotech",
-      companyEmail: "suriyaecs@gmail.com",
-      companyCity: "Chennai",
-    },
-  ];
+  const getData = async () => {
+    try {
+      const response = await api.get("getAllCompanyReg");
+      setDatas(response.data);
+      setLoading(false);
+      console.log("Deduction data fetched:", response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
+  };
 
   useEffect(() => {
-    const table = $(tableRef.current).DataTable({
-      responsive: true,
-    });
+    getData();
+     }, []);
 
-    return () => {
-      table.destroy();
-    };
-  }, []);
+
+
+useEffect(() => {
+
+  if (!loading) {
+    initializeDataTable();
+  }
+  return () => {
+    destroyDataTable();
+  };
+}, [loading]);
+
+const initializeDataTable = () => {
+  if ($.fn.DataTable.isDataTable(tableRef.current)) {
+    return;
+  }
+  $(tableRef.current).DataTable({
+    responsive: true,
+  });
+};
+
+const destroyDataTable = () => {
+  const table = $(tableRef.current).DataTable();
+  if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
+    table.destroy();
+  }
+};
+
+const refreshData = async () => {
+  destroyDataTable();
+  setLoading(true);
+  try {
+    const response = await api.get("getAllCompanyReg");
+    setDatas(response.data);
+  } catch (error) {
+    console.error("Error refreshing data:", error);
+  }
+  setLoading(false);
+};
+
+
 
   return (
     <div className="container">
@@ -53,23 +93,23 @@ const CompanyRegistration = () => {
           {datas.map((data, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
-              <td>{data.companyID}</td>
-              <td>{data.companyName}</td>
-              <td>{data.companyCity}</td>
-              <td>{data.companyEmail}</td>
+              <td>{data.cmpId}</td>
+              <td>{data.cmpName}</td>
+              <td>{data.cmpCity}</td>
+              <td>{data.cmpEmail}</td>
               <td>
                 <div className="d-flex">
-                  <Link to={`/companyregisteration/view`}>
+                  <Link to={`/companyregisteration/view/${data.cmpId}`}>
                     <button className="btn btn-sm">
                       <FaEye />
                     </button>
                   </Link>
-                  <Link to={`/companyregisteration/edit`}>
+                  <Link to={`/companyregisteration/edit/${data.cmpId}`}>
                     <button className="btn btn-sm">
                       <FaEdit />
                     </button>
                   </Link>
-                  <Delete />
+                  <Delete path={`/deleteCompanyRegById/${data.cmpId}`}  onSuccess={refreshData}/>
                 </div>
               </td>
             </tr>

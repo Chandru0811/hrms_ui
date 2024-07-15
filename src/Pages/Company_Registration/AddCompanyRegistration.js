@@ -1,40 +1,58 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
 
 function AddCompanyRegistration() {
+
+  const navigate = useNavigate();
   const validationSchema = Yup.object({
-    companyName: Yup.string().required("*Company name is required"),
-    companyAddress: Yup.string().required("*Company address is required"),
-    companyCity: Yup.string().required("*Company city is required"),
-    companyPincode: Yup.number()
+    cmpName: Yup.string().required("*Company name is required"),
+    cmpAddr: Yup.string().required("*Company address is required"),
+    cmpCity: Yup.string().required("*Company city is required"),
+    cmpPincode: Yup.number()
       .required("*Company pincode is required")
       .typeError("*Must be a number"),
-    companyEmail: Yup.string().required("*Company email is required"),
-    companyPhoneNumber: Yup.number()
+    cmpEmail: Yup.string().required("*Company email is required"),
+    cmpPhNumber: Yup.number()
       .required("*Company phone number is required")
       .typeError("*Must be a number"),
-    companyRegistrationNumber: Yup.number()
+    cmpRegNumber: Yup.number()
       .required("*Company registeration number is required")
       .typeError("*Must be a number"),
-    companyTaxCode: Yup.string().required("*Company tax code is required"),
+    cmpTaxCode: Yup.string().required("*Company tax code is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      companyName: "",
-      companyAddress: "",
-      companyCity: "",
-      companyPincode: "",
-      companyEmail: "",
-      companyPhoneNumber: "",
-      companyRegistrationNumber: "",
-      companyTaxCode: "",
+      cmpName: "",
+      cmpAddr: "",
+      cmpCity: "",
+      cmpPincode: "",
+      cmpEmail: "",
+      cmpPhNumber: "",
+      cmpRegNumber: "",
+      cmpTaxCode: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+
+      try {
+        const response = await api.post("addCompanyReg", values);
+        // console.log(response)
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/companyregisteration");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error("Error Submiting Data, ", error);
+      }
+    
     },
   });
 
@@ -65,15 +83,15 @@ function AddCompanyRegistration() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.companyName && formik.errors.companyName
+                      formik.touched.cmpName && formik.errors.cmpName
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("companyName")}
+                    {...formik.getFieldProps("cmpName")}
                   />
-                  {formik.touched.companyName && formik.errors.companyName && (
+                  {formik.touched.cmpName && formik.errors.cmpName && (
                     <div className="invalid-feedback">
-                      {formik.errors.companyName}
+                      {formik.errors.cmpName}
                     </div>
                   )}
                 </div>
@@ -86,17 +104,17 @@ function AddCompanyRegistration() {
                     id="floatingTextarea2"
                     style={{ height: "100px" }}
                     className={`form-control  ${
-                      formik.touched.companyAddress &&
-                      formik.errors.companyAddress
+                      formik.touched.cmpAddr &&
+                      formik.errors.cmpAddr
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("companyAddress")}
+                    {...formik.getFieldProps("cmpAddr")}
                   ></textarea>
-                  {formik.touched.companyAddress &&
-                    formik.errors.companyAddress && (
+                  {formik.touched.cmpAddr &&
+                    formik.errors.cmpAddr && (
                       <div className="invalid-feedback">
-                        {formik.errors.companyAddress}
+                        {formik.errors.cmpAddr}
                       </div>
                     )}
                 </div>
@@ -109,15 +127,15 @@ function AddCompanyRegistration() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.companyCity && formik.errors.companyCity
+                      formik.touched.cmpCity && formik.errors.cmpCity
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("companyCity")}
+                    {...formik.getFieldProps("cmpCity")}
                   />
-                  {formik.touched.companyCity && formik.errors.companyCity && (
+                  {formik.touched.cmpCity && formik.errors.cmpCity && (
                     <div className="invalid-feedback">
-                      {formik.errors.companyCity}
+                      {formik.errors.cmpCity}
                     </div>
                   )}
                 </div>
@@ -130,17 +148,17 @@ function AddCompanyRegistration() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.companyPincode &&
-                      formik.errors.companyPincode
+                      formik.touched.cmpPincode &&
+                      formik.errors.cmpPincode
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("companyPincode")}
+                    {...formik.getFieldProps("cmpPincode")}
                   />
-                  {formik.touched.companyPincode &&
-                    formik.errors.companyPincode && (
+                  {formik.touched.cmpPincode &&
+                    formik.errors.cmpPincode && (
                       <div className="invalid-feedback">
-                        {formik.errors.companyPincode}
+                        {formik.errors.cmpPincode}
                       </div>
                     )}
                 </div>
@@ -153,16 +171,16 @@ function AddCompanyRegistration() {
                   <input
                     type="email"
                     className={`form-control  ${
-                      formik.touched.companyEmail && formik.errors.companyEmail
+                      formik.touched.cmpEmail && formik.errors.cmpEmail
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("companyEmail")}
+                    {...formik.getFieldProps("cmpEmail")}
                   />
-                  {formik.touched.companyEmail &&
-                    formik.errors.companyEmail && (
+                  {formik.touched.cmpEmail &&
+                    formik.errors.cmpEmail && (
                       <div className="invalid-feedback">
-                        {formik.errors.companyEmail}
+                        {formik.errors.cmpEmail}
                       </div>
                     )}
                 </div>
@@ -175,17 +193,17 @@ function AddCompanyRegistration() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.companyPhoneNumber &&
-                      formik.errors.companyPhoneNumber
+                      formik.touched.cmpPhNumber &&
+                      formik.errors.cmpPhNumber
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("companyPhoneNumber")}
+                    {...formik.getFieldProps("cmpPhNumber")}
                   />
-                  {formik.touched.companyPhoneNumber &&
-                    formik.errors.companyPhoneNumber && (
+                  {formik.touched.cmpPhNumber &&
+                    formik.errors.cmpPhNumber && (
                       <div className="invalid-feedback">
-                        {formik.errors.companyPhoneNumber}
+                        {formik.errors.cmpPhNumber}
                       </div>
                     )}
                 </div>
@@ -199,17 +217,17 @@ function AddCompanyRegistration() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.companyRegistrationNumber &&
-                      formik.errors.companyRegistrationNumber
+                      formik.touched.cmpRegNumber &&
+                      formik.errors.cmpRegNumber
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("companyRegistrationNumber")}
+                    {...formik.getFieldProps("cmpRegNumber")}
                   />
-                  {formik.touched.companyRegistrationNumber &&
-                    formik.errors.companyRegistrationNumber && (
+                  {formik.touched.cmpRegNumber &&
+                    formik.errors.cmpRegNumber && (
                       <div className="invalid-feedback">
-                        {formik.errors.companyRegistrationNumber}
+                        {formik.errors.cmpRegNumber}
                       </div>
                     )}
                 </div>
@@ -222,17 +240,17 @@ function AddCompanyRegistration() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.companyTaxCode &&
-                      formik.errors.companyTaxCode
+                      formik.touched.cmpTaxCode &&
+                      formik.errors.cmpTaxCode
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("companyTaxCode")}
+                    {...formik.getFieldProps("cmpTaxCode")}
                   />
-                  {formik.touched.companyTaxCode &&
-                    formik.errors.companyTaxCode && (
+                  {formik.touched.cmpTaxCode &&
+                    formik.errors.cmpTaxCode && (
                       <div className="invalid-feedback">
-                        {formik.errors.companyTaxCode}
+                        {formik.errors.cmpTaxCode}
                       </div>
                     )}
                 </div>

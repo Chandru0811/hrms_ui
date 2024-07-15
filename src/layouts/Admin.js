@@ -163,11 +163,11 @@ function Admin({ handleLogout }) {
                 element={<AddCompanyRegistration />}
               />
               <Route
-                path="/companyregisteration/edit"
+                path="/companyregisteration/edit/:id"
                 element={<EditCompanyRegistration />}
               />
               <Route
-                path="/companyregisteration/view"
+                path="/companyregisteration/view/:id"
                 element={<ViewCompanyRegistration />}
               />
 

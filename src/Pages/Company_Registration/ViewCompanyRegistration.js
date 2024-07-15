@@ -1,7 +1,29 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
 
 function ViewCompanyRegistration() {
+  const [data, setData] = useState([]);
+  const { id } = useParams();
+  
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`getCompanyRegById/${id}`);
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        // console.log(error.message);
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+  }, [id]);
+
   return (
     <div className="container">
       <div className="row mt-3">
@@ -21,7 +43,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company Name</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: ECS Cloud</p>
+                <p className="text-muted text-sm">: {data.cmpName}</p>
               </div>
             </div>
           </div>
@@ -31,7 +53,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company Role ID</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: ECS978</p>
+                <p className="text-muted text-sm">: {data.cmpRoleId}</p>
               </div>
             </div>
           </div>
@@ -41,7 +63,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company Address</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: Skathi Tower</p>
+                <p className="text-muted text-sm">: {data.cmpAddr}</p>
               </div>
             </div>
           </div>
@@ -51,7 +73,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company City</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: Chennai</p>
+                <p className="text-muted text-sm">: {data.cmpCity}</p>
               </div>
             </div>
           </div>
@@ -61,7 +83,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company Pincode</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: 600001</p>
+                <p className="text-muted text-sm">: {data.cmpPincode}</p>
               </div>
             </div>
           </div>
@@ -71,7 +93,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company Email</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: ecscloud@gmail.com</p>
+                <p className="text-muted text-sm">: {data.cmpEmail}</p>
               </div>
             </div>
           </div>
@@ -81,7 +103,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company Phone Number</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: 9807917199</p>
+                <p className="text-muted text-sm">: {data.cmpPhNumber}</p>
               </div>
             </div>
           </div>
@@ -91,7 +113,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company Tax Code</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: THS679NSUY88QW9</p>
+                <p className="text-muted text-sm">: {data.cmpTaxCode}</p>
               </div>
             </div>
           </div>
@@ -101,7 +123,7 @@ function ViewCompanyRegistration() {
                 <p className="fw-medium">Company Registration Number</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: ECSCLOUD88992</p>
+                <p className="text-muted text-sm">: {data.cmpRegNumber}</p>
               </div>
             </div>
           </div>
