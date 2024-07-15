@@ -59,7 +59,7 @@ function ExitManagementAdmin() {
         // console.log(response)
         if (response.status === 201) {
           toast.success(response.data.message);
-          navigate("/exitmanagement");
+          // navigate("/exitmanagement");
         } else {
           toast.error(response.data.message);
         }
@@ -242,7 +242,6 @@ function ExitManagementAdmin() {
                 >
                   <option selected></option>
                   <option value="30 days">30 days</option>
-                  <option value="45 days">45 days</option>
                   <option value="60 days">60 days</option>
                   <option value="90 days">90 days</option>
                 </select>

@@ -40,6 +40,7 @@ function AddPayroll() {
     deduction: Yup.string().required("*Deduction is required"),
     netPay: Yup.string().required("*Net pay is required"),
     payrollWorkingStatus: Yup.string().required("*Status is required"),
+    deductionMonth: Yup.string().required("*Payroll month is required"),
   });
 
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ function AddPayroll() {
       deduction: "",
       netPay: "",
       payrollWorkingStatus: "",
+      deductionMonth: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -221,6 +223,25 @@ function AddPayroll() {
                   </div>
                 )}
               </div>
+            </div>
+            <div className="col-md-6 col-12 mb-3 ">
+              <lable className="">Payroll Month</lable>
+              <span className="text-danger">*</span>
+              <input
+                type="month"
+                className={`form-control  ${
+                  formik.touched.deductionMonth && formik.errors.deductionMonth
+                    ? "is-invalid"
+                    : ""
+                }`}
+                {...formik.getFieldProps("deductionMonth")}
+              />
+              {formik.touched.deductionMonth &&
+                formik.errors.deductionMonth && (
+                  <div className="invalid-feedback">
+                    {formik.errors.deductionMonth}
+                  </div>
+                )}
             </div>
             <div className="  col-md-6 col-12">
               <div className="text-start mt-2 mb-3">

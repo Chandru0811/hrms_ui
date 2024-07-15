@@ -10,7 +10,7 @@ function Sidebar() {
 
   const [menuItems, setMenuItems] = useState([
     {
-      title: "Organizations",
+      title: "Organization",
       icon: "bx bx-buildings",
       isOpen: false,
       subMenus: [

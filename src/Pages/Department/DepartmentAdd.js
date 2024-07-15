@@ -21,7 +21,7 @@ function DepartmentAdd() {
     validationSchema: validationSchema, 
     onSubmit: async (values) => {
      
-      values.deptCmpId = 106;
+      // values.deptCmpId = 106;
        console.log(values);
       try {
         const response = await api.post("addDepartment", values);

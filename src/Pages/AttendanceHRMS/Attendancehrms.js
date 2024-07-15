@@ -114,6 +114,7 @@ const Attendancehrms = () => {
             <thead>
               <tr>
                 <th scope="col">S No</th>
+                <th scope="col">Employee ID</th>
                 <th scope="col">Employee Name</th>
                 <th scope="col">Date</th>
                 <th scope="col">Mode of Working</th>
@@ -125,6 +126,7 @@ const Attendancehrms = () => {
               {datas.map((data, index) => (
                 <tr key={data.id}>
                   <td>{index + 1}</td>
+                  <td>{findEmployeeName(data.dailyAttendanceEmpId)}</td>
                   <td>{findEmployeeName(data.dailyAttendanceEmpId)}</td>
                   <td>
                     {data.attendanceDate &&

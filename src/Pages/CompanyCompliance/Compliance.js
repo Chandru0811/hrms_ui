@@ -115,6 +115,7 @@ const Compliance = () => {
             <thead>
               <tr>
                 <th scope="col">S No</th>
+                <th scope="col">Company Name</th>
                 <th scope="col">Designation Name</th>
                 <th scope="col">Designation Category</th>
                 <th scope="col">Leave Limit</th>
@@ -126,6 +127,7 @@ const Compliance = () => {
               {datas.map((data, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
+                  <td>{data.compComplianceCmpId}</td>
                   <td>{data.compComplianceDesignationName}</td>
                   <td>{data.compComplianceDesignationCategory}</td>
                   <td>{data.compComplianceLeaveLimit}</td>

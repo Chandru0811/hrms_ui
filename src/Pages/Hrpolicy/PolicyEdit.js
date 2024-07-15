@@ -35,7 +35,7 @@ export default function PolicyEdit() {
           toast.error(response.data.message);
         }
       } catch (error) {
-        toast.error(error);
+        toast.error("Error Submiting Data:", error);
       }
     },
   });
@@ -106,7 +106,7 @@ export default function PolicyEdit() {
                         ? "is-invalid"
                         : ""
                     }`}
-                    rows="3"
+                    rows="4"
                     {...formik.getFieldProps("hrPolicyDescr")}
                   ></textarea>
                   {formik.touched.hrPolicyDescr &&

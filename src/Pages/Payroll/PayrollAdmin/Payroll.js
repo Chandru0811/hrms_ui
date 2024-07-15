@@ -85,8 +85,8 @@ const Payroll = () => {
                 <th scope="col">S No</th>
                 <th scope="col">Employee ID</th>
                 <th scope="col">Emplopee Name</th>
-                <th scope="col">Bonus</th>
-                <th scope="col">Gross Pay</th>
+                {/* <th scope="col">Bonus</th> */}
+                <th scope="col">Basic Pay</th>
                 {/* <th scope="col">Deduction</th> */}
                 <th scope="col">Net Pay</th>
                 <th scope="col">Status</th>
@@ -99,7 +99,7 @@ const Payroll = () => {
                   <th scope="row">{index + 1}</th>
                   <td>{data.payrollEmpId}</td>
                   <td>{data.employeeName}</td>
-                  <td>{data.bonus}</td>
+                  {/* <td>{data.bonus}</td> */}
                   <td>{data.grossPay}</td>
                   {/* <td>{data.deduction}</td> */}
                   <td>{data.netPay}</td>

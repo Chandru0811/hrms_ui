@@ -45,7 +45,7 @@ function ExitManagementView() {
   const findCompanyName = (exitMgmtCmpId) => {
     if (companyData) {
       const company = companyData.find((cmp) => cmp.cmpId === exitMgmtCmpId);
-      return company ? company.cmpName : "Company not found";
+      return company ? company.cmpName : "";
     }
     return "";
   };

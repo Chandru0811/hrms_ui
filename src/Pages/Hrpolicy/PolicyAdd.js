@@ -106,13 +106,14 @@ function PolicyAdd() {
                 <span className="text-danger">*</span>
                 <textarea
                   id="floatingTextarea2"
-                  style={{ height: "100px" }}
+                  // style={{ height: "100px" }}
                   className={`form-control  ${
                     formik.touched.hrPolicyDescr && formik.errors.hrPolicyDescr
                       ? "is-invalid"
                       : ""
                   }`}
                   {...formik.getFieldProps("hrPolicyDescr")}
+                  rows="4"
                 ></textarea>
                 {formik.touched.hrPolicyDescr &&
                   formik.errors.hrPolicyDescr && (
