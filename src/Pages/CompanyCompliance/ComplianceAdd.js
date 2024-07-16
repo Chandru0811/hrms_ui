@@ -7,7 +7,9 @@ import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import { toast } from "react-toastify";
 
 function ComplianceAdd() {
+  const [loading, setLoading] = useState(false);
   const [companyData, setCompanyData] = useState(null);
+  const [currentDate, setCurrentDate] = useState('');
 
   const fetchData = async () => {
     try {
@@ -22,6 +24,10 @@ function ComplianceAdd() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setCurrentDate(today);
+  }, []);
   const navigate = useNavigate();
   const validationSchema = Yup.object({
     cmpId: Yup.string().required("*Company name is required"),
@@ -53,6 +59,7 @@ function ComplianceAdd() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log("add", values);
+      setLoading(true);
       values.compComplianceCmpId = values.cmpId;
       try {
         const response = await api.post("addCompanyComplianceInfo", values);
@@ -65,6 +72,8 @@ function ComplianceAdd() {
         }
       } catch (error) {
         toast.error("Error Submiting Data, ", error);
+      }finally{
+        setLoading(false);
       }
     },
   });
@@ -82,9 +91,21 @@ function ComplianceAdd() {
                   </button>
                 </Link>
                 &nbsp;&nbsp;
-                <button type="submit" className="btn btn-sm btn-button">
-                  Save
-                </button>
+                <button
+                    type="submit"
+                    className="btn btn-sm btn-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    &nbsp;<span>Save</span>
+                  </button>
               </div>
             </div>
             <div className="row mt-3">
@@ -203,6 +224,8 @@ function ComplianceAdd() {
                     {...formik.getFieldProps(
                       "compComplianceSalaryCalculationDay"
                     )}
+                    value={formik.values.compComplianceSalaryCalculationDay || currentDate}
+                  min={currentDate}
                   />
                   {formik.touched.compComplianceSalaryCalculationDay &&
                     formik.errors.compComplianceSalaryCalculationDay && (
@@ -226,6 +249,8 @@ function ComplianceAdd() {
                         : ""
                     }`}
                     {...formik.getFieldProps("compComplianceSalaryDay")}
+                    value={formik.values.compComplianceSalaryDay || currentDate}
+                  min={currentDate}
                   />
                   {formik.touched.compComplianceSalaryDay &&
                     formik.errors.compComplianceSalaryDay && (

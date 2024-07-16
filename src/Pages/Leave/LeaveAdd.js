@@ -13,6 +13,7 @@ function LeaveAdd() {
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [currentDate, setCurrentDate] = useState('');
 
   const fetchData = async () => {
     try {
@@ -29,6 +30,11 @@ function LeaveAdd() {
 
   useEffect(() => {
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setCurrentDate(today);
   }, []);
 
   const validationSchema = Yup.object({
@@ -284,6 +290,8 @@ function LeaveAdd() {
                         : ""
                     }`}
                     {...formik.getFieldProps("fromDate")}
+                    value={formik.values.fromDate || currentDate}
+                    min={currentDate}
                   />
                   {formik.touched.fromDate && formik.errors.fromDate && (
                     <div className="invalid-feedback">
@@ -304,6 +312,8 @@ function LeaveAdd() {
                         : ""
                     }`}
                     {...formik.getFieldProps("toDate")}
+                    value={formik.values.toDate || currentDate}
+                    min={currentDate}
                   />
                   {formik.touched.toDate && formik.errors.toDate && (
                     <div className="invalid-feedback">

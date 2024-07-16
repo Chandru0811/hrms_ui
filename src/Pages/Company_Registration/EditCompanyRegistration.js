@@ -113,7 +113,7 @@ function EditCompanyRegistration() {
                     ) : (
                       <span></span>
                     )}
-                    &nbsp;<span>Save</span>
+                    &nbsp;<span>Update</span>
                   </button>
               </div>
             </div>

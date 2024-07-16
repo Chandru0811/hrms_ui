@@ -14,6 +14,7 @@ function ClaimAdminAdd() {
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [currentDate, setCurrentDate] = useState('');
 
   const fetchData = async () => {
     try {
@@ -30,6 +31,11 @@ function ClaimAdminAdd() {
 
   useEffect(() => {
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setCurrentDate(today);
   }, []);
 
   const validationSchema = Yup.object({
@@ -280,6 +286,8 @@ function ClaimAdminAdd() {
                     : ""
                 }`}
                 {...formik.getFieldProps("claimsDate")}
+                value={formik.values.claimsDate || currentDate}
+                  min={currentDate}
               />
               {formik.touched.claimsDate && formik.errors.claimsDate && (
                 <div className="invalid-feedback">

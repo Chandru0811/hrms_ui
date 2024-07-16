@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
@@ -7,6 +7,13 @@ import api from "../../config/URL";
 
 function PerformanceAppraisalAdd() {
   const navigate = useNavigate();
+  const [currentDate, setCurrentDate] = useState('');
+
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setCurrentDate(today);
+  }, []);
   const validationSchema = Yup.object({});
 
   const formik = useFormik({
@@ -64,6 +71,8 @@ function PerformanceAppraisalAdd() {
                   className={`form-control iconInput `}
                   placeholder=""
                   {...formik.getFieldProps("perfAppraisalDate")}
+                  value={formik.values.perfAppraisalDate || currentDate}
+                  min={currentDate}
                 />
               </div>
             </div>

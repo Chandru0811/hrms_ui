@@ -12,6 +12,7 @@ function EmployeeAdminAdd() {
   const [departmentData, setDepartmentData] = useState(null);
   const [selectedIdType, setSelectedIdType] = useState("nric");
   const [loading, setLoading] = useState(false);
+  const [currentDate, setCurrentDate] = useState('');
 
   const fetchData = async () => {
     try {
@@ -28,6 +29,10 @@ function EmployeeAdminAdd() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setCurrentDate(today);
+  }, []);
   const validationSchema = Yup.object({
     firstName: Yup.string().required("*First name is required"),
     lastName: Yup.string().required("*Last name is required"),
@@ -502,6 +507,8 @@ function EmployeeAdminAdd() {
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("employeeDateOfJoining")}
+                  value={formik.values.employeeDateOfJoining || currentDate}
+                  min={currentDate}
                 />
                 {formik.touched.employeeDateOfJoining &&
                   formik.errors.employeeDateOfJoining && (

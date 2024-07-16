@@ -14,6 +14,7 @@ function DeductionAdd() {
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState("");
 
   const fetchData = async () => {
     try {
@@ -31,6 +32,14 @@ function DeductionAdd() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    setCurrentMonth(`${year}-${month}`);
+  }, []);
+
 
   const validationSchema = Yup.object({
     // deductionEmpId: Yup.string().required("*Employee id is required"),
@@ -374,6 +383,7 @@ function DeductionAdd() {
                     ? "is-invalid"
                     : ""
                 }`}
+                min={currentMonth}
                 {...formik.getFieldProps("deductionMonth")}
               />
               {formik.touched.deductionMonth &&

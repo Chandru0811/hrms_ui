@@ -10,6 +10,7 @@ function ExpenseAdd() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [currentDate, setCurrentDate] = useState('');
 
 
   const fetchData = async () => {
@@ -25,6 +26,10 @@ function ExpenseAdd() {
 
   useEffect(() => {
     fetchData();
+  }, []);
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setCurrentDate(today);
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -207,6 +212,8 @@ function ExpenseAdd() {
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   {...formik.getFieldProps("expenseDate")}
+                  value={formik.values.expenseDate || currentDate}
+                  min={currentDate}
                 />
                 {formik.touched.expenseDate && formik.errors.expenseDate && (
                   <div className="invalid-feedback">
