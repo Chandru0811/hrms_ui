@@ -493,7 +493,7 @@ function EmployeeAdminAdd() {
             <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <lable for="exampleFormControlInput1" className="form-label">
-                  Employee Date Of Joining<span className="text-danger">*</span>
+                  Employee Date of Joining<span className="text-danger">*</span>
                 </lable>
                 <input
                   type="date"
@@ -563,32 +563,6 @@ function EmployeeAdminAdd() {
                     {formik.errors.noticePeriod}
                   </div>
                 )}
-              </div>
-            </div>
-            <div className="col-md-6 col-12 mb-3 ">
-              <div className="mb-2">
-                <lable for="exampleFormControlInput1" className="form-label">
-                  Reporting Manager ID<span className="text-danger">*</span>
-                </lable>
-                <input
-                  type="text"
-                  name="reportingManagerID"
-                  className={`form-control  ${
-                    formik.touched.reportingManagerID &&
-                    formik.errors.reportingManagerID
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("reportingManagerID")}
-                />
-                {formik.touched.reportingManagerID &&
-                  formik.errors.reportingManagerID && (
-                    <div className="invalid-feedback">
-                      {formik.errors.reportingManagerID}
-                    </div>
-                  )}
               </div>
             </div>
             <div className="col-md-6 col-12 mb-3 ">

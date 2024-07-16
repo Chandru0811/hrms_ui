@@ -55,7 +55,7 @@ const LeaveAdmin = () => {
           
             <th scope="col">Employee Id</th>
             <th scope="col">Employee Name</th>
-            <th scope="col">Department</th>
+            {/* <th scope="col">Department</th> */}
             {/* <th scope="col">Reason For Leave</th> */}
             {/* <th scope="col">From Date</th>
             <th scope="col">To Date</th>
@@ -72,7 +72,7 @@ const LeaveAdmin = () => {
               <th scope="row">{index + 1}</th>
               <td>{data.leaveRequestId}</td>
               <td>{data.leaveReqApproverName}</td>
-              <td>{data.department}</td>
+              {/* <td>{data.department}</td> */}
               {/* <td>{data.leaveReqRemarks}</td> */}
               {/* <td>{data.fromdate}</td>
               <td>{data.todate}</td>

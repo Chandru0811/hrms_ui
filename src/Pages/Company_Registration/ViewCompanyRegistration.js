@@ -49,16 +49,6 @@ function ViewCompanyRegistration() {
           </div>
           <div className="col-md-6 col-12">
             <div className="row mb-2">
-              <div className="col-6  ">
-                <p className="fw-medium">Company Role ID</p>
-              </div>
-              <div className="col-6">
-                <p className="text-muted text-sm">: {data.cmpRoleId}</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 col-12">
-            <div className="row mb-2">
               <div className="col-6 ">
                 <p className="fw-medium">Company Address</p>
               </div>

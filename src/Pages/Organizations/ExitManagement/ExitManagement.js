@@ -108,7 +108,7 @@ const ExitManagement = () => {
                 <th scope="col">Employee ID</th>
                 <th scope="col">Employee Name</th>
                 <th scope="col">Reason For Relieving</th>
-                <th scope="col">Notice Period</th>
+                {/* <th scope="col">Notice Period</th> */}
                 <th scope="col">Approval Status</th>
                 <th scope="col">Action</th>
               </tr>
@@ -120,7 +120,7 @@ const ExitManagement = () => {
                   <td>{data.exitMgmtEmpId}</td>
                   <td> {findEmployeeName(data.exitMgmtEmpId)}</td>
                   <td>{data.reasonForRelieving}</td>
-                  <td>{data.exitMgmtNoticePeriod}</td>
+                  {/* <td>{data.exitMgmtNoticePeriod}</td> */}
                   <td>
                     {data.relievingApprovalStatus === "Approved" ? (
                       <span className="badge text-bg-success">Approved</span>

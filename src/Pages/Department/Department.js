@@ -105,14 +105,14 @@ const Department = () => {
                         <FaEye />
                       </button>
                     </Link>
-                    {userRole === "Admin" && (
+                    {(userRole === "Admin" || userRole === "Super Admin") && (
                       <Link to={`/departments/edit/${data.deptId}`}>
                         <button className="btn btn-sm">
                           <FaEdit />
                         </button>
                       </Link>
                     )}
-                    {userRole === "Admin" && (
+                    {(userRole === "Admin" || userRole === "Super Admin") && (
                       <Delete
                         onSuccess={refreshData}
                         path={`/deleteDepartmentById/${data.deptId}`}

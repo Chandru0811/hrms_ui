@@ -14,15 +14,24 @@ function Sidebar() {
       icon: "bx bx-buildings",
       isOpen: false,
       subMenus: [
-        userRole ==="Admin" && { title: "Company Registration", path: "/companyregisteration" },
-        userRole === "Admin" && {
+        userRole === "Super Admin" && {
+          title: "Company Registration",
+          path: "/companyregisteration",
+        },
+        (userRole === "Admin" || userRole === "Super Admin") && {
           title: "Company Compliance",
           path: "/compliance",
         },
         { title: "HR Policy", path: "/policy" },
         { title: "Departments", path: "/departments" },
-        userRole ==="Admin" && { title: "Exit Management", path: "/exitmanagement" },
-        userRole ==="Employee" &&{ title: "Exit Management ", path: "/exitmanagementadmin" },
+        userRole === "Admin" && {
+          title: "Exit Management",
+          path: "/exitmanagement",
+        },
+        userRole === "Employee" && {
+          title: "Exit Management ",
+          path: "/exitmanagementadmin",
+        },
       ],
     },
   ]);
