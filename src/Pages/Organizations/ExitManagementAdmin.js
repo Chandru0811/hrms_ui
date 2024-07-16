@@ -11,7 +11,7 @@ function ExitManagementAdmin() {
   const navigate = useNavigate();
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
-
+  const [currentDate, setCurrentDate] = useState('');
   const fetchData = async () => {
     try {
       const companyData = await fetchAllCompanyNamesWithId();
@@ -26,6 +26,12 @@ function ExitManagementAdmin() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setCurrentDate(today);
+  }, []);
+
 
   const validationSchema = Yup.object({
     employeeId: Yup.string().required("*Employee name is required"),
@@ -199,6 +205,8 @@ function ExitManagementAdmin() {
                       : ""
                   }`}
                   {...formik.getFieldProps("dateOfRelieving")}
+                  value={formik.values.expenseDate || currentDate}
+                  min={currentDate}
                 />
                 {formik.touched.dateOfRelieving &&
                   formik.errors.dateOfRelieving && (
@@ -220,6 +228,8 @@ function ExitManagementAdmin() {
                       : ""
                   }`}
                   {...formik.getFieldProps("exitMgmtDateOfApply")}
+                  value={formik.values.expenseDate || currentDate}
+                  min={currentDate}
                 />
                 {formik.touched.exitMgmtDateOfApply &&
                   formik.errors.exitMgmtDateOfApply && (
