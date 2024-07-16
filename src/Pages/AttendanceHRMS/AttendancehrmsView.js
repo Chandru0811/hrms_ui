@@ -75,10 +75,10 @@ function AttendancehrmsView() {
                   :{" "}
                   {data.attendanceDate
                     ? data.attendanceDate
-                        .split("T")[0]
-                        .split("-")
-                        .reverse()
-                        .join("-")
+                      .split("T")[0]
+                      .split("-")
+                      .reverse()
+                      .join("-")
                     : "--"}
                 </div>
               </div>
@@ -103,17 +103,18 @@ function AttendancehrmsView() {
             </div>
             <div className="col-md-6 col-12">
               <div className="row mb-2">
-                <div className="col-6 ">
+                <div className="col-6">
                   <p className="fw-medium">Check In</p>
                 </div>
                 <div className="col-6">
                   :{" "}
                   {data.attendanceCheckInTime
-                    ? data.attendanceCheckInTime.split("T")[1].split(".")[0]
+                    ? new Date(data.attendanceCheckInTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     : "--"}
                 </div>
               </div>
             </div>
+
             <div className="col-md-6 col-12">
               <div className="row    mb-2">
                 <div className="col-6 ">
@@ -122,7 +123,7 @@ function AttendancehrmsView() {
                 <div className="col-6">
                   :{" "}
                   {data.attendanceCheckOutTime
-                    ? data.attendanceCheckOutTime.split("T")[1].split(".")[0]
+                    ? new Date(data.attendanceCheckOutTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     : "--"}
                 </div>
               </div>
@@ -155,7 +156,7 @@ function AttendancehrmsView() {
                 <div className="col-6">
                   :{" "}
                   {data.attendanceOtStarttime
-                    ? data.attendanceOtStarttime.split("T")[1].split(".")[0]
+                    ? new Date(data.attendanceOtStarttime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     : "--"}
                 </div>
               </div>
@@ -168,7 +169,7 @@ function AttendancehrmsView() {
                 <div className="col-6">
                   :{" "}
                   {data.attendanceOtEndtime
-                    ? data.attendanceOtEndtime.split("T")[1].split(".")[0]
+                   ? new Date(data.attendanceOtEndtime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     : "--"}
                 </div>
               </div>

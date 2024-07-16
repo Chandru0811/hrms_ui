@@ -49,7 +49,7 @@ function ExitManagementAdmin() {
       exitMgmtNoticePeriod: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       // console.log(values);
       // values.exitMgmtCmpId = 106;
       // values.exitMgmtEmpId = "106-01";
@@ -59,6 +59,7 @@ function ExitManagementAdmin() {
         // console.log(response)
         if (response.status === 201) {
           toast.success(response.data.message);
+          resetForm();
           // navigate("/exitmanagement");
         } else {
           toast.error(response.data.message);

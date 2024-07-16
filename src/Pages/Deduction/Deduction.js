@@ -121,7 +121,7 @@ const Deduction = () => {
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{data.deductionId}</td>
-              <td>{getEmployeeNameById(data.employeeId)}</td>
+              <td>{getEmployeeNameById(data.deductionEmpId)}</td>
               <td>{data.deductionId}</td>
               <td>{data.deductionName}</td>
               <td>{data.deductionAmt}</td>
