@@ -7,6 +7,8 @@ import { FaEye, FaEdit } from "react-icons/fa";
 import DeleteModel from "../../components/common/Delete";
 
 export default function ExpensesReport() {
+  const userRole = sessionStorage.getItem("userName");
+
   const tableRef = useRef(null);
   const datas = [
     {
@@ -89,12 +91,16 @@ export default function ExpensesReport() {
                       <FaEye />
                     </button>
                   </Link>
-                  <Link to={`/expensesreport/edit`}>
-                    <button className="btn btn-sm">
-                      <FaEdit />
-                    </button>
-                  </Link>
-                  <DeleteModel />
+                  {(userRole === "Super Admin" || userRole === "Admin") && (
+                    <Link to={`/expensesreport/edit`}>
+                      <button className="btn btn-sm">
+                        <FaEdit />
+                      </button>
+                    </Link>
+                  )}
+                  {(userRole === "Super Admin" || userRole === "Admin") && (
+                    <DeleteModel />
+                  )}
                 </div>
               </td>
             </tr>

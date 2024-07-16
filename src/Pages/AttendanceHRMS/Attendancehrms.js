@@ -126,7 +126,7 @@ const Attendancehrms = () => {
               {datas.map((data, index) => (
                 <tr key={data.id}>
                   <td>{index + 1}</td>
-                  <td>{findEmployeeName(data.dailyAttendanceEmpId)}</td>
+                  <td>{findEmployeeName(data.dailyAttendanceName)}</td>
                   <td>{findEmployeeName(data.dailyAttendanceEmpId)}</td>
                   <td>
                     {data.attendanceDate &&

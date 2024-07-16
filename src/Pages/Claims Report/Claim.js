@@ -11,6 +11,7 @@ const Claim = () => {
   const tableRef = useRef(null);
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const userRole = sessionStorage.getItem("userName");
 
   useEffect(() => {
     const table = $(tableRef.current).DataTable({
@@ -147,15 +148,19 @@ const Claim = () => {
                           <FaEye />
                         </button>
                       </Link>
-                      <Link to={`/claimadmin/edit/${data.claimsId}`}>
-                        <button className="btn btn-sm">
-                          <FaEdit />
-                        </button>
-                      </Link>
-                      <Delete
-                        path={`/deleteClaimsById/${data.claimsId}`}
-                        onSuccess={refreshData}
-                      />
+                      {(userRole === "Super Admin" || userRole === "Admin") && (
+                        <Link to={`/claimadmin/edit/${data.claimsId}`}>
+                          <button className="btn btn-sm">
+                            <FaEdit />
+                          </button>
+                        </Link>
+                      )}
+                      {(userRole === "Super Admin" || userRole === "Admin") && (
+                        <Delete
+                          path={`/deleteClaimsById/${data.claimsId}`}
+                          onSuccess={refreshData}
+                        />
+                      )}
                     </div>
                   </td>
                 </tr>

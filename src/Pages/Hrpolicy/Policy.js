@@ -107,14 +107,14 @@ const Policy = () => {
                           <FaEye />
                         </button>
                       </Link>
-                      {userRole === "Admin" && (
+                      {(userRole === "Admin" || userRole === "Super Admin") && (
                         <Link to={`/policy/edit/${data.hrPolicyId}`}>
                           <button className="btn btn-sm">
                             <FaEdit />
                           </button>
                         </Link>
                       )}
-                      {userRole === "Admin" && (
+                      {(userRole === "Admin" || userRole === "Super Admin") && (
                         <Delete
                           onSuccess={refreshData}
                           path={`/deleteHRPolicyById/${data.hrPolicyId}`}
