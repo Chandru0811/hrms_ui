@@ -1,11 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/Logo.png";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 function Login({ onLogin }) {
+  const navigate = useNavigate();
   const validationSchema = Yup.object({
     username: Yup.string()
       .email("*Invalid email address")
@@ -25,6 +26,7 @@ function Login({ onLogin }) {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       onLogin(values.username, values.password, values.companyId);
+      // navigate('/hrms')
     },
   });
 

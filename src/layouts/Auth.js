@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 
 function Auth({ handleLogin }) {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/hrms">
       <ToastContainer position="top-center" />
       <Routes>
         <Route path="/" element={<Login onLogin={handleLogin} />} />
