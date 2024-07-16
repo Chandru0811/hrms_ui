@@ -5,9 +5,7 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import api from "../../config/URL";
-import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import Delete from "../../components/common/Delete";
-import { toast } from "react-toastify";
 
 const Compliance = () => {
   const tableRef = useRef(null);
@@ -15,16 +13,6 @@ const Compliance = () => {
   const [loading, setLoading] = useState(true);
   const [viewAction, setViewAction] = useState(false);
   const userName = sessionStorage.getItem("userName");
-  const [companyData, setCompanyData] = useState(null);
-
-  const fetchData = async () => {
-    try {
-      const companyData = await fetchAllCompanyNamesWithId();
-      setCompanyData(companyData);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
 
   useEffect(() => {
     if (userName === "Employee") {
@@ -52,7 +40,6 @@ const Compliance = () => {
       }
     };
     getData();
-    fetchData();
   }, []);
 
   useEffect(() => {
@@ -118,7 +105,7 @@ const Compliance = () => {
                 <th scope="col">Company Name</th>
                 <th scope="col">Designation Name</th>
                 <th scope="col">Designation Category</th>
-                <th scope="col">Leave Limit</th>
+                {/* <th scope="col">Leave Limit</th> */}
                 <th scope="col">Salary Day</th>
                 <th scope="col">Action</th>
               </tr>
@@ -127,10 +114,19 @@ const Compliance = () => {
               {datas.map((data, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{data.compComplianceCmpId}</td>
+                  {/* <td>
+                    {" "}
+                    {companyData &&
+                      companyData.map((company) =>
+                        parseInt(data.compComplianceCmpId) === company.cmpId
+                          ? company.cmpName || "--"
+                          : ""
+                      )}
+                  </td> */}
+                  <td>{data.compComplianceCmpName}</td>
                   <td>{data.compComplianceDesignationName}</td>
                   <td>{data.compComplianceDesignationCategory}</td>
-                  <td>{data.compComplianceLeaveLimit}</td>
+                  {/* <td>{data.compComplianceLeaveLimit}</td> */}
                   <td>
                     {data.compComplianceSalaryDay &&
                       data.compComplianceSalaryDay
