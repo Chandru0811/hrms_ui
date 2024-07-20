@@ -17,7 +17,6 @@ const CompanyRegistration = () => {
       const response = await api.get("getAllCompanyReg");
       setDatas(response.data);
       setLoading(false);
-      console.log("Deduction data fetched:", response.data);
     } catch (error) {
       console.error("Error fetching data ", error);
     }
