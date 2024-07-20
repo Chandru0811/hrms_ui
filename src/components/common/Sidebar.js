@@ -24,7 +24,7 @@ function Sidebar() {
         },
         { title: "HR Policy", path: "/policy" },
         { title: "Departments", path: "/departments" },
-        userRole === "Admin" && {
+        (userRole === "Super Admin" || userRole === "Admin") && {
           title: "Exit Management",
           path: "/exitmanagement",
         },

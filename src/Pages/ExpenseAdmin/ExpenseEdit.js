@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
+import api from "../../config/URL";
 
 function ExpensesEdit() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("Pending");
+  const [reason, setReason] = useState("");
+  const [showReasonSelect, setShowReasonSelect] = useState(false);
+  const [showSubjectDescription, setShowSubjectDescription] = useState(false);
+  const navigate = useNavigate();
+  const {id} =useParams()
 
 
   const fetchData = async () => {
@@ -48,32 +55,57 @@ function ExpensesEdit() {
 
   const formik = useFormik({
     initialValues: {
-      expenseDate: "2024-03-13",
-      expenseType: "Office Supplies",
-      expenseAmount: "450",
-      attachment: "",
-      // employeeId: "ECS01",
-      employeeId: "Surya Kumar",
-      // companyId: "ECS3456",
-      cmpId: "AWS",
+      expensesId:1,
+      expenseDate: "",
+      files:null,
+      expenseType: "",
+      expenseAmount: "",
+      employeeId: "",
+      cmpId: "",
       approvalId: "",
       approvalName: "",
       status: "",
       reason: "",
       subject: "",
       description: "",
-      remarks: "Purchase of Stationery",
+      remarks: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async(values) => {
       console.log(values);
       setLoading(true);
+      const formData = new FormData();
+      formData.append("expensesId", id);
+      formData.append("files", values.attachment);
+      formData.append("expenseType", values.expenseType);
+      formData.append("expenseAmt", values.expenseAmount);
+      formData.append("expenseDetails", values.remarks);
+      formData.append("expenseDate", values.expenseDate);
+      formData.append("approverStatus", values.status);
+      formData.append("approverName", values.approvalName);
+      formData.append("expensesEmpId", values.employeeId);
+      formData.append("cmpId", values.cmpId);
+      
+      try {
+        const response = await api.post("/addExpenses", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/expenceadmin");
+        }
+      } catch (error) {
+        toast.error(
+          error.message || "An error occurred while submitting the form"
+        );
+      } finally {
+        setLoading(false);
+      }
     },
   });
-  const [status, setStatus] = useState("Pending");
-  const [reason, setReason] = useState("");
-  const [showReasonSelect, setShowReasonSelect] = useState(false);
-  const [showSubjectDescription, setShowSubjectDescription] = useState(false);
+ 
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
@@ -124,7 +156,7 @@ function ExpensesEdit() {
                     ) : (
                       <span></span>
                     )}
-                    &nbsp;<span>Save</span>
+                    &nbsp;<span>Update</span>
                   </button>
             </div>
           </div>
@@ -171,7 +203,7 @@ function ExpensesEdit() {
                   <option selected></option>
                   {companyData &&
                     companyData.map((cmpId) => (
-                      <option key={cmpId.id} value={cmpId.id}>
+                      <option key={cmpId.id} value={cmpId.cmpId}>
                         {cmpId.cmpName}
                       </option>
                     ))}
@@ -198,7 +230,7 @@ function ExpensesEdit() {
                   <option selected></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.id}>
+                      <option key={employeeId.id} value={employeeId.employeeId}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}
@@ -320,15 +352,19 @@ function ExpensesEdit() {
                 </lable>
                 <input
                   type="file"
-                  className={`form-control  ${
+                  name="attachment"
+                  className={`form-control ${
                     formik.touched.attachment && formik.errors.attachment
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("attachment")}
-                  disabled
+                  onChange={(event) => {
+                    formik.setFieldValue(
+                      "attachment",
+                      event.currentTarget.files[0]
+                    );
+                  }}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.touched.attachment && formik.errors.attachment && (
                   <div className="invalid-feedback">
@@ -398,9 +434,9 @@ function ExpensesEdit() {
                 onChange={handleStatusChange}
               >
                 <option selected></option>
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
+                <option value="PENDING">Pending</option>
+                <option value="APPROVED">Approved</option>
+                <option value="REJECTED">Rejected</option>
               </select>
               {formik.touched.status && formik.errors.status && (
                 <div className="invalid-feedback">{formik.errors.status}</div>

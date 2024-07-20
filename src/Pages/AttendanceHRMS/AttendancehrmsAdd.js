@@ -42,6 +42,7 @@ function AttendancehrmsAdd() {
   });
   const formik = useFormik({
     initialValues: {
+      attendanceId:1,
       dailyAttendanceEmpId: "",
       // employeeName: "",
       attendanceDate: "",

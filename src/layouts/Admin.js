@@ -273,8 +273,8 @@ function Admin({ handleLogout }) {
               {/* Expense Report Admin */}
               <Route path="/expenseadmin" element={<ExpenseReport />} />
               <Route path="/expenseadmin/add" element={<ExpenseAdd />} />
-              <Route path="/expenseadmin/edit" element={<ExpenseEdit />} />
-              <Route path="/expenseadmin/view" element={<ExpenseView />} />
+              <Route path="/expenseadmin/edit/:id" element={<ExpenseEdit />} />
+              <Route path="/expenseadmin/view/:id" element={<ExpenseView />} />
             </Routes>
           </div>
           <Footer />

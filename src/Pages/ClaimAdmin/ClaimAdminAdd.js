@@ -70,21 +70,23 @@ function ClaimAdminAdd() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
-      const payload = {
-        ...values,
-        claimsEmpId: values.claimsEmpId,
-        cmpId: parseInt(values.cmpId),
-        deptId: parseInt(values.deptId),
-      };
-      console.log("object", payload);
+     const formData = new FormData();
+      formData.append("files",values.claimsAttachment)
+      formData.append("deptId",values.deptId)
+      formData.append("cmpId",values.cmpId)
+      formData.append("claimsEmpId",values.claimsEmpId)
+      formData.append("claimsDate",values.claimsDate)
+      formData.append("claimsAmt",values.claimsAmt)
+      formData.append("remarks",values.remarks)
+      formData.append("claimsType",values.claimsType)
       setLoading(true);
       try {
-        const response = await api.post("/addClaims", payload, {
+        const response = await api.post("/addClaims", formData, {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         });
-        console.log("payload", payload);
+        console.log("formData", formData);
         if (response.status === 201) {
           toast.success(response.data.message);
           navigate("/claimadmin");
@@ -344,15 +346,21 @@ function ClaimAdminAdd() {
                 Attachment<span className="text-danger">*</span>
               </lable>
               <input
-                type="file"
-                className={`form-control  ${
-                  formik.touched.claimsAttachment &&
-                  formik.errors.claimsAttachment
-                    ? "is-invalid"
-                    : ""
-                }`}
-                {...formik.getFieldProps("claimsAttachment")}
-              />
+                  type="file"
+                  name="claimsAttachment"
+                  className={`form-control ${
+                    formik.touched.claimsAttachment && formik.errors.claimsAttachment
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  onChange={(event) => {
+                    formik.setFieldValue(
+                      "claimsAttachment",
+                      event.currentTarget.files[0]
+                    );
+                  }}
+                  onBlur={formik.handleBlur}
+                />
               {formik.touched.claimsAttachment &&
                 formik.errors.claimsAttachment && (
                   <div className="invalid-feedback">

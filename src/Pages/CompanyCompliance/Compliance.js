@@ -123,7 +123,7 @@ const Compliance = () => {
                           : ""
                       )}
                   </td> */}
-                  <td>{data.compComplianceCmpName}</td>
+                  <td>{data.compComplianceCmpId}</td>
                   <td>{data.compComplianceDesignationName}</td>
                   <td>{data.compComplianceDesignationCategory}</td>
                   {/* <td>{data.compComplianceLeaveLimit}</td> */}

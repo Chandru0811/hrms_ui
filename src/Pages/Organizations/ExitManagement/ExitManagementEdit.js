@@ -42,7 +42,7 @@ function ExitManagementEdit() {
     relievingApproverName: Yup.string().required(
       "*Relieving approver name is required"
     ),
-    relievingApprovalStatus: Yup.string().required(
+    relievingApproverStatus: Yup.string().required(
       "*Select the approval status"
     ),
     assetsReturned: Yup.string().required("*Select the assets returned"),
@@ -58,10 +58,10 @@ function ExitManagementEdit() {
       dateOfRelieving: "",
       relievingApproverName: "",
       relievingApproverId: "",
-      relievingApprovalStatus: "",
+      relievingApproverStatus: "",
       assetsReturned: "",
     },
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: async (values) => {
       // console.log(values);
       try {
@@ -134,7 +134,7 @@ function ExitManagementEdit() {
                   </Link>
                   &nbsp;&nbsp;
                   <button type="submit" className="btn btn-sm btn-button">
-                    Save
+                    Update
                   </button>
                 </div>
               </div>
@@ -384,10 +384,10 @@ function ExitManagementEdit() {
                     Approval Status<span className="text-danger">*</span>
                   </lable>
                   <select
-                    {...formik.getFieldProps("relievingApprovalStatus")}
+                    {...formik.getFieldProps("relievingApproverStatus")}
                     className={`form-select  ${
-                      formik.touched.relievingApprovalStatus &&
-                      formik.errors.relievingApprovalStatus
+                      formik.touched.relievingApproverStatus &&
+                      formik.errors.relievingApproverStatus
                         ? "is-invalid"
                         : ""
                     }`}
@@ -399,10 +399,10 @@ function ExitManagementEdit() {
                     <option value="Approved">Approved</option>
                     <option value="Rejected">Rejected</option>
                   </select>
-                  {formik.touched.relievingApprovalStatus &&
-                    formik.errors.relievingApprovalStatus && (
+                  {formik.touched.relievingApproverStatus &&
+                    formik.errors.relievingApproverStatus && (
                       <div className="invalid-feedback">
-                        {formik.errors.relievingApprovalStatus}
+                        {formik.errors.relievingApproverStatus}
                       </div>
                     )}
                 </div>

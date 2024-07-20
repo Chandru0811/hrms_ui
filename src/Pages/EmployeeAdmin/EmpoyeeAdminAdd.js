@@ -46,7 +46,7 @@ function EmployeeAdminAdd() {
       "*Primary email password is required"
     ),
     cmpId: Yup.string().required("*Company name is required"),
-    employeeID: Yup.string().required("*Employee id is required"),
+    // employeeID: Yup.string().required("*Employee id is required"),
     deptId: Yup.string().required("*Department name is required"),
     employeedesignation: Yup.string().required(
       "*Employee designation is required"
@@ -59,9 +59,9 @@ function EmployeeAdminAdd() {
     reportingManagerName: Yup.string().required(
       "*Reporting manager name is required"
     ),
-    reportingManagerID: Yup.string().required(
-      "*Reporting manager id is required"
-    ),
+    // reportingManagerID: Yup.string().required(
+    //   "*Reporting manager id is required"
+    // ),
     ...(selectedIdType === "nric" && {
       nricFin: Yup.string().required("*NRIC fin is required"),
       nricType: Yup.string().required("*Select a NRIC type"),

@@ -85,11 +85,27 @@ function ClaimAdminEdit() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+      const formData = new FormData();
+      formData.append("claimsId",id)
+      formData.append("files",values.claimsAttachment)
+      formData.append("deptId",values.deptId)
+      formData.append("cmpId",values.cmpId)
+      formData.append("claimsEmpId",values.claimsEmpId)
+      formData.append("claimsDate",values.claimsDate)
+      formData.append("claimsAmt",values.claimsAmt)
+      formData.append("remarks",values.remarks)
+      formData.append("claimsType",values.claimsType)
+      formData.append("approverNameLv1",values.approvalNameLv1)
+      formData.append("approverNameLv2",values.approvalNameLv2)
+      formData.append("approverStatusLv1",values.approvalStatusLv1)
+      formData.append("approverStatusLv2",values.approvalStatusLv2)
+      formData.append("claimsApproverLv1Id",values.claimsApprovalLv1Id)
+      formData.append("claimsApproverLv2Id",values.claimsApprovalLv2Id)
       setLoading(true);
       try {
-        const response = await api.put(`/updateClaimsById/${id}`, values, {
+        const response = await api.put(`/updateClaimsById/${id}`, formData, {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         });
         console.log("values", values);

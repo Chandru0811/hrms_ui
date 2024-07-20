@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
+import api from "../../config/URL";
 
 function ExpenseAdd() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [currentDate, setCurrentDate] = useState('');
-
+  const [currentDate, setCurrentDate] = useState("");
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -28,7 +29,7 @@ function ExpenseAdd() {
     fetchData();
   }, []);
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     setCurrentDate(today);
   }, []);
 
@@ -58,10 +59,37 @@ function ExpenseAdd() {
       remarks: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
       setLoading(true);
+      const formData = new FormData();
+      formData.append("files", values.attachment);
+      formData.append("expenseType", values.expenseType);
+      formData.append("expenseAmt", values.expenseAmount);
+      formData.append("expenseDetails", values.remarks);
+      formData.append("expenseDate", "2024-07-23T00:00:00");
+      formData.append("expensesEmpId", values.employeeId);
+      formData.append("cmpId", values.cmpId);
+      
+      try {
+        const response = await api.post("/addExpenses", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/expenceadmin");
+        }
+      } catch (error) {
+        toast.error(
+          error.message || "An error occurred while submitting the form"
+        );
+      } finally {
+        setLoading(false);
+      }
     },
+    
   });
 
   return (
@@ -77,20 +105,20 @@ function ExpenseAdd() {
               </Link>
               &nbsp;&nbsp;
               <button
-                    type="submit"
-                    className="btn btn-sm btn-button"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span></span>
-                    )}
-                    &nbsp;<span>Save</span>
-                  </button>
+                type="submit"
+                className="btn btn-sm btn-button"
+                disabled={loading}
+              >
+                {loading ? (
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    aria-hidden="true"
+                  ></span>
+                ) : (
+                  <span></span>
+                )}
+                &nbsp;<span>Save</span>
+              </button>
             </div>
           </div>
           <div className="row mt-3">
@@ -117,7 +145,7 @@ function ExpenseAdd() {
                 )}
               </div>
             </div> */}
-             <div className="col-md-6 col-12 mb-2">
+            <div className="col-md-6 col-12 mb-2">
               <lable className="form-lable">
                 Company Name<span className="text-danger">*</span>
               </lable>
@@ -134,7 +162,7 @@ function ExpenseAdd() {
                   <option selected></option>
                   {companyData &&
                     companyData.map((cmpId) => (
-                      <option key={cmpId.id} value={cmpId.id}>
+                      <option key={cmpId.id} value={cmpId.cmpId}>
                         {cmpId.cmpName}
                       </option>
                     ))}
@@ -161,7 +189,7 @@ function ExpenseAdd() {
                   <option selected></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.id}>
+                      <option key={employeeId.id} value={employeeId.employeeId}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}
@@ -196,7 +224,7 @@ function ExpenseAdd() {
                 )}
               </div>
             </div> */}
-           
+
             <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">
@@ -274,19 +302,24 @@ function ExpenseAdd() {
             </div>
             <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
-                <lable className="form-lable">
+                <label className="form-label">
                   Attachment<span className="text-danger">*</span>
-                </lable>
+                </label>
                 <input
                   type="file"
-                  className={`form-control  ${
+                  name="attachment"
+                  className={`form-control ${
                     formik.touched.attachment && formik.errors.attachment
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("attachment")}
+                  onChange={(event) => {
+                    formik.setFieldValue(
+                      "attachment",
+                      event.currentTarget.files[0]
+                    );
+                  }}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.touched.attachment && formik.errors.attachment && (
                   <div className="invalid-feedback">
@@ -295,6 +328,7 @@ function ExpenseAdd() {
                 )}
               </div>
             </div>
+
             <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">Remarks</lable>

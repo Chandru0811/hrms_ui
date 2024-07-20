@@ -1,60 +1,82 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
 import Delete from "../../components/common/Delete";
+import api from "../../config/URL";
 // import ExpenseStatus from "../ExpenseAdmin/ExpenseStatus";
 
 const Payroll = () => {
   const tableRef = useRef(null);
+  const [datas, setDatas] = useState(null);
+  const [loading, setLoading] = useState(true);
+  console.log("object", datas);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get("getAllExpenses");
+        setDatas(response.data);
 
-  const datas = [
-    {
-      id: 1,
-      employeeID: "2",
-      expenseID: "1",
-      date: "01/01/2024",
-      type: "Office Supplies",
-      amount: "$350",
-      status: "Approved",
-    },
-    {
-      id: 2,
-      employeeID: " 4",
-      expenseID: "2",
-      date: "22/01/2024",
-      type: "Equipment",
-      amount: "$270",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      employeeID: " 6",
-      expenseID: "2",
-      date: "16/01/2024",
-      type: "Training",
-      amount: "$1500",
-      status: "Rejected",
-    },
-  ];
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data ", error);
+      }
+    };
+    getData();
+  }, []);
 
   useEffect(() => {
-    const table = $(tableRef.current).DataTable({
+    if (!loading) {
+      initializeDataTable();
+    }
+    return () => {
+      destroyDataTable();
+    };
+  }, [loading]);
+  const initializeDataTable = () => {
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      return;
+    }
+    $(tableRef.current).DataTable({
       responsive: true,
     });
+  };
 
-    return () => {
+  const destroyDataTable = () => {
+    const table = $(tableRef.current).DataTable();
+    if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
       table.destroy();
-    };
-  }, []);
+    }
+  };
+
+  const refreshData = async () => {
+    destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getAllExpenses");
+      setDatas(response.data);
+      // initializeDataTable(); // Reinitialize DataTable after successful data update
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="container">
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
+
       <div className="col-12 text-end my-3">
         <Link to="/expenseadmin/add">
-          <button type="button" className="btn btn-button btn-sm">Add  <i class="bx bx-plus"></i></button>
+          <button type="button" className="btn btn-button btn-sm">
+            Add <i class="bx bx-plus"></i>
+          </button>
         </Link>
       </div>
       <table ref={tableRef} className="display">
@@ -71,7 +93,7 @@ const Payroll = () => {
           </tr>
         </thead>
         <tbody>
-          {datas.map((data, index) => (
+          {datas?.map((data, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
               <td>{data.employeeID}</td>
@@ -89,18 +111,18 @@ const Payroll = () => {
                 )}
               </td>
               <td>
-                <Link to="/expenseadmin/view">
+                <Link to={`/expenseadmin/view/${data.expenseId}`}>
                   <button className="btn btn-sm">
                     <FaEye />
                   </button>
                 </Link>
-                <Link to="/expenseadmin/edit">
+                <Link to={`/expenseadmin/edit/${data.expenseId}`}>
                   <button className="btn btn-sm">
                     <FaEdit />
                   </button>
                 </Link>
                 {/* <ExpenseStatus /> */}
-                <Delete />
+                <Delete onSuccess={refreshData} />
               </td>
             </tr>
           ))}
