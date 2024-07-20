@@ -4,7 +4,6 @@ import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaEye, FaEdit } from "react-icons/fa";
-import Delete from "../../components/common/Delete";
 import api from "../../config/URL";
 // import axios from "axios";
 
@@ -12,6 +11,7 @@ const LeaveAdmin = () => {
   const tableRef = useRef(null);
   const [data, setData] = useState([]);
   const [loading, setloading] = useState(true);
+  const userRole = sessionStorage.getItem("userName");
 
   const fetchData = async () => {
     try {
@@ -40,19 +40,27 @@ const LeaveAdmin = () => {
         table.destroy();
       };
     }
-  }, [loading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="container my-4">
-      <div className="my-5 d-flex justify-content-between"></div>
-
+      {userRole === "Admin" && (
+        <div className="my-3 d-flex align-items-end justify-content-end">
+          <Link to="/policy/add">
+            <button type="button" className="btn btn-button btn-sm">
+              Add <i className="bx bx-plus"></i>
+            </button>
+          </Link>
+        </div>
+      )}
       <table ref={tableRef} className="display">
         <thead>
           <tr>
             <th scope="col" style={{ whiteSpace: "nowrap" }}>
               S No
             </th>
-          
+
             <th scope="col">Employee Id</th>
             <th scope="col">Employee Name</th>
             {/* <th scope="col">Department</th> */}

@@ -9,7 +9,6 @@ import api from "../../config/URL";
 
 const Policy = () => {
   const userRole = sessionStorage.getItem("userName");
-
   const tableRef = useRef(null);
   const [datas, setDatas] = useState([]);
   // console.log(datas)
@@ -75,8 +74,8 @@ const Policy = () => {
         </div>
       )}
       {!loading && (
-        <div className="container my-5">
-          {userRole === "Admin" && (
+        <div className="container my-3">
+          {(userRole === "Super Admin" || userRole === "Admin") && (
             <div className="my-3 d-flex align-items-end justify-content-end">
               <Link to="/policy/add">
                 <button type="button" className="btn btn-button btn-sm">

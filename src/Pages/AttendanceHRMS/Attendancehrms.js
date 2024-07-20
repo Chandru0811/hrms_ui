@@ -100,7 +100,7 @@ const Attendancehrms = () => {
         </div>
       )}
       {!loading && (
-        <div className="container my-5">
+        <div className="container my-3">
           {!viewAction && (
             <div className="col-12 text-end mb-3">
               <Link to="/attendancehrms/add">

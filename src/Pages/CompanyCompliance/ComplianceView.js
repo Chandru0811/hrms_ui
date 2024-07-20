@@ -2,24 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../../config/URL";
 import { toast } from "react-toastify";
-import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 
 function ComplianceView() {
-  const [data, setData] = useState([]);
   const { id } = useParams();
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [companyData, setCompanyData] = useState("");
-
-  const fetchData = async () => {
-    try {
-      const companyData = await fetchAllCompanyNamesWithId();
-      setCompanyData(companyData);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-
-  console.log("data", data);
 
   useEffect(() => {
     const getData = async () => {
@@ -28,24 +15,14 @@ function ComplianceView() {
         setData(response.data);
         setLoading(false);
       } catch (error) {
-        // console.log(error.message);
         toast.error("Error Fetching Data ", error.message);
       }
     };
     getData();
-    fetchData();
   }, [id]);
 
-  const getCompanyNameById = () => {
-    if (companyData) {
-      const company = companyData.find(
-        (company) => company.cmpId === data.compComplianceCmpId
-      );
-      return company ? company.cmpName : "";
-    }
-  };
-  const reverseDateFormat = (dateString) =>
-    dateString.split("-").reverse().join("-");
+  // const reverseDateFormat = (dateString) =>
+  //   dateString.split("-").reverse().join("-");
 
   return (
     <section>
@@ -74,7 +51,7 @@ function ComplianceView() {
                   </div>
                   <div className="col-6">
                     <p className="text-muted text-sm">
-                      : {getCompanyNameById()}
+                      : {data.compComplianceCmpName}
                     </p>
                   </div>
                 </div>
@@ -117,13 +94,13 @@ function ComplianceView() {
               </div>
               <div className="col-md-6 col-12">
                 <div className="row mb-2">
-                  <div className="col-6  ">
-                    <p className="fw-medium">Salary Day</p>
+                  <div className="col-6 ">
+                    <p className="fw-medium">Salary Calculation Day</p>
                   </div>
                   <div className="col-6">
                     <p className="text-muted text-sm">
                       :{" "}
-                      {data.compComplianceSalaryDay
+                      {data.compComplianceSalaryCalculationDay
                         .split("T")[0]
                         .split("-")
                         .reverse()
@@ -134,13 +111,13 @@ function ComplianceView() {
               </div>
               <div className="col-md-6 col-12">
                 <div className="row mb-2">
-                  <div className="col-6 ">
-                    <p className="fw-medium">Salary Calculation Day</p>
+                  <div className="col-6  ">
+                    <p className="fw-medium">Salary Day</p>
                   </div>
                   <div className="col-6">
                     <p className="text-muted text-sm">
                       :{" "}
-                      {data.compComplianceSalaryCalculationDay
+                      {data.compComplianceSalaryDay
                         .split("T")[0]
                         .split("-")
                         .reverse()

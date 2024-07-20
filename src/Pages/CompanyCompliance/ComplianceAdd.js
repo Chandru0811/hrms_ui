@@ -9,26 +9,8 @@ import { toast } from "react-toastify";
 function ComplianceAdd() {
   const [loading, setLoading] = useState(false);
   const [companyData, setCompanyData] = useState(null);
-  const [currentDate, setCurrentDate] = useState('');
-
-  const fetchData = async () => {
-    try {
-      const companyData = await fetchAllCompanyNamesWithId();
-      setCompanyData(companyData);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setCurrentDate(today);
-  }, []);
   const navigate = useNavigate();
+
   const validationSchema = Yup.object({
     cmpId: Yup.string().required("*Company name is required"),
     compComplianceDesignationName: Yup.string().required(
@@ -72,11 +54,24 @@ function ComplianceAdd() {
         }
       } catch (error) {
         toast.error("Error Submiting Data, ", error);
-      }finally{
+      } finally {
         setLoading(false);
       }
     },
   });
+
+  const fetchData = async () => {
+    try {
+      const companyData = await fetchAllCompanyNamesWithId();
+      setCompanyData(companyData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <section className="HolidayAdd p-3">
@@ -92,20 +87,20 @@ function ComplianceAdd() {
                 </Link>
                 &nbsp;&nbsp;
                 <button
-                    type="submit"
-                    className="btn btn-sm btn-button"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span></span>
-                    )}
-                    &nbsp;<span>Save</span>
-                  </button>
+                  type="submit"
+                  className="btn btn-sm btn-button"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    <span></span>
+                  )}
+                  &nbsp;<span>Save</span>
+                </button>
               </div>
             </div>
             <div className="row mt-3">
@@ -174,8 +169,10 @@ function ComplianceAdd() {
                   aria-label="Default select example"
                 >
                   <option selected></option>
-                  <option value="Permanent">Permanent</option>
-                  <option value="Temporary">Temporary</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Developer">Developer</option>
+                  <option value="Temporary">Tester</option>
                 </select>
                 {formik.touched.compComplianceDesignationCategory &&
                   formik.errors.compComplianceDesignationCategory && (
@@ -224,8 +221,6 @@ function ComplianceAdd() {
                     {...formik.getFieldProps(
                       "compComplianceSalaryCalculationDay"
                     )}
-                    value={formik.values.compComplianceSalaryCalculationDay || currentDate}
-                  min={currentDate}
                   />
                   {formik.touched.compComplianceSalaryCalculationDay &&
                     formik.errors.compComplianceSalaryCalculationDay && (
@@ -249,8 +244,6 @@ function ComplianceAdd() {
                         : ""
                     }`}
                     {...formik.getFieldProps("compComplianceSalaryDay")}
-                    value={formik.values.compComplianceSalaryDay || currentDate}
-                  min={currentDate}
                   />
                   {formik.touched.compComplianceSalaryDay &&
                     formik.errors.compComplianceSalaryDay && (

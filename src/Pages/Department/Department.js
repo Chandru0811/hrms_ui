@@ -76,8 +76,8 @@ const Department = () => {
         </div>
       )}
       {!loading && (
-        <div className="container my-5">
-          {userRole === "Admin" && (
+        <div className="container my-3">
+          {(userRole === "Admin" || userRole === "Super Admin") && (
             <div className="my-3 d-flex align-items-end justify-content-end">
               <Link to="/departments/add">
                 <button type="button" className="btn btn-button btn-sm">

@@ -74,11 +74,12 @@ const Leave = () => {
         table.destroy();
       };
     }
-  }, [loading]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="container my-4">
-      <div className="my-5 d-flex justify-content-end">
+    <div className="container my-3">
+      <div className="my-3 d-flex justify-content-end">
         <Link to="/leave/add">
           <button type="button" className="btn btn-button btn-sm">
             Add <i class="bx bx-plus"></i>

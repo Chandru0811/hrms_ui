@@ -7,25 +7,10 @@ import { toast } from "react-toastify";
 import api from "../../config/URL";
 
 function ComplianceEdit() {
-  const [companyData, setCompanyData] = useState(null);
-  console.log("companydata", companyData);
-
-  const fetchData = async () => {
-    try {
-      const companyData = await fetchAllCompanyNamesWithId();
-      setCompanyData(companyData);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [companyData, setCompanyData] = useState(null);
 
   const validationSchema = Yup.object({
     compComplianceCmpId: Yup.string().required("*Company name is required"),
@@ -56,7 +41,6 @@ function ComplianceEdit() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log("values", values);
       setLoading(true);
       try {
         const response = await api.put(
@@ -81,6 +65,19 @@ function ComplianceEdit() {
       }
     },
   });
+
+  const fetchData = async () => {
+    try {
+      const companyData = await fetchAllCompanyNamesWithId();
+      setCompanyData(companyData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const getData = async () => {
     try {
@@ -107,12 +104,11 @@ function ComplianceEdit() {
     if (id) {
       getData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <section className="HolidayAdd p-3">
-
-
       <div className="container-fluid">
         <div className="container">
           <form onSubmit={formik.handleSubmit}>
@@ -149,11 +145,12 @@ function ComplianceEdit() {
                 <div className="input-group mb-3">
                   <select
                     {...formik.getFieldProps("compComplianceCmpId")}
-                    className={`form-select  ${formik.touched.compComplianceCmpId &&
-                        formik.errors.compComplianceCmpId
+                    className={`form-select  ${
+                      formik.touched.compComplianceCmpId &&
+                      formik.errors.compComplianceCmpId
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     aria-label="Default select example"
                   >
                     <option selected></option>
@@ -181,11 +178,12 @@ function ComplianceEdit() {
                   <span className="text-danger">*</span>
                   <input
                     type="text"
-                    className={`form-control  ${formik.touched.compComplianceDesignationName &&
-                        formik.errors.compComplianceDesignationName
+                    className={`form-control  ${
+                      formik.touched.compComplianceDesignationName &&
+                      formik.errors.compComplianceDesignationName
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     {...formik.getFieldProps("compComplianceDesignationName")}
                   ></input>
                   {formik.touched.compComplianceDesignationName &&
@@ -200,19 +198,20 @@ function ComplianceEdit() {
                 <lable className="">Designation Category</lable>
                 <span className="text-danger">*</span>
                 <select
-                  className={`form-select ${formik.touched.compComplianceDesignationCategory &&
-                      formik.errors.compComplianceDesignationCategory
+                  className={`form-select ${
+                    formik.touched.compComplianceDesignationCategory &&
+                    formik.errors.compComplianceDesignationCategory
                       ? "is-invalid"
                       : ""
-                    }`}
-                  {...formik.getFieldProps(
-                    "compComplianceDesignationCategory"
-                  )}
+                  }`}
+                  {...formik.getFieldProps("compComplianceDesignationCategory")}
                   aria-label="Default select example"
                 >
                   <option selected></option>
-                  <option value="Permanent">Permanent</option>
-                  <option value="Temporary">Temporary</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Developer">Developer</option>
+                  <option value="Temporary">Tester</option>
                 </select>
                 {formik.touched.compComplianceDesignationCategory &&
                   formik.errors.compComplianceDesignationCategory && (
@@ -228,11 +227,12 @@ function ComplianceEdit() {
                   </lable>
                   <input
                     type="text"
-                    className={`form-control  ${formik.touched.compComplianceLeaveLimit &&
-                        formik.errors.compComplianceLeaveLimit
+                    className={`form-control  ${
+                      formik.touched.compComplianceLeaveLimit &&
+                      formik.errors.compComplianceLeaveLimit
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     {...formik.getFieldProps("compComplianceLeaveLimit")}
                   />
                   {formik.touched.compComplianceLeaveLimit &&
@@ -251,11 +251,12 @@ function ComplianceEdit() {
                   </lable>
                   <input
                     type="date"
-                    className={`form-control  ${formik.touched.compComplianceSalaryCalculationDay &&
-                        formik.errors.compComplianceSalaryCalculationDay
+                    className={`form-control  ${
+                      formik.touched.compComplianceSalaryCalculationDay &&
+                      formik.errors.compComplianceSalaryCalculationDay
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     {...formik.getFieldProps(
                       "compComplianceSalaryCalculationDay"
                     )}
@@ -275,11 +276,12 @@ function ComplianceEdit() {
                   </lable>
                   <input
                     type="date"
-                    className={`form-control  ${formik.touched.compComplianceSalaryDay &&
-                        formik.errors.compComplianceSalaryDay
+                    className={`form-control  ${
+                      formik.touched.compComplianceSalaryDay &&
+                      formik.errors.compComplianceSalaryDay
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     {...formik.getFieldProps("compComplianceSalaryDay")}
                   />
                   {formik.touched.compComplianceSalaryDay &&
@@ -296,11 +298,12 @@ function ComplianceEdit() {
                   <textarea
                     id="floatingTextarea2"
                     style={{ height: "100px" }}
-                    className={`form-control  ${formik.touched.compComplianceRemarks &&
-                        formik.errors.compComplianceRemarks
+                    className={`form-control  ${
+                      formik.touched.compComplianceRemarks &&
+                      formik.errors.compComplianceRemarks
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     {...formik.getFieldProps("compComplianceRemarks")}
                   />
                   {formik.touched.compComplianceRemarks &&
@@ -315,7 +318,6 @@ function ComplianceEdit() {
           </form>
         </div>
       </div>
-
     </section>
   );
 }
