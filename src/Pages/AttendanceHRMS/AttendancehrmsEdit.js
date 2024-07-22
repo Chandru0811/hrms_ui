@@ -41,7 +41,7 @@ function AttendancehrmsEdit() {
   });
   const formik = useFormik({
     initialValues: {
-      dailyAttendanceEmpId: "",
+      dailyAttendanceEmpId: 34,
       attendanceDate: "",
       attendanceStatus: "",
       attendanceShiftMode: "",
@@ -53,7 +53,7 @@ function AttendancehrmsEdit() {
       attendanceOtEndtime: "",
       attendanceRemarks: "",
     },
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: async (values) => {
       const payload={
         ...values,

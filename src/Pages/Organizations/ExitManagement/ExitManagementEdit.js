@@ -30,15 +30,15 @@ function ExitManagementEdit() {
   }, []);
 
   const validationSchema = Yup.object({
-    exitMgmtEmpId: Yup.string().required("*Employee name is required"),
-    exitMgmtCmpId: Yup.string().required("*Company name is required"),
-    exitMgmtDateOfApply: Yup.string().required("*Select the date of apply"),
+    // exitMgmtEmpId: Yup.string().required("*Employee name is required"),
+    // exitMgmtCmpId: Yup.string().required("*Company name is required"),
+    // exitMgmtDateOfApply: Yup.string().required("*Select the date of apply"),
     exitMgmtNoticePeriod: Yup.string().required("*Notice period is required"),
     // currentDate: Yup.string().required("*Select the current date"),
-    reasonForRelieving: Yup.string().required(
-      "*Reason for relieving is required"
-    ),
-    dateOfRelieving: Yup.string().required("*Select the date of relieving"),
+    // reasonForRelieving: Yup.string().required(
+    //   "*Reason for relieving is required"
+    // ),
+    // dateOfRelieving: Yup.string().required("*Select the date of relieving"),
     relievingApproverName: Yup.string().required(
       "*Relieving approver name is required"
     ),
@@ -51,7 +51,7 @@ function ExitManagementEdit() {
   const formik = useFormik({
     initialValues: {
       exitMgmtCmpId: "",
-      exitMgmtEmpId: "",
+      exitMgmtEmpId: 34,
       exitMgmtDateOfApply: "",
       exitMgmtNoticePeriod: "",
       reasonForRelieving: "",
@@ -61,7 +61,7 @@ function ExitManagementEdit() {
       relievingApproverStatus: "",
       assetsReturned: "",
     },
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
       // console.log(values);
       try {

@@ -67,8 +67,8 @@ function ExpenseAdd() {
       formData.append("expenseType", values.expenseType);
       formData.append("expenseAmt", values.expenseAmount);
       formData.append("expenseDetails", values.remarks);
-      formData.append("expenseDate", "2024-07-23T00:00:00");
-      formData.append("expensesEmpId", values.employeeId);
+      formData.append("expenseDate", "2024-07-14T14:26:32.665Z");
+      formData.append("expensesEmpId", 34);
       formData.append("cmpId", values.cmpId);
       
       try {
@@ -79,7 +79,7 @@ function ExpenseAdd() {
         });
         if (response.status === 201) {
           toast.success(response.data.message);
-          navigate("/expenceadmin");
+          navigate("/expenseadmin");
         }
       } catch (error) {
         toast.error(
@@ -189,7 +189,7 @@ function ExpenseAdd() {
                   <option selected></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.employeeId}>
+                      <option key={employeeId.id} value={employeeId.id}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}

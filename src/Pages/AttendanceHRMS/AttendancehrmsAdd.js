@@ -43,7 +43,7 @@ function AttendancehrmsAdd() {
   const formik = useFormik({
     initialValues: {
       attendanceId:1,
-      dailyAttendanceEmpId: "",
+      dailyAttendanceEmpId: 34,
       // employeeName: "",
       attendanceDate: "",
       attendanceStatus: "",
@@ -56,7 +56,7 @@ function AttendancehrmsAdd() {
       attendanceOtEndtime: "",
       attendanceRemarks: "",
     },
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: async (values) => {
       const payload = {
         ...values,
@@ -68,7 +68,7 @@ function AttendancehrmsAdd() {
       console.log("object", payload.attendanceCheckInTime);
       try {
         setLoading(true);
-        const response = await api.post(`addDailyAttendance`, payload, {
+        const response = await api.post(`/addDailyAttendance`, payload, {
           headers: {
             "Content-Type": "application/json",
             //Authorization: `Bearer ${token}`,

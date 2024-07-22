@@ -37,7 +37,7 @@ function ExpensesEdit() {
   const validationSchema = Yup.object().shape({
     expenseDate: Yup.string().required("*Expense date is required"),
     expenseType: Yup.string().required("*Select a expense type"),
-    expenseAmount: Yup.number()
+    expenseAmt: Yup.number()
       .required("*Expense amount is required")
       .typeError("*Must be a number"),
     attachment: Yup.string().required("*Attachment is required"),
@@ -45,12 +45,12 @@ function ExpensesEdit() {
     employeeId: Yup.string().required("*Employee name is required"),
     // companyId: Yup.string().required("*Company id is required"),
     cmpId: Yup.string().required("*Company name is required"),
-    approvalId: Yup.string().required("*Approver id is required"),
-    approvalName: Yup.string().required("*Approver name is required"),
+    // approvalId: Yup.string().required("*Approver id is required"),
+    // approvalName: Yup.string().required("*Approver name is required"),
     status: Yup.string().required("*Select the status"),
     reason: Yup.string().required("*Select the reason"),
-    subject: Yup.string().required("*Subject is required"),
-    description: Yup.string().required("*Description is required"),
+    // subject: Yup.string().required("*Subject is required"),
+    // description: Yup.string().required("*Description is required"),
   });
 
   const formik = useFormik({
@@ -59,7 +59,7 @@ function ExpensesEdit() {
       expenseDate: "",
       files:null,
       expenseType: "",
-      expenseAmount: "",
+      expenseAmt: "",
       employeeId: "",
       cmpId: "",
       approvalId: "",
@@ -70,7 +70,7 @@ function ExpensesEdit() {
       description: "",
       remarks: "",
     },
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: async(values) => {
       console.log(values);
       setLoading(true);
@@ -78,7 +78,7 @@ function ExpensesEdit() {
       formData.append("expensesId", id);
       formData.append("files", values.attachment);
       formData.append("expenseType", values.expenseType);
-      formData.append("expenseAmt", values.expenseAmount);
+      formData.append("expenseAmt", values.expenseAmt);
       formData.append("expenseDetails", values.remarks);
       formData.append("expenseDate", values.expenseDate);
       formData.append("approverStatus", values.status);
@@ -87,14 +87,14 @@ function ExpensesEdit() {
       formData.append("cmpId", values.cmpId);
       
       try {
-        const response = await api.post("/addExpenses", formData, {
+        const response = await api.put(`/updateExpensesById/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
         if (response.status === 201) {
           toast.success(response.data.message);
-          navigate("/expenceadmin");
+          navigate("/expenseadmin");
         }
       } catch (error) {
         toast.error(
@@ -130,6 +130,19 @@ function ExpensesEdit() {
       formik.setFieldValue("description", "");
     }
   };
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/getExpensesById/${id}`);
+        formik.setValues(response.data);
+        
+      } catch (error) {
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   return (
     <div className="container-fluid">
@@ -298,21 +311,16 @@ function ExpensesEdit() {
                 <lable className="form-lable">
                   Expense Type<span className="text-danger">*</span>
                 </lable>
-                <select
+                <input
                   {...formik.getFieldProps("expenseType")}
-                  className={`form-select    ${
+                  className={`form-control    ${
                     formik.touched.expenseType && formik.errors.expenseType
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Default select example"
                   disabled
-                >
-                  <option value="Office Supplies">Office Supplies</option>
-                  <option value="Equipment">Equipment</option>
-                  <option value="Training">Training</option>
-                </select>
-                {formik.touched.expenseType && formik.errors.expenseType && (
+                />
+                 {formik.touched.expenseType && formik.errors.expenseType && (
                   <div className="invalid-feedback">
                     {formik.errors.expenseType}
                   </div>
@@ -328,19 +336,19 @@ function ExpensesEdit() {
                   type="text"
                   placeholder="$350"
                   className={`form-control  ${
-                    formik.touched.expenseAmount && formik.errors.expenseAmount
+                    formik.touched.expenseAmt && formik.errors.expenseAmt
                       ? "is-invalid"
                       : ""
                   }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("expenseAmount")}
+                  {...formik.getFieldProps("expenseAmt")}
                   disabled
                 />
-                {formik.touched.expenseAmount &&
-                  formik.errors.expenseAmount && (
+                {formik.touched.expenseAmt &&
+                  formik.errors.expenseAmt && (
                     <div className="invalid-feedback">
-                      {formik.errors.expenseAmount}
+                      {formik.errors.expenseAmt}
                     </div>
                   )}
               </div>
@@ -466,7 +474,7 @@ function ExpensesEdit() {
                 )}
               </div>
             )}
-            {showSubjectDescription && (
+            {/* {showSubjectDescription && (
               <>
                 <div className="col-md-6 col-12 mb-4">
                   <lable className="form-lable fw-medium">Subject</lable>
@@ -508,7 +516,7 @@ function ExpensesEdit() {
                   )}
                 </div>
               </>
-            )}
+            )} */}
             <div className="col-md-6 col-12 mb-4">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">Remarks</lable>

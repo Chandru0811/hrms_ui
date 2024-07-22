@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
-import api from '../../config/URL'
+import api from "../../config/URL";
 
 function LeaveAdd() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [currentDate, setCurrentDate] = useState('');
+  const [currentDate, setCurrentDate] = useState("");
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -33,7 +34,7 @@ function LeaveAdd() {
   }, []);
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     setCurrentDate(today);
   }, []);
 
@@ -49,9 +50,7 @@ function LeaveAdd() {
     reasonForrequestedLeave: Yup.string().required(
       "*Reason for requested leave is required"
     ),
-    leaveReqType: Yup.string().required(
-      "*Leave request type is required"
-    ),
+    leaveReqType: Yup.string().required("*Leave request type is required"),
   });
   const formik = useFormik({
     initialValues: {
@@ -67,31 +66,31 @@ function LeaveAdd() {
       reasonForrequestedLeave: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values,{ resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log(values);
-      const payload={
-        leaveReqEmpId: values.employeeId,
+      const payload = {
+        leaveReqEmpId: 34,
         leaveReqStartDate: values.fromDate,
         leaveReqEndDate: values.toDate,
-        leaveReqRemarks : values.reasonForrequestedLeave,
-        leaveReqType:values.leaveReqType
-      }
+        leaveReqRemarks: values.reasonForrequestedLeave,
+        leaveReqType: values.leaveReqType,
+      };
       setLoading(true);
       try {
-        const response = await api.post(`addLeaveRequests`,payload,{
-            headers: {
-              "Content-Type": "application/json",
-              //Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if(response.status===201){
-        toast.success("created:") 
-        resetForm();
-      }
+        const response = await api.post(`addLeaveRequests`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+            //Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 201) {
+          toast.success("created:");
+          resetForm();
+          navigate("/leaveadmin");
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
-      }  finally {
+      } finally {
         setLoading(false);
       }
     },
@@ -111,20 +110,20 @@ function LeaveAdd() {
                 </Link>
                 &nbsp;&nbsp;
                 <button
-                    type="submit"
-                    className="btn btn-sm btn-button"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span></span>
-                    )}
-                    &nbsp;<span>Save</span>
-                  </button>
+                  type="submit"
+                  className="btn btn-sm btn-button"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    <span></span>
+                  )}
+                  &nbsp;<span>Save</span>
+                </button>
               </div>
             </div>
             <div className="row mt-3">
@@ -148,7 +147,7 @@ function LeaveAdd() {
                   )}
                 </div>
               </div> */}
-                <div className="col-md-6 col-12 mb-2">
+              <div className="col-md-6 col-12 mb-2">
                 <lable className="form-lable">
                   Company Name<span className="text-danger">*</span>
                 </lable>
@@ -256,7 +255,7 @@ function LeaveAdd() {
                     )}
                 </div>
               </div> */}
-            
+
               {/* <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start mt-2 mb-3">
                   <lable className="form-lable">Company ID</lable>
@@ -277,7 +276,7 @@ function LeaveAdd() {
                   )}
                 </div>
               </div> */}
-            
+
               <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start  mb-3">
                   <lable className="form-lable">From Date</lable>
@@ -324,15 +323,12 @@ function LeaveAdd() {
               </div>
               <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                  Leave Requested Type
-                  </lable>
+                  <lable className="form-lable">Leave Requested Type</lable>
                   <span className="text-danger">*</span>
                   <select
                     type="text"
                     className={`form-select ${
-                      formik.touched.leaveReqType &&
-                      formik.errors.leaveReqType
+                      formik.touched.leaveReqType && formik.errors.leaveReqType
                         ? "is-invalid"
                         : ""
                     }`}

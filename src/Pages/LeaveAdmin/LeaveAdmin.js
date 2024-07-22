@@ -9,45 +9,67 @@ import api from "../../config/URL";
 
 const LeaveAdmin = () => {
   const tableRef = useRef(null);
-  const [data, setData] = useState([]);
-  const [loading, setloading] = useState(true);
+  const [data, setDatas] = useState([]);
+  const [loading, setLoading] = useState(true);
   const userRole = sessionStorage.getItem("userName");
+  // console.log("object",)
 
-  const fetchData = async () => {
-    try {
-      // setLoading(true);
-      const response = await api.get(`getAllLeaveRequests`, {
-        headers: {
-          "Content-Type": "application/json",
-          //Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(response.data);
-      setloading(false);
-      console.log("object", data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get("getAllLeaveRequests");
+        setDatas(response.data);
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data ", error);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      initializeDataTable();
+    }
+    return () => {
+      destroyDataTable();
+    };
+  }, [loading]);
+  const initializeDataTable = () => {
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      return;
+    }
+    $(tableRef.current).DataTable({
+      responsive: true,
+    });
+  };
+
+  const destroyDataTable = () => {
+    const table = $(tableRef.current).DataTable();
+    if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
+      table.destroy();
     }
   };
 
-  useEffect(() => {
-    fetchData();
-    if (!loading) {
-      const table = $(tableRef.current).DataTable({
-        responsive: true,
-      });
-      return () => {
-        table.destroy();
-      };
+  const refreshData = async () => {
+    destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getAllLeaveRequests");
+      setDatas(response.data);
+      // initializeDataTable(); // Reinitialize DataTable after successful data update
+    } catch (error) {
+      console.error("Error refreshing data:", error.message);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setLoading(false);
+  };
 
   return (
     <div className="container my-4">
       {userRole === "Admin" && (
         <div className="my-3 d-flex align-items-end justify-content-end">
-          <Link to="/policy/add">
+          <Link to="/leave/add">
             <button type="button" className="btn btn-button btn-sm">
               Add <i className="bx bx-plus"></i>
             </button>
@@ -103,7 +125,7 @@ const LeaveAdmin = () => {
                       <FaEye />
                     </button>
                   </Link>
-                  <Link to="/leaveadmin/edit">
+                  <Link to={`/leaveadmin/edit/${data.leaveRequestId}`}>
                     <button className="btn btn-sm">
                       <FaEdit />
                     </button>

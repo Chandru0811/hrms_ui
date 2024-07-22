@@ -1,10 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Invoice from "../../assets/images/Invoice.png";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
 
 export default function ExpensesView() {
+  const [data, setData] = useState([]);
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+
+  console.log("data", data);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`getExpensesById/${id}`);
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        // console.log(error.message);
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+    // fetchData();
+  }, [id]);
   return (
     <div className="container">
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
       <div className="row mt-3">
         <div className="col-12 text-end">
           <Link to="/expenseadmin">
@@ -32,7 +58,7 @@ export default function ExpensesView() {
                 <p className="fw-medium">Employee Name</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: Suriya</p>
+                <p className="text-muted text-sm">:{data.expensesEmpId}</p>
               </div>
             </div>
           </div>
@@ -52,7 +78,7 @@ export default function ExpensesView() {
                 <p className="fw-medium">Company Name</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: ECS Cloud</p>
+                <p className="text-muted text-sm">: {data.cmpId}</p>
               </div>
             </div>
           </div>
@@ -62,7 +88,9 @@ export default function ExpensesView() {
                 <p className="fw-medium">Expense Date</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: 01/01/2024</p>
+                <p className="text-muted text-sm">
+                  : {new Date(data.expenseDate).toLocaleDateString()}
+                </p>
               </div>
             </div>
           </div>
@@ -72,7 +100,7 @@ export default function ExpensesView() {
                 <p className="fw-medium">Expense Type</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: Office Supplies</p>
+                <p className="text-muted text-sm">: {data.expenseType}</p>
               </div>
             </div>
           </div>
@@ -82,7 +110,7 @@ export default function ExpensesView() {
                 <p className="fw-medium">Expense Amount</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: 350</p>
+                <p className="text-muted text-sm">: {data.expenseAmt}</p>
               </div>
             </div>
           </div>
@@ -102,7 +130,7 @@ export default function ExpensesView() {
                 <p className="fw-medium">Approver Name</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: </p>
+                <p className="text-muted text-sm">: {data.approverName}</p>
               </div>
             </div>
           </div>
@@ -112,7 +140,7 @@ export default function ExpensesView() {
                 <p className="fw-medium">Status</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: Pending</p>
+                <p className="text-muted text-sm">: {data.approverStatus}</p>
               </div>
             </div>
           </div>
@@ -123,7 +151,7 @@ export default function ExpensesView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm d-flex">
-                  :&nbsp;<img src={Invoice} alt="invoice"></img>
+                  :&nbsp;<img src={data.attachment} alt="invoice"></img>
                 </p>
               </div>
             </div>
@@ -134,7 +162,7 @@ export default function ExpensesView() {
                 <p className="fw-medium">Remarks</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm">: Purchase of Stationery</p>
+                <p className="text-muted text-sm">: {data.expenseDetails}</p>
               </div>
             </div>
           </div>

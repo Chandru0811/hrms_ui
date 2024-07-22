@@ -14,39 +14,6 @@ function LeaveAdminEdit() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
-  const [data, setData] = useState([]);
-
-  const fetchData = async () => {
-    try {
-      const companyData = await fetchAllCompanyNamesWithId();
-      const employeeData = await fetchAllEmployeeNamesWithId();
-      const departmentData = await fetchAllDepartmentNamesWithId();
-      setCompanyData(companyData);
-      setEmployeeData(employeeData);
-      setDepartmentData(departmentData);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-  const fetchUserData = async () => {
-    try {
-      // setLoading(true);
-      const response = await api.get(`getAllLeaveRequests/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          //Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(response.data);
-      // console.log("object",data)
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  useEffect(() => {
-    fetchUserData();
-    fetchData();
-  }, []);
 
   const validationSchema = Yup.object({
     // employeeId: Yup.string().required("*Employee id is required"),
@@ -74,15 +41,15 @@ function LeaveAdminEdit() {
   const formik = useFormik({
     initialValues: {
       // employeeId: "ecs01",
-      employeeId: "Ram Charan",
+      employeeId: "",
       // departmentId: "ecsdp01",
-      deptId: "Information Technology",
+      deptId: "",
       // companyId: "cmp01",
-      cmpId: "Ecs Cloud",
-      fromDate: "2020-02-10",
-      toDate: "2020-02-15",
-      reasonForrequestedLeave: "Fever",
-      leaveReqType: "Sick leave",
+      cmpId: "",
+      fromDate: "",
+      toDate: "",
+      reasonForrequestedLeave: "",
+      leaveReqType: "",
       // approverId: "",
       approverName: "",
       status: "",
@@ -95,6 +62,37 @@ function LeaveAdminEdit() {
       console.log(values);
     },
   });
+
+  const fetchData = async () => {
+    try {
+      const companyData = await fetchAllCompanyNamesWithId();
+      const employeeData = await fetchAllEmployeeNamesWithId();
+      const departmentData = await fetchAllDepartmentNamesWithId();
+      setCompanyData(companyData);
+      setEmployeeData(employeeData);
+      setDepartmentData(departmentData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/getAllLeaveRequests/${id}`);
+        formik.setValues(response.data);
+        
+      } catch (error) {
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
 
   const [selectedValue, setSelectedValue] = useState("");
   const [showSecondSelect, setShowSecondSelect] = useState(false);
@@ -138,7 +136,7 @@ function LeaveAdminEdit() {
                 </Link>
                 &nbsp;&nbsp;
                 <button type="submit" className="btn btn-sm btn-button">
-                  Save
+                  Update
                 </button>
               </div>
             </div>
@@ -291,7 +289,7 @@ function LeaveAdminEdit() {
                 )}
               </div>
             </div> */}
-              <div className="col-md-6 col-12 mb-2">
+              {/* <div className="col-md-6 col-12 mb-2">
                 <lable className="form-lable">
                   Company Name<span className="text-danger">*</span>
                 </lable>
@@ -319,7 +317,7 @@ function LeaveAdminEdit() {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
               <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start mt-2 mb-3">
                   <lable className="form-lable">From Date</lable>

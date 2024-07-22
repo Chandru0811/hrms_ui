@@ -251,7 +251,7 @@ function ClaimView() {
                 <p className="fw-medium">Attachment</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm d-flex">:{data.attachment}</p>
+                <p className="text-muted text-sm d-flex">:<img src={data.attachment} alt="invoice"></img></p>
               </div>
             </div>
           </div>

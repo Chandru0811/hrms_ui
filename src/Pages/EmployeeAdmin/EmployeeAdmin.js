@@ -112,7 +112,8 @@ const EmployeeAdmin = () => {
                           <FaEdit />
                         </button>
                       </Link>
-                      <Delete onSuccess={refreshData} />
+                      <Delete onSuccess={refreshData} 
+                      path={`/`}/>
                     </div>
                   </td>
                 </tr>

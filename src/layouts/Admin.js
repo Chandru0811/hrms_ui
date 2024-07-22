@@ -185,7 +185,7 @@ function Admin({ handleLogout }) {
 
               {/* Leave Admin */}
               <Route path="/leaveadmin" element={<LeaveAdmin />} />
-              <Route path="/leaveadmin/edit" element={<LeaveAdminEdit />} />
+              <Route path="/leaveadmin/edit/:id" element={<LeaveAdminEdit />} />
               <Route path="/leaveadmin/view/:id" element={<LeaveAdminView />} />
 
               {/*Hrms Deduction */}
@@ -267,8 +267,8 @@ function Admin({ handleLogout }) {
               {/* Expensers Report */}
               <Route path="/expensesreport" element={<ExpensesReport />} />
               <Route path="/expensesreport/add" element={<ExpensesAdd />} />
-              <Route path="/expensesreport/edit" element={<ExpensesEdit />} />
-              <Route path="/expensesreport/view" element={<ExpensesView />} />
+              <Route path="/expensesreport/edit/:id" element={<ExpensesEdit />} />
+              <Route path="/expensesreport/view/:id" element={<ExpensesView />} />
 
               {/* Expense Report Admin */}
               <Route path="/expenseadmin" element={<ExpenseReport />} />

@@ -67,14 +67,14 @@ function ClaimAdminAdd() {
       claimsAttachment: "",
       remarks: "",
     },
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
      const formData = new FormData();
       formData.append("files",values.claimsAttachment)
       formData.append("deptId",values.deptId)
       formData.append("cmpId",values.cmpId)
-      formData.append("claimsEmpId",values.claimsEmpId)
+      formData.append("claimsEmpId",34)
       formData.append("claimsDate",values.claimsDate)
       formData.append("claimsAmt",values.claimsAmt)
       formData.append("remarks",values.remarks)

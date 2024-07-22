@@ -59,7 +59,7 @@ const Payroll = () => {
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
-      console.error("Error refreshing data:", error);
+      console.error("Error refreshing data:", error.message);
     }
     setLoading(false);
   };
@@ -96,11 +96,11 @@ const Payroll = () => {
           {datas?.map((data, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
-              <td>{data.employeeID}</td>
-              <td>{data.expenseID}</td>
-              <td>{data.date}</td>
-              <td>{data.type}</td>
-              <td>{data.amount}</td>
+              <td>{data.expensesEmpId}</td>
+              <td>{data.expenseId}</td>
+              <td>{new Date(data.expenseDate).toLocaleDateString()}</td>
+              <td>{data.expenseType}</td>
+              <td>{data.expenseAmt}</td>
               <td>
                 {data.status === "Approved" ? (
                   <span className="badge badges-Green">Approved</span>
