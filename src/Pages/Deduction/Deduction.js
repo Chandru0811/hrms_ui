@@ -110,7 +110,7 @@ const Deduction = () => {
             <th scope="col">Employee Id</th>
             <th scope="col">Employee Name</th>
           
-            <th scope="col">Deduction Id</th>
+            {/* <th scope="col">Deduction Id</th> */}
             <th scope="col">Deduction Name</th>
             <th scope="col">Deduction Amount</th>
             <th scope="col">Action</th>
@@ -122,7 +122,7 @@ const Deduction = () => {
               <td>{index + 1}</td>
               <td>{data.deductionId}</td>
               <td>{getEmployeeNameById(data.deductionEmpId)}</td>
-              <td>{data.deductionId}</td>
+              {/* <td>{data.deductionId}</td> */}
               <td>{data.deductionName}</td>
               <td>{data.deductionAmt}</td>
               <td>
