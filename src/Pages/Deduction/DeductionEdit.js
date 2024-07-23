@@ -35,7 +35,7 @@ function DeductionEdit() {
 
   const validationSchema = Yup.object({
     // employeeId: Yup.string().required("*Employee id is required"),
-    deductionEmpId: Yup.string().required("*Employee name is required"),
+    // deductionEmpId: Yup.string().required("*Employee name is required"),
     // companyId: Yup.string().required("*Company id is required"),
     cmpId: Yup.string().required("*Company name is required"),
     // departmentId: Yup.string().required("*Department id is required"),
@@ -74,7 +74,7 @@ function DeductionEdit() {
           },
         });
         console.log(response.status);
-        if (response.status === 201) {
+        if (response.status === 200) {
           toast.success(response.data.message);
           navigate("/deductions");
         } else {

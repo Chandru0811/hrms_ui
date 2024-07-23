@@ -40,9 +40,9 @@ function AddPayroll() {
 
   const validationSchema = Yup.object().shape({
     // payrollEmpId: Yup.string().required("*Employee id is required"),
-    employeeId: Yup.string().required("*Employee name is required"),
+    // payrollEmpId: Yup.string().required("*Employee name is required"),
     cmpId: Yup.string().required("*Company name is required"),
-    deptId: Yup.string().required("*Department name is required"),
+    // deptId: Yup.string().required("*Department name is required"),
     basicSalary: Yup.string().required("*Basic pay is required"),
     bonus: Yup.string().required("*Bonus is required"),
     deduction: Yup.string().required("*Deduction is required"),
@@ -55,9 +55,9 @@ function AddPayroll() {
   const formik = useFormik({
     initialValues: {
       // payrollEmpId: "",
-      employeeId: "",
+      payrollEmpId: 34,
       cmpId: "",
-      deptId: "",
+      // deptId: "",
       basicSalary: "",
       bonus: "",
       deduction: "",
@@ -70,8 +70,16 @@ function AddPayroll() {
       // console.log(values);
       // values.payrollClaimsId = 10;
       setLoading(true);
+      const payload = {
+        ...values,
+        cmpId: parseInt(values.cmpId),
+        basicSalary: parseInt(values.basicSalary),
+        bonus: parseInt(values.bonus),
+        deduction: parseInt(values.deduction),
+        netPay: parseInt(values.netPay),
+      };
       try {
-        const response = await api.post("addPayroll", values);
+        const response = await api.post("/addPayroll", payload);
         // console.log(response)
         if (response.status === 201) {
           toast.success(response.data.message);
@@ -158,7 +166,7 @@ function AddPayroll() {
                   <option selected></option>
                   {companyData &&
                     companyData.map((cmpId) => (
-                      <option key={cmpId.id} value={cmpId.id}>
+                      <option key={cmpId.id} value={cmpId.cmpId}>
                         {cmpId.cmpName}
                       </option>
                     ))}
@@ -185,7 +193,7 @@ function AddPayroll() {
                   <option selected></option>
                   {departmentData &&
                     departmentData.map((deptId) => (
-                      <option key={deptId.id} value={deptId.id}>
+                      <option key={deptId.id} value={deptId.deptId}>
                         {deptId.deptName}
                       </option>
                     ))}
@@ -201,9 +209,9 @@ function AddPayroll() {
               </lable>
               <div className="input-group mb-3">
                 <select
-                  {...formik.getFieldProps("employeeId")}
+                  {...formik.getFieldProps("payrollEmpId")}
                   className={`form-select  ${
-                    formik.touched.employeeId && formik.errors.employeeId
+                    formik.touched.payrollEmpId && formik.errors.payrollEmpId
                       ? "is-invalid"
                       : ""
                   }`}
@@ -211,15 +219,15 @@ function AddPayroll() {
                 >
                   <option selected></option>
                   {employeeData &&
-                    employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.id}>
-                        {employeeId.firstName} {employeeId.lastName}
+                    employeeData.map((payrollEmpId) => (
+                      <option key={payrollEmpId.id} value={payrollEmpId.id}>
+                        {payrollEmpId.firstName} {payrollEmpId.lastName}
                       </option>
                     ))}
                 </select>
-                {formik.touched.employeeId && formik.errors.employeeId && (
+                {formik.touched.payrollEmpId && formik.errors.payrollEmpId && (
                   <div className="invalid-feedback">
-                    {formik.errors.employeeId}
+                    {formik.errors.payrollEmpId}
                   </div>
                 )}
               </div>

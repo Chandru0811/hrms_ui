@@ -77,7 +77,7 @@ function DeductionAdd() {
       console.log(values);
       const payload = {
         ...values,
-        deductionEmpId: values.deductionEmpId,
+        deductionEmpId:34,
         cmpId: parseInt(values.cmpId),
         deptId: parseInt(values.deptId),
       };
