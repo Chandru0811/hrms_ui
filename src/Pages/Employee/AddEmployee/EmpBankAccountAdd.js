@@ -8,16 +8,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import api from "../../../config/URL";
 
 const validationSchema = Yup.object().shape({
   bankName: Yup.string().required("*Bank name is required"),
-  branchName: Yup.string().required("*Branch name is required"),
-  ifscCode: Yup.string().required("*IFSC code is required"),
-  accountNumber: Yup.string().required("*Account number is required"),
+  brName: Yup.string().required("*Branch name is required"),
+  IFSCCode: Yup.string().required("*IFSC code is required"),
+  accNumber: Yup.string().required("*Account number is required"),
 });
 
 const EmpBankAccountAdd = forwardRef(
-  ({ formData, setFormData, handleNext }, ref) => {
+  ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const navigate = useNavigate();
     const [centerData, setCenterData] = useState(null);
     const fetchData = async () => {
@@ -36,24 +37,28 @@ const EmpBankAccountAdd = forwardRef(
     const formik = useFormik({
       initialValues: {
         bankName: formData.bankName || "",
-        branchName: formData.branchName || "",
-        ifscCode: formData.ifscCode || "",
-        accountNumber: formData.accountNumber || "",
+        brName: formData.brName || "",
+        IFSCCode: formData.IFSCCode || "",
+        accNumber: formData.accNumber || "",
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        setLoadIndicators(true);
+        values.bankAccDetailsEmpId = formData.empId;
+        // console.log("Body Values is ", values);
         try {
-          // let queryParams = new URLSearchParams({
-          //   branchName: values.branchName,
-          //   ifscCode: values.ifscCode,
-          //   bankName: values.bankName,
-          //   accountNumber: values.accountNumber,
-          // });
-          setFormData((prv) => ({ ...prv, ...values }));
-          handleNext();
-          navigate("/employee/view");
+          const response = await api.post(`/addEmpBankAccDetails`, values);
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            setFormData((prv) => ({ ...prv, ...values }));
+            handleNext();
+          } else {
+            toast.error(response.data.message);
+          }
         } catch (error) {
           toast.error(error);
+        } finally {
+          setLoadIndicators(false);
         }
       },
     });
@@ -101,14 +106,14 @@ const EmpBankAccountAdd = forwardRef(
                       <input
                         className="form-control "
                         type="text"
-                        name="ifscCode"
+                        name="IFSCCode"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.ifscCode}
+                        value={formik.values.IFSCCode}
                       />
-                      {formik.touched.ifscCode && formik.errors.ifscCode && (
+                      {formik.touched.IFSCCode && formik.errors.IFSCCode && (
                         <div className="text-danger">
-                          <small>{formik.errors.ifscCode}</small>
+                          <small>{formik.errors.IFSCCode}</small>
                         </div>
                       )}
                     </div>
@@ -121,17 +126,17 @@ const EmpBankAccountAdd = forwardRef(
                       </lable>
                       <br />
                       <input
-                        name="branchName"
+                        name="brName"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.branchName}
+                        value={formik.values.brName}
                         className="form-control "
                         type="text"
                       />
-                      {formik.touched.branchName &&
-                        formik.errors.branchName && (
+                      {formik.touched.brName &&
+                        formik.errors.brName && (
                           <div className="text-danger">
-                            <small>{formik.errors.branchName}</small>
+                            <small>{formik.errors.brName}</small>
                           </div>
                         )}
                     </div>
@@ -143,15 +148,15 @@ const EmpBankAccountAdd = forwardRef(
                       <br />
                       <input
                         type="number"
-                        name="accountNumber"
+                        name="accNumber"
                         className="form-control"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       />
-                      {formik.touched.accountNumber &&
-                        formik.errors.accountNumber && (
+                      {formik.touched.accNumber &&
+                        formik.errors.accNumber && (
                           <div className="error text-danger ">
-                            <small>{formik.errors.accountNumber}</small>
+                            <small>{formik.errors.accNumber}</small>
                           </div>
                         )}
                     </div>

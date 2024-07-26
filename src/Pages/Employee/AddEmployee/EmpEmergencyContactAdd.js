@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { FaRegTrashAlt } from "react-icons/fa";
+import api from "../../../config/URL";
 
 const validationSchema = Yup.object().shape({
   empEmergencyContact: Yup.array().of(
@@ -20,7 +21,7 @@ const validationSchema = Yup.object().shape({
       emergencyContactAddress: Yup.string().required(
         "*Emergency contact address is required"
       ),
-      relationshipToEmployee: Yup.string().required(
+      relationshipOfEmployee: Yup.string().required(
         "*Relationship to employee is required"
       ),
     })
@@ -28,7 +29,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const EmpEmergencyContactAdd = forwardRef(
-  ({ formData, setFormData, handleNext }, ref) => {
+  ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
 
     const formik = useFormik({
@@ -38,17 +39,28 @@ const EmpEmergencyContactAdd = forwardRef(
             emergencyContactName: formData.emergencyContactName || "",
             emergencyContactNo: formData.emergencyContactNo || "",
             emergencyContactAddress: formData.emergencyContactAddress || "",
-            relationshipToEmployee: formData.relationshipToEmployee || "",
+            relationshipOfEmployee: formData.relationshipOfEmployee || "",
           }
         ]
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        setLoadIndicators(true);
+        values.emergencyEmpId = formData.empId;
+        // console.log("Body Values is ", values);
         try {
-          setFormData((prevFormData) => ({ ...prevFormData, ...values }));
-          handleNext();
+          const response = await api.post(`/createEmpEmergencyContact`, values);
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            setFormData((prv) => ({ ...prv, ...values }));
+            handleNext();
+          } else {
+            toast.error(response.data.message);
+          }
         } catch (error) {
           toast.error(error);
+        } finally {
+          setLoadIndicators(false);
         }
       },
     });
@@ -164,23 +176,23 @@ const EmpEmergencyContactAdd = forwardRef(
                     <input
                       className="form-control "
                       type="text"
-                      name={`empEmergencyContact[${index}].relationshipToEmployee`}
+                      name={`empEmergencyContact[${index}].relationshipOfEmployee`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={
                         formik.values.empEmergencyContact[index]
-                          ?.relationshipToEmployee || ""
+                          ?.relationshipOfEmployee || ""
                       }
                     />
                     {formik.touched.empEmergencyContact?.[index]
-                      ?.relationshipToEmployee &&
+                      ?.relationshipOfEmployee &&
                       formik.errors.empEmergencyContact?.[index]
-                        ?.relationshipToEmployee && (
+                        ?.relationshipOfEmployee && (
                         <div className="text-danger">
                           <small>
                             {
                               formik.errors.empEmergencyContact[index]
-                                .relationshipToEmployee
+                                .relationshipOfEmployee
                             }
                           </small>
                         </div>

@@ -1,17 +1,131 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
+import api from "../../config/URL";
 
 function EmployeeAdminEdit() {
-  const [companyData, setCompanyData] = useState(null); 
+  const [companyData, setCompanyData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const [selectedIdType, setSelectedIdType] = useState("nric");
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [loadIndicator, setLoadIndicators] = useState(false);
+
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required("*First name is required"),
+    lastName: Yup.string().required("*Last name is required"),
+    empPriPhNumber: Yup.number()
+      .required("*Primary phone number is required")
+      .typeError("*Must be a number"),
+    empPriEmail: Yup.string()
+      .email("*Enter valid email")
+      .required("*Primary email id is required"),
+    empPriEmailPassword: Yup.string().required(
+      "*Primary email password is required"
+    ),
+    // empRegCmpId: Yup.string().required("*Company name is required"),1
+    // employeeID: Yup.string().required("*Employee id is required"),
+    // empRegDeptId: Yup.string().required("*Department name is required"),1
+    // employeedesignation: Yup.string().required(
+    //   "*Employee designation is required"
+    // ),1
+    // employeeDateOfJoining: Yup.string().required(
+    //   "*Employee date of joining is required"
+    // ),1
+    // employeeType: Yup.string().required("*Employee type is required"),1
+    // noticePeriod: Yup.string().required("*Notice period is required"),1
+    // reportingManagerName: Yup.string().required(
+    //   "*Reporting manager name is required"
+    // ),1
+    // reportingManagerID: Yup.string().required(
+    //   "*Reporting manager id is required"
+    // ),
+    ...(selectedIdType === "nric" && {
+      NRICFin: Yup.string().required("*NRIC fin is required"),
+      NRICType: Yup.string().required("*Select a NRIC type"),
+    }),
+    ...(selectedIdType === "aadhar" && {
+      aadharNumber: Yup.string().required("*Aadhar number is required"),
+    }),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      empPriPhNumber: "",
+      empPriEmail: "",
+      empPriEmailPassword: "",
+      NRICFin: "",
+      NRICType: "",
+      aadharNumber: "",
+      empRegCmpId: "",
+      empRegDeptId: "",
+      employeedesignation: "",
+      proof: "",
+      employeeDateOfJoining: "",
+      employeeType: "",
+      noticePeriod: "",
+      reportingManagerName: "",
+      reportingManagerID: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      setLoadIndicators(true);
+      try {
+        const formData = new FormData();
+
+        // Add each data field manually to the FormData object
+        formData.append("firstName", values.firstName);
+        formData.append("lastName", values.lastName);
+        formData.append("empPriPhNumber", values.empPriPhNumber);
+        formData.append("empPriEmail", values.empPriEmail);
+        formData.append("empPriEmailPassword", values.empPriEmailPassword);
+        formData.append("NRICFin", values.NRICFin);
+        formData.append("NRICType", values.NRICType);
+        // formData.append("aadharNumber", values.aadharNumber);
+        formData.append("empRegCmpId", "1");
+        formData.append("empRegDeptId", "2");
+        formData.append("file", values.file);
+        formData.append("aadharNumber", "gytrhh56696");
+        formData.append("proof", "AADHAR");
+        // formData.append("employeedesignation", values.employeedesignation);
+        // formData.append("proof", values.proof);
+        // formData.append("employeeDateOfJoining", values.employeeDateOfJoining);
+        // formData.append("employeeType", values.employeeType);
+        // formData.append("noticePeriod", values.noticePeriod);
+        // formData.append("reportingManagerName", values.reportingManagerName);
+        // formData.append("reportingManagerID", values.reportingManagerID);
+
+        const response = await api.put(
+          `updateEmployeeRegDetailsById/${id}`,
+          values,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/employeeadmin");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        setLoadIndicators(false);
+      }
+    },
+  });
 
   const fetchData = async () => {
     try {
@@ -28,72 +142,6 @@ function EmployeeAdminEdit() {
     fetchData();
   }, []);
 
-  const validationSchema = Yup.object({
-    firstName: Yup.string().required("*First name is required"),
-    lastName: Yup.string().required("*Last name is required"),
-    primaryPhoneNumber: Yup.number()
-      .required("*Primary phone number is required")
-      .typeError("*Must be a number"),
-    primaryEmailID: Yup.string()
-      .email("*Enter valid email")
-      .required("*Primary email id is required"),
-    primaryEmailPassword: Yup.string().required(
-      "*Primary email password is required"
-    ),
-    companyID: Yup.string().required("*Company id is required"),
-    employeeID: Yup.string().required("*Employee id is required"),
-    departmentID: Yup.string().required("*Select a department id"),
-    employeedesignation: Yup.string().required(
-      "*Employee designation is required"
-    ),
-    employeeDateOfJoining: Yup.string().required(
-      "*Employee date of joining is required"
-    ),
-    employeeType: Yup.string().required("*Employee type is required"),
-    noticePeriod: Yup.string().required("*Notice period is required"),
-    reportingManagerName: Yup.string().required(
-      "*Reporting manager name is required"
-    ),
-    reportingManagerID: Yup.string().required(
-      "*Reporting manager id is required"
-    ),
-    ...(selectedIdType === "nric" && {
-      nricFin: Yup.string().required("*NRIC fin is required"),
-      nricType: Yup.string().required("*Select a NRIC type"),
-    }),
-    ...(selectedIdType === "aadhar" && {
-      aadharNumber: Yup.string().required("*Aadhar number is required"),
-    }),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      firstName: "Suriya",
-      lastName: "Suresh",
-      primaryPhoneNumber: "9876543210",
-      address: "Singapore",
-      primaryEmailID: "suriya00@gmail.com",
-      primaryEmailPassword: "12345678",
-      nricFin: "5678",
-      nricType: "Singapore PR",
-      cmpId: "AWS",
-      employeeReferalID: "ECS845",
-      employeeID: "ECS54",
-      deptId: "Marketing",
-      employeedesignation: "Developer",
-      employeeDateOfJoining: "2024-03-13",
-      employeeType: "Full Time",
-      noticePeriod: "45 Days",
-      reportingManagerName: "Manoj",
-      reportingManagerID: "ECS17",
-    },
-    validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      console.log(values);
-      setLoading(true);
-    },
-  });
-
   const handleIdTypeChange = (event) => {
     setSelectedIdType(event.target.value);
   };
@@ -103,6 +151,20 @@ function EmployeeAdminEdit() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`getEmployeeRegDetailsById/${id}`);
+        formik.setValues(response.data);
+        setLoading(false);
+      } catch (error) {
+        // console.log(error.message);
+        toast.error("Error Fetching Data ", error.message);
+      }
+    };
+    getData();
+  }, [id]);
 
   return (
     <div className="container-fluid">
@@ -115,20 +177,20 @@ function EmployeeAdminEdit() {
               </Link>
               &nbsp;&nbsp;
               <button
-                    type="submit"
-                    className="btn btn-sm btn-button"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span></span>
-                    )}
-                    &nbsp;<span>Save</span>
-                  </button>
+                type="submit"
+                className="btn btn-sm btn-button"
+                disabled={loadIndicator}
+              >
+                {loadIndicator ? (
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    aria-hidden="true"
+                  ></span>
+                ) : (
+                  <span></span>
+                )}
+                &nbsp;<span>Update</span>
+              </button>
             </div>
           </div>
           <div className="row mt-3">
@@ -187,23 +249,21 @@ function EmployeeAdminEdit() {
                 </lable>
                 <input
                   type="email"
-                  name="primaryEmailID"
+                  name="empPriEmail"
                   className={`form-control  ${
-                    formik.touched.primaryEmailID &&
-                    formik.errors.primaryEmailID
+                    formik.touched.empPriEmail && formik.errors.empPriEmail
                       ? "is-invalid"
                       : ""
                   }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("primaryEmailID")}
+                  {...formik.getFieldProps("empPriEmail")}
                 />
-                {formik.touched.primaryEmailID &&
-                  formik.errors.primaryEmailID && (
-                    <div className="invalid-feedback">
-                      {formik.errors.primaryEmailID}
-                    </div>
-                  )}
+                {formik.touched.empPriEmail && formik.errors.empPriEmail && (
+                  <div className="invalid-feedback">
+                    {formik.errors.empPriEmail}
+                  </div>
+                )}
               </div>
             </div>
             <div className="col-md-6 col-12 mb-3">
@@ -216,18 +276,18 @@ function EmployeeAdminEdit() {
                     type={showPassword ? "text" : "password"}
                     onChange={(e) => setPassword(e.target.value)}
                     className={`form-control  ${
-                      formik.touched.primaryEmailPassword &&
-                      formik.errors.primaryEmailPassword
+                      formik.touched.empPriEmailPassword &&
+                      formik.errors.empPriEmailPassword
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("primaryEmailPassword")}
+                    {...formik.getFieldProps("empPriEmailPassword")}
                     style={{
                       borderRight: "none",
                       borderTopRightRadius: "0px",
                       borderBottomRightRadius: "0px",
                     }}
-                    name="primaryEmailPassword"
+                    name="empPriEmailPassword"
                   />
                   <span
                     className={`input-group-text bg-white`}
@@ -243,10 +303,10 @@ function EmployeeAdminEdit() {
                   >
                     {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
                   </span>
-                  {formik.touched.primaryEmailPassword &&
-                    formik.errors.primaryEmailPassword && (
+                  {formik.touched.empPriEmailPassword &&
+                    formik.errors.empPriEmailPassword && (
                       <div className="invalid-feedback">
-                        {formik.errors.primaryEmailPassword}
+                        {formik.errors.empPriEmailPassword}
                       </div>
                     )}
                 </div>
@@ -259,84 +319,84 @@ function EmployeeAdminEdit() {
                 </lable>
                 <input
                   type="text"
-                  name="primaryPhoneNumber"
+                  name="empPriPhNumber"
                   className={`form-control  ${
-                    formik.touched.primaryPhoneNumber &&
-                    formik.errors.primaryPhoneNumber
+                    formik.touched.empPriPhNumber &&
+                    formik.errors.empPriPhNumber
                       ? "is-invalid"
                       : ""
                   }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("primaryPhoneNumber")}
+                  {...formik.getFieldProps("empPriPhNumber")}
                 />
-                {formik.touched.primaryPhoneNumber &&
-                  formik.errors.primaryPhoneNumber && (
+                {formik.touched.empPriPhNumber &&
+                  formik.errors.empPriPhNumber && (
                     <div className="invalid-feedback">
-                      {formik.errors.primaryPhoneNumber}
+                      {formik.errors.empPriPhNumber}
                     </div>
                   )}
               </div>
             </div>
             <div className="col-md-6 col-12 mb-2">
-                <lable className="form-lable">
+              <lable className="form-lable">
                 Company Name<span className="text-danger">*</span>
-                </lable>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("cmpId")}
-                    className={`form-select  ${
-                      formik.touched.cmpId && formik.errors.cmpId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    {companyData &&
-                      companyData.map((cmpId) => (
-                        <option key={cmpId.id} value={cmpId.id}>
-                          {cmpId.cmpName}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.cmpId && formik.errors.cmpId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.cmpId}
-                    </div>
-                  )}
-                </div>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("empRegCmpId")}
+                  className={`form-select  ${
+                    formik.touched.empRegCmpId && formik.errors.empRegCmpId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {companyData &&
+                    companyData.map((cmpId) => (
+                      <option key={cmpId.id} value={cmpId.id}>
+                        {cmpId.cmpName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.empRegCmpId && formik.errors.empRegCmpId && (
+                  <div className="invalid-feedback">
+                    {formik.errors.empRegCmpId}
+                  </div>
+                )}
               </div>
+            </div>
             <div className="col-md-6 col-12 mb-2">
-                <lable className="form-lable">
+              <lable className="form-lable">
                 Department Name<span className="text-danger">*</span>
-                </lable>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("deptId")}
-                    className={`form-select  ${
-                      formik.touched.deptId && formik.errors.deptId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    {departmentData &&
-                      departmentData.map((deptId) => (
-                        <option key={deptId.id} value={deptId.id}>
-                          {deptId.deptName}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.deptId && formik.errors.deptId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.deptId}
-                    </div>
-                  )}
-                </div>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("empRegDeptId")}
+                  className={`form-select  ${
+                    formik.touched.empRegDeptId && formik.errors.empRegDeptId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {departmentData &&
+                    departmentData.map((deptId) => (
+                      <option key={deptId.id} value={deptId.id}>
+                        {deptId.deptName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.empRegDeptId && formik.errors.empRegDeptId && (
+                  <div className="invalid-feedback">
+                    {formik.errors.empRegDeptId}
+                  </div>
+                )}
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+            </div>
+            <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <lable for="exampleFormControlInput1" className="form-label">
                   Employee Designation<span className="text-danger">*</span>
@@ -405,19 +465,19 @@ function EmployeeAdminEdit() {
                       </lable>
                       <input
                         type="text"
-                        name="nricFin"
+                        name="NRICFin"
                         className={`form-control  ${
-                          formik.touched.nricFin && formik.errors.nricFin
+                          formik.touched.NRICFin && formik.errors.NRICFin
                             ? "is-invalid"
                             : ""
                         }`}
                         aria-label="Username"
                         aria-describedby="basic-addon1"
-                        {...formik.getFieldProps("nricFin")}
+                        {...formik.getFieldProps("nricfin")}
                       />
-                      {formik.touched.nricFin && formik.errors.nricFin && (
+                      {formik.touched.NRICFin && formik.errors.NRICFin && (
                         <div className="invalid-feedback">
-                          {formik.errors.nricFin}
+                          {formik.errors.NRICFin}
                         </div>
                       )}
                     </div>
@@ -432,11 +492,11 @@ function EmployeeAdminEdit() {
                       </lable>
                       <select
                         className={`form-select  ${
-                          formik.touched.nricType && formik.errors.nricType
+                          formik.touched.NRICType && formik.errors.NRICType
                             ? "is-invalid"
                             : ""
                         }`}
-                        {...formik.getFieldProps("nricType")}
+                        {...formik.getFieldProps("nrictype")}
                       >
                         <option selected></option>
                         <option value="Singapore Citizen">
@@ -448,9 +508,9 @@ function EmployeeAdminEdit() {
                         <option value="S-Pass">S-Pass</option>
                         <option value="Work Permit">Work Permit</option>
                       </select>
-                      {formik.touched.nricType && formik.errors.nricType && (
+                      {formik.touched.NRICType && formik.errors.NRICType && (
                         <div className="invalid-feedback">
-                          {formik.errors.nricType}
+                          {formik.errors.NRICType}
                         </div>
                       )}
                     </div>
@@ -489,11 +549,12 @@ function EmployeeAdminEdit() {
                 </div>
               )}
             </div>
-            
+
             <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <lable for="exampleFormControlInput1" className="form-label">
-                  Employee Date Of Joining<span className="text-danger">*</span>
+                  Employee Date of Joining
+                  <span className="text-danger">*</span>
                 </lable>
                 <input
                   type="date"
@@ -515,6 +576,24 @@ function EmployeeAdminEdit() {
                     </div>
                   )}
               </div>
+            </div>
+            <div className="col-md-6 col-12 mb-3">
+              <lable>Photo</lable>
+              <span className="text-danger">*</span>
+              <input
+                type="file"
+                name="file"
+                className="form-control"
+                onChange={(event) => {
+                  formik.setFieldValue("file", event.target.files[0]);
+                }}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.file && formik.errors.file && (
+                <div className="error text-danger ">
+                  <small>{formik.errors.file}</small>
+                </div>
+              )}
             </div>
             <div className="col-md-6 col-12 mb-4">
               <lable className="">Employee Type</lable>
@@ -585,32 +664,6 @@ function EmployeeAdminEdit() {
                   formik.errors.reportingManagerName && (
                     <div className="invalid-feedback">
                       {formik.errors.reportingManagerName}
-                    </div>
-                  )}
-              </div>
-            </div>
-            <div className="col-md-6 col-12 mb-3 ">
-              <div className="mb-2">
-                <lable for="exampleFormControlInput1" className="form-label">
-                  Reporting Manager ID<span className="text-danger">*</span>
-                </lable>
-                <input
-                  type="text"
-                  name="reportingManagerID"
-                  className={`form-control  ${
-                    formik.touched.reportingManagerID &&
-                    formik.errors.reportingManagerID
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("reportingManagerID")}
-                />
-                {formik.touched.reportingManagerID &&
-                  formik.errors.reportingManagerID && (
-                    <div className="invalid-feedback">
-                      {formik.errors.reportingManagerID}
                     </div>
                   )}
               </div>

@@ -102,18 +102,17 @@ const EmployeeAdmin = () => {
                   <td>{data.empDes}</td>
                   <td>
                     <div className="d-flex">
-                      <Link to={`/employee/view`}>
+                      <Link to={`/employeeadmin/view/${data.id}`}>
                         <button className="btn btn-sm">
                           <FaEye />
                         </button>
                       </Link>
-                      <Link to={`/employeeadmin/edit`}>
+                      <Link to={`/employeeadmin/edit/${data.id}`}>
                         <button className="btn btn-sm">
                           <FaEdit />
                         </button>
                       </Link>
-                      <Delete onSuccess={refreshData} 
-                      path={`/`}/>
+                      <Delete onSuccess={refreshData} />
                     </div>
                   </td>
                 </tr>

@@ -1,386 +1,787 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import Invoice from "../../assets/images/Invoice.png";
+import api from "../../config/URL";
 import { toast } from "react-toastify";
 
-const validationSchema = Yup.object().shape({
-  qualificationName: Yup.string().required("*Qualification name is required!"),
-  qualificationType: Yup.string().required("*Qualification type is required!"),
-  fieldOfStudy: Yup.string().required("*Field of study is required!"),
-  modeOfStudy: Yup.string().required("*Mode of study is required!"),
-  startDate: Yup.string().required("*Start date is required!"),
-  endDate: Yup.string().required("*End date is required!"),
-  institution: Yup.string().required("*Institution is required!"),
-  employeeSkill: Yup.string().required("*Employee skill is required!"),
-  skillDescription: Yup.string().required("*Skill description is required!"),
-  yearOfExperience: Yup.string().required("*Year of experience is required!"),
-});
+export default function ExpensesView() {
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const EmpQualificationDetailsAdd = forwardRef(
-  ({ formData, setFormData, handleNext }, ref) => {
-    const [qD, setQd] = useState([
-      {
-        formik: useFormik({
-          initialValues: {
-            qualificationName: "",
-            qualificationType: "",
-            fieldOfStudy: "",
-            modeOfStudy: "",
-            startDate: "",
-            endDate: "",
-            institution: "",
-          },
-          validationSchema: validationSchema,
-        }),
-      },
-    ]);
-    const [skills, setSkills] = useState([
-      {
-        formik: useFormik({
-          initialValues: {
-            employeeSkill: "",
-            yearOfExperience: "",
-            skillDescription: "",
-          },
-          validationSchema: validationSchema,
-        }),
-      },
-    ]);
-
-    const addQualificationDetail = (e) => {
-      e.preventDefault(); // Prevent form submission
-      const newQD = {
-        formik: useFormik({
-          initialValues: {
-            qualificationName: "",
-            qualificationType: "",
-            fieldOfStudy: "",
-            modeOfStudy: "",
-            startDate: "",
-            endDate: "",
-            institution: "",
-          },
-          validationSchema: validationSchema,
-        }),
-      };
-      setQd((prevQD) => [...prevQD, newQD]);
-      console.log("Add qualification detail");
-    };
-    
-
-    const addSkill = (e) => {
-      e.preventDefault(); // Prevent form submission
-      setSkills((prevSkills) => [
-        ...prevSkills,
-        {
-          formik: useFormik({
-            initialValues: {
-              employeeSkill: "",
-              yearOfExperience: "",
-              skillDescription: "",
-            },
-            validationSchema: validationSchema,
-          }),
-        },
-      ]);
-      console.log("Add skill");
-    };
-
-    const handleSubmit = async () => {
+  useEffect(() => {
+    const getData = async () => {
       try {
-        const qualificationDetailsData = qD.map(({ formik }) => formik.values);
-        const skillsData = skills.map(({ formik }) => formik.values);
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          qualificationDetails: qualificationDetailsData,
-          skills: skillsData,
-        }));
-        handleNext();
+        const response = await api.get(`getEmployeeRegDetailsById/49`);
+        setData(response.data);
+        setLoading(false);
       } catch (error) {
-        toast.error(error);
+        // console.log(error.message);
+        toast.error("Error Fetching Data ", error.message);
       }
     };
+    getData();
+  }, [id]);
 
-    useImperativeHandle(ref, () => ({
-      qualificationDetailsAdd: handleSubmit,
-    }));
-
-    return (
-      <div className="container-fluid">
-        <form onSubmit={handleSubmit}>
-          <div className="pb-4">
-            {qD.map(({ formik }, i) => (
-              <div key={i}>
-                <p className="headColor ">Qualification Details</p>
-                <div className="container">
-                  <div className="row mt-3">
-                    <div className="col-lg-6 col-md-6 col-12 ">
-                      <div className="text-start mt-2">
-                        <label className="form-label">
-                          Qualification Name
-                          <span className="text-danger">*</span>
-                        </label>
-                        <br />
-                        <input
-                          className="form-control"
-                          type="text"
-                          name={`qualificationName${i}`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.qualificationName}
-                        />
-                        {formik.touched.qualificationName &&
-                          formik.errors.qualificationName && (
-                            <div className="text-danger">
-                              <small>{formik.errors.qualificationName}</small>
-                            </div>
-                          )}
-                      </div>
-                      <div className="text-start mt-4">
-                        <label className="form-label">
-                          Field Of Study<span className="text-danger">*</span>
-                        </label>
-                        <br />
-                        <input
-                          className="form-control"
-                          type="text"
-                          name={`fieldOfStudy${i}`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.fieldOfStudy}
-                        />
-                        {formik.touched.fieldOfStudy &&
-                          formik.errors.fieldOfStudy && (
-                            <div className="text-danger">
-                              <small>{formik.errors.fieldOfStudy}</small>
-                            </div>
-                          )}
-                      </div>
-                      <div className="text-start mt-4">
-                        <label className="form-label">
-                          Start Date<span className="text-danger">*</span>
-                        </label>
-                        <br />
-                        <input
-                          className="form-control"
-                          type="date"
-                          name={`startDate${i}`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.startDate}
-                        />
-                        {formik.touched.startDate &&
-                          formik.errors.startDate && (
-                            <div className="text-danger">
-                              <small>{formik.errors.startDate}</small>
-                            </div>
-                          )}
-                      </div>
-                      <div className="text-start mt-4">
-                        <label className="form-label">
-                          Institution<span className="text-danger">*</span>
-                        </label>
-                        <br />
-                        <input
-                          className="form-control"
-                          type="text"
-                          name={`institution${i}`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.institution}
-                        />
-                        {formik.touched.institution &&
-                          formik.errors.institution && (
-                            <div className="text-danger">
-                              <small>{formik.errors.institution}</small>
-                            </div>
-                          )}
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-6 col-12 px-5">
-                      <div className="text-start mt-2">
-                        <label className="form-label">
-                          Qualification Type
-                          <span className="text-danger">*</span>
-                        </label>
-                        <br />
-                        <input
-                          className="form-control"
-                          type="text"
-                          name={`qualificationType${i}`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.qualificationType}
-                        />
-                        {formik.touched.qualificationType &&
-                          formik.errors.qualificationType && (
-                            <div className="text-danger">
-                              <small>{formik.errors.qualificationType}</small>
-                            </div>
-                          )}
-                      </div>
-                      <div className="text-start mt-4">
-                        <label className="form-label">
-                          Mode Of Study<span className="text-danger">*</span>
-                        </label>
-                        <br />
-                        <input
-                          className="form-control"
-                          type="text"
-                          name={`modeOfStudy${i}`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.modeOfStudy}
-                        />
-                        {formik.touched.modeOfStudy &&
-                          formik.errors.modeOfStudy && (
-                            <div className="text-danger">
-                              <small>{formik.errors.modeOfStudy}</small>
-                            </div>
-                          )}
-                      </div>
-                      <div className="text-start mt-4">
-                        <label className="form-label">
-                          End Date<span className="text-danger">*</span>
-                        </label>
-                        <br />
-                        <input
-                          className="form-control"
-                          type="date"
-                          name={`endDate${i}`}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.endDate}
-                        />
-                        {formik.touched.endDate && formik.errors.endDate && (
-                          <div className="text-danger">
-                            <small>{formik.errors.endDate}</small>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            {/* Add more button for qualification details */}
-            <button
-              onClick={(e) => addQualificationDetail(e)}
-              className="btn btn-button btn-sm my-4 mx-1"
-            >
-              Add More
-            </button>
-            {/* Delete button for qualification details */}
-            {qD.length > 1 && (
-              <button
-                className="btn btn-danger my-4 mx-1"
-                onClick={(e) => {
-                  e.preventDefault(); // Prevent form submission
-                  setQd((prevQD) => prevQD.slice(0, -1));
-                }}
-              >
-                Delete
-              </button>
-            )}
-
-            {/* Skills input fields */}
-            {skills.map(({ formik }, i) => (
-              <div key={i}>
-                <p className="headColor mt-3">Skills</p>
-                <div className="row mt-3">
-                  <div className="col-lg-6 col-md-6 col-12 ">
-                    <div className="text-start mt-4">
-                      <label className="form-label">
-                        Employee Skill<span className="text-danger">*</span>
-                      </label>
-                      <br />
-                      <input
-                        className="form-control"
-                        type="text"
-                        name={`employeeSkill${i}`}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.employeeSkill}
-                      />
-                      {formik.touched.employeeSkill &&
-                        formik.errors.employeeSkill && (
-                          <div className="text-danger">
-                            <small>{formik.errors.employeeSkill}</small>
-                          </div>
-                        )}
-                    </div>
-                    <div className="text-start mt-4">
-                      <label className="form-label">
-                        Years Of Experience
-                        <span className="text-danger">*</span>
-                      </label>
-                      <br />
-                      <input
-                        className="form-control"
-                        type="text"
-                        name={`yearOfExperience${i}`}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.yearOfExperience}
-                      />
-                      {formik.touched.yearOfExperience &&
-                        formik.errors.yearOfExperience && (
-                          <div className="text-danger">
-                            <small>{formik.errors.yearOfExperience}</small>
-                          </div>
-                        )}
-                    </div>
-                  </div>
-                  <div className="col-lg-6 col-md-6 col-12">
-                    <div className="text-start mt-4">
-                      <label className="form-label">
-                        Skill Description
-                        <span className="text-danger">*</span>
-                      </label>
-                      <br />
-                      <input
-                        className="form-control"
-                        type="text"
-                        name={`skillDescription${i}`}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.skillDescription}
-                      />
-                      {formik.touched.skillDescription &&
-                        formik.errors.skillDescription && (
-                          <div className="text-danger">
-                            <small>{formik.errors.skillDescription}</small>
-                          </div>
-                        )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            {/* Add more button for skills */}
-            <button
-              onClick={(e) => addSkill(e)}
-              className="btn btn-button btn-sm my-4 mx-1"
-            >
-              Add More
-            </button>
-            {/* Delete button for skills */}
-            {skills.length > 1 && (
-              <button
-                className="btn btn-danger my-4 mx-1"
-                onClick={(e) => {
-                  e.preventDefault(); // Prevent form submission
-                  setSkills((prevSkills) => prevSkills.slice(0, -1));
-                }}
-              >
-                Delete
-              </button>
-            )}
+  return (
+    <section>
+      {loading && (
+        <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="container py-4">
+          <div className="row">
+            <div className="col-12 text-end">
+              <Link to="/employeeadmin">
+                <button className="btn btn-sm btn-border">Back</button>
+              </Link>
+              &nbsp;&nbsp;
+              <Link to="/employee/add">
+                <button className="btn btn-sm btn-button">Update</button>
+              </Link>
+            </div>
           </div>
-        </form>
-      </div>
-    );
-  }
-);
+          <div>
+            <div className="container mt-5">
+              <h4>Personal Information</h4>
+              <div className="row mt-5 pb-3">
+                <div className="col-md-6 col-12">
+                  <div className="row mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">First Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.firstName}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Last Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.lastName}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row  mb-2  ">
+                    <div className="col-6  ">
+                      <p className="fw-medium">Primary Phone No</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.empPriPhNumber}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Start Date</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.address}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Primary Email ID</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.empPriEmail}</p>
+                    </div>
+                  </div>
+                </div>
+                {/* <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Primary Email Password</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.empPriEmailPassword}
+                      </p>
+                    </div>
+                  </div>
+                </div> */}
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">NRIC Fin</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.nricfin}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">NRIC Type</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.nrictype}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Company Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.empRegCmpName}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Employee ID</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.employeeId}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Employee Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.firstName}&nbsp;{data.lastName}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Department Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.empRegDeptName}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Employee Designation</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.employeeDesignation}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Employee Date Of Joining</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.employeeDateOfJoining}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Notice Period</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.noticePeriod}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Reporting Manager ID</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.reportingManagerId}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Reporting Manager Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.reportingManagerName}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="container mt-3">
+              <h4>Contact Details</h4>
+              <div className="row mt-5 pb-3">
+                <div className="col-md-6 col-12">
+                  <div className="row mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Date of Birth</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].dob
+                          ? data.empPersonalDetailsEntities[0].dob.substring(
+                              0,
+                              10
+                            )
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Gender</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].gender
+                          ? data.empPersonalDetailsEntities[0].gender
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row  mb-2  ">
+                    <div className="col-6  ">
+                      <p className="fw-medium">Marital Status</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].maritalStatus
+                          ? data.empPersonalDetailsEntities[0].maritalStatus
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Religion</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].religion
+                          ? data.empPersonalDetailsEntities[0].religion
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Address</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].empAddr
+                          ? data.empPersonalDetailsEntities[0].empAddr
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Primary Email Password</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.empPriEmailPassword}
+                      </p>
+                    </div>
+                  </div>
+                </div> */}
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">City</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        {" "}
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].city
+                          ? data.empPersonalDetailsEntities[0].city
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Pincode</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        {" "}
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].pincode
+                          ? data.empPersonalDetailsEntities[0].pincode
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Secondary Email ID</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].empSecEmail
+                          ? data.empPersonalDetailsEntities[0].empSecEmail
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Secondary Phone Number</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        {" "}
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].empSecPhNumber
+                          ? data.empPersonalDetailsEntities[0].empSecPhNumber
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* <div className="container mt-3">
+              <h4>Qualification Details</h4>
+              <div className="row mt-5 pb-3">
+                <div className="col-md-6 col-12">
+                  <div className="row mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Qualification Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].dob
+                          ? data.empPersonalDetailsEntities[0].dob.substring(
+                              0,
+                              10
+                            )
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Qualification Type</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].gender
+                          ? data.empPersonalDetailsEntities[0].gender
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row  mb-2  ">
+                    <div className="col-6  ">
+                      <p className="fw-medium">Field of Study</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].maritalStatus
+                          ? data.empPersonalDetailsEntities[0].maritalStatus
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">
+                      Mode of Study</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].religion
+                          ? data.empPersonalDetailsEntities[0].religion
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Start Date</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].empAddr
+                          ? data.empPersonalDetailsEntities[0].empAddr
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">End Date</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        {" "}
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].city
+                          ? data.empPersonalDetailsEntities[0].city
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Institution</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        {" "}
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].pincode
+                          ? data.empPersonalDetailsEntities[0].pincode
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Secondary Email ID</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].empSecEmail
+                          ? data.empPersonalDetailsEntities[0].empSecEmail
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Secondary Phone Number</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        {" "}
+                        :{" "}
+                        {data.empPersonalDetailsEntities &&
+                        data.empPersonalDetailsEntities.length > 0 &&
+                        data.empPersonalDetailsEntities[0].empSecPhNumber
+                          ? data.empPersonalDetailsEntities[0].empSecPhNumber
+                          : "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+            <div class="container mt-3">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed  bg-light fs-5 shadow-none border-dark"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseThree"
+                  aria-expanded="false"
+                  aria-controls="panelsStayOpen-collapseThree"
+                >
+                  Parent / Guardian
+                </button>
+              </h2>
+              {data.studentParentsDetails &&
+                data.studentParentsDetails.length > 0 &&
+                data.studentParentsDetails.map((parent, index) => (
+                  <div
+                    id="panelsStayOpen-collapseThree"
+                    class="accordion-collapse collapse"
+                    key={index}
+                  >
+                    <div class="accordion-body">
+                      <div className="row pb-3">
+                        <div className="d-flex align-items-center justify-content-between">
+                          <button
+                            className="btn btn-sm border-none text-primary px-3 my-3 fw-bold fs-4"
+                            style={{ backgroundColor: "#b2d3df" }}
+                          >
+                            {index + 1}
+                          </button>
+                        </div>
+                        <div className="col-10"></div>
+                        <div className="col-2">
+                          {parent.primaryContact && (
+                            <div className="col-12 mb-2">
+                              <p className="badge text-bg-primary">primary</p>
+                            </div>
+                          )}
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">
+                                Parents / Guardian Name
+                              </p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {parent.parentName || "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Occupation</p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {parent.occupation || "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Date of Birth</p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {(parent.parentDateOfBirth &&
+                                  parent.parentDateOfBirth.substring(0, 10)) ||
+                                  "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Email</p>
+                            </div>
+                            <div className="col-6" style={{ overflow: "auto" }}>
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {parent.email || "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Mobile No</p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {parent.mobileNumber || "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        {/* <div className="col-md-6 col-12">
+                        <div className="row  mb-2">
+                          <div className="col-6  ">
+                            <p className="fw-medium">Relation</p>
+                          </div>
+                          <div className="col-6">
+                            <p className="text-muted text-sm">
+                              <b className="mx-2">:</b>
+                              {parent.relation || "--"}
+                            </p>
+                          </div>
+                        </div>
+                      </div> */}
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Postal Code</p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {parent.postalCode || "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Profile Image</p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                <p className="my-2 d-flex">
+                                  {parent.profileImage ? (
+                                    <img
+                                      src={parent.profileImage}
+                                      className="img-fluid ms-2 w-100 rounded"
+                                      alt=""
+                                    />
+                                  ) : (
+                                    <div></div>
+                                  )}
+                                </p>
+                                {/* {data.studentParentsDetails &&
+                          data.studentParentsDetails.length > 0 &&
+                          data.studentParentsDetails[0].profileImage
+                            ? data.studentParentsDetails[0].profileImage
+                            : "--"} */}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Address</p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {data.studentParentsDetails &&
+                                data.studentParentsDetails.length > 0 &&
+                                data.studentParentsDetails[0].address
+                                  ? data.studentParentsDetails[0].address
+                                  : "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-export default EmpQualificationDetailsAdd;
+                      <br />
+                    </div>
+                  </div>
+                ))}
+              {(!data.studentParentsDetails ||
+                data.studentParentsDetails.length === 0) && (
+                <div
+                  id="panelsStayOpen-collapseThree"
+                  class="accordion-collapse collapse"
+                >
+                  <div class="accordion-body">
+                    <div className="text-muted">
+                      No parent/guardian information available
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}

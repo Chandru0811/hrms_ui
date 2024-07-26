@@ -12,6 +12,7 @@ import EmpBankAccountAdd from "./AddEmployee/EmpBankAccountAdd";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import EmpContactDetailsAdd from "./AddEmployee/EmpContactDetailsAdd";
+import { useParams } from "react-router-dom";
 
 const steps = [
   { tooltip: "Personal Information" },
@@ -26,14 +27,15 @@ const steps = [
 function EmployeeAdd() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-  const [formData, setFormData] = useState({});
+  // const id = sessionStorage.getItem('employeeId')
+  // const id = useParams()
+  const [formData, setFormData] = useState({ empId: 49 });
+  const childRef = React.useRef();
+  const [loadIndicator, setLoadIndicator] = useState(false);
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
-
-  const childRef = React.useRef();
-  console.log("Form Data:", formData);
 
   const handleNext = () => {
     let newSkipped = skipped;
@@ -59,11 +61,11 @@ function EmployeeAdd() {
           childRef.current.personalInfoAdd();
         }
         break;
-        case "1":
-          if (childRef.current) {
-            childRef.current.contactDetailsAdd();
-          }
-          break;
+      case "1":
+        if (childRef.current) {
+          childRef.current.contactDetailsAdd();
+        }
+        break;
       case "2":
         if (childRef.current) {
           childRef.current.qualificationDetailsAdd();
@@ -120,14 +122,16 @@ function EmployeeAdd() {
               ref={childRef}
               setFormData={setFormData}
               handleNext={handleNext}
+              setLoadIndicators={setLoadIndicator}
             />
           )}
-           {activeStep === 1 && (
+          {activeStep === 1 && (
             <EmpContactDetailsAdd
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
               handleNext={handleNext}
+              setLoadIndicators={setLoadIndicator}
             />
           )}
           {activeStep === 2 && (
@@ -136,6 +140,7 @@ function EmployeeAdd() {
               ref={childRef}
               setFormData={setFormData}
               handleNext={handleNext}
+              setLoadIndicators={setLoadIndicator}
             />
           )}
           {activeStep === 3 && (
@@ -144,6 +149,7 @@ function EmployeeAdd() {
               ref={childRef}
               setFormData={setFormData}
               handleNext={handleNext}
+              setLoadIndicators={setLoadIndicator}
             />
           )}
           {activeStep === 4 && (
@@ -152,6 +158,7 @@ function EmployeeAdd() {
               ref={childRef}
               setFormData={setFormData}
               handleNext={handleNext}
+              setLoadIndicators={setLoadIndicator}
             />
           )}
           {activeStep === 5 && (
@@ -160,6 +167,7 @@ function EmployeeAdd() {
               ref={childRef}
               setFormData={setFormData}
               handleNext={handleNext}
+              setLoadIndicators={setLoadIndicator}
             />
           )}
           {activeStep === 6 && (
@@ -168,6 +176,7 @@ function EmployeeAdd() {
               ref={childRef}
               setFormData={setFormData}
               handleNext={handleNext}
+              setLoadIndicators={setLoadIndicator}
             />
           )}
 
@@ -188,7 +197,14 @@ function EmployeeAdd() {
               className="btn btn-button btn-sm"
               onClick={handleButtonClick}
               style={{ padding: "7px" }}
+              disabled={loadIndicator}
             >
+              {loadIndicator && (
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  aria-hidden="true"
+                ></span>
+              )}
               {activeStep === steps.length - 1 ? "Submit" : "Save and Next"}
             </button>
           </div>

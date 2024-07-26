@@ -8,69 +8,128 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import api from "../../../config/URL";
 
 const EmpPersonalInfoAdd = forwardRef(
-  ({ formData, setFormData, handleNext }, ref) => {
+  ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [selectedIdType, setSelectedIdType] = useState("nric");
-    const [centerData, setCenterData] = useState(null);
-    const fetchData = async () => {
-      try {
-        setCenterData(centerData);
-      } catch (error) {
-        toast.error(error);
-      }
-    };
+    const [employeProfile, setEmployeeProfile] = useState("");
+    console.log("Employee Data", formData.empId)
 
-    useEffect(() => {
-      fetchData();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const validationSchema = Yup.object().shape({
-      firstName: Yup.string().required("*First name is required"),
-      lastName: Yup.string().required("*Last name is required "),
-      primaryEmailID: Yup.string()
-        .email("Enter valid email")
-        .required("*Primary email id is required "),
-      primaryEmailPassword: Yup.string().required(
-        "*Primary email password is required "
-      ),
-      primaryPhoneNumber: Yup.number().required(
-        "*Primary phone number is required "
-      )
-        .typeError("*Must be a number"),
-      file: Yup.string().required("*Photo is required "),
-      ...(selectedIdType === 'nric' && {
-        nricFin: Yup.string().required("*NRIC fin is required"),
-        nricType: Yup.string().required("*Select a NRIC type"),
-      }),
-      ...(selectedIdType === 'aadhar' && {
-        aadharNumber: Yup.string().required("*Aadhar number is required"),
-      }),
+    const validationSchema = Yup.object({
+      // firstName: Yup.string().required("*First name is required"),
+      // lastName: Yup.string().required("*Last name is required"),
+      // empPriPhNumber: Yup.number()
+      //   .required("*Primary phone number is required")
+      //   .typeError("*Must be a number"),
+      // empPriEmail: Yup.string()
+      //   .email("*Enter valid email")
+      //   .required("*Primary email id is required"),
+      // empPriEmailPassword: Yup.string().required(
+      //   "*Primary email password is required"
+      // ),
+      // empRegCmpId: Yup.string().required("*Company name is required"),1
+      // employeeID: Yup.string().required("*Employee id is required"),
+      // empRegDeptId: Yup.string().required("*Department name is required"),1
+      // employeedesignation: Yup.string().required(
+      //   "*Employee designation is required"
+      // ),1
+      // employeeDateOfJoining: Yup.string().required(
+      //   "*Employee date of joining is required"
+      // ),1
+      // employeeType: Yup.string().required("*Employee type is required"),1
+      // noticePeriod: Yup.string().required("*Notice period is required"),1
+      // reportingManagerName: Yup.string().required(
+      //   "*Reporting manager name is required"
+      // ),1
+      // reportingManagerID: Yup.string().required(
+      //   "*Reporting manager id is required"
+      // ),
+      // ...(selectedIdType === "nric" && {
+      //   NRICFin: Yup.string().required("*NRIC fin is required"),
+      //   NRICType: Yup.string().required("*Select a NRIC type"),
+      // }),
+      // ...(selectedIdType === "aadhar" && {
+      //   aadharNumber: Yup.string().required("*Aadhar number is required"),
+      // }),
     });
 
     const formik = useFormik({
       initialValues: {
         firstName: formData.firstName || "",
         lastName: formData.lastName || "",
-        primaryPhoneNumber: formData.primaryPhoneNumber || "",
-        nricFin: formData.nricFin || "",
-        nricType: formData.nricType || "",
-        aadharNumber: formData.aadharNumber || "",
-        primaryEmailID: formData.primaryEmailID || "",
-        primaryEmailPassword: formData.primaryEmailPassword || "",
+        empPriPhNumber: formData.empPriPhNumber || "",
+        empPriEmail: formData.empPriEmail || "",
+        empPriEmailPassword: formData.empPriEmailPassword || "",
+        nricfin: formData.nricfin || "",
+        nrictype: formData.nrictype || "",
+        empRegCmpId: formData.empRegCmpId || "1",
+        empRegDeptId: formData.empRegDeptId || "2",
         file: formData.file || "",
+        aadharNumber: formData.aadharNumber || "gytrhh56696",
+        proof: formData.proof || "AADHAR",
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        setLoadIndicators(true);
+        console.log("Form Data:", formData);
+        // console.log("Api Data:", data);
         try {
-          setFormData((prv) => ({ ...prv, ...values }));
-          handleNext();
+          const formDatas = new FormData();
+          formDatas.append("firstName", values.firstName);
+          formDatas.append("lastName", values.lastName);
+          formDatas.append("empPriPhNumber", values.empPriPhNumber);
+          formDatas.append("empPriEmail", values.empPriEmail);
+          formDatas.append("empPriEmailPassword", values.empPriEmailPassword);
+          formDatas.append("NRICFin", values.nricfin);
+          formDatas.append("NRICType", values.nrictype);
+          // formDatas.append("aadharNumber", values.aadharNumber);
+          formDatas.append("empRegCmpId", "1");
+          formDatas.append("empRegDeptId", "2");
+          formDatas.append("file", values.file);
+          formDatas.append("aadharNumber", "gytrhh56696");
+          formDatas.append("proof", "NRIC");
+          // formDatas.append("employeedesignation", values.employeedesignation);
+          // formDatas.append("proof", values.proof);
+          // formDatas.append("employeeDateOfJoining", values.employeeDateOfJoining);
+          // formDatas.append("employeeType", values.employeeType);
+          // formDatas.append("noticePeriod", values.noticePeriod);
+          // formDatas.append("reportingManagerName", values.reportingManagerName);
+          // formDatas.append("reportingManagerID", values.reportingManagerID);
+          const response = await api.put(
+            `/updateEmployeeRegDetailsById/${formData.empId}`,
+            formDatas
+          );
+          if (response.status === 200) {
+            toast.success(response.data.message);
+            setFormData((prv) => ({ ...prv, ...values }));
+            handleNext();
+          } else {
+            toast.error(response.data.message);
+          }
         } catch (error) {
           toast.error(error);
+        } finally {
+          setLoadIndicators(false);
         }
       },
     });
+
+    useEffect(() => {
+      const getData = async () => {
+        try {
+          const response = await api.get(`getEmployeeRegDetailsById/${formData.empId}`);
+          formik.setValues(response.data);
+          console.log("Employee response", response.data)
+          setEmployeeProfile(response.data.files);
+        } catch (error) {
+          // console.log(error.message);
+          toast.error("Error Fetching Data ", error.message);
+        }
+      };
+      getData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useImperativeHandle(ref, () => ({
       personalInfoAdd: formik.handleSubmit,
@@ -132,16 +191,16 @@ const EmpPersonalInfoAdd = forwardRef(
                     </lable>
                     <input
                       className="form-control  form-contorl-sm"
-                      name="primaryEmailID"
+                      name="empPriEmail"
                       type="email"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.primaryEmailID}
+                      value={formik.values.empPriEmail}
                     />
-                    {formik.touched.primaryEmailID &&
-                      formik.errors.primaryEmailID && (
+                    {formik.touched.empPriEmail &&
+                      formik.errors.empPriEmail && (
                         <div className="error text-danger ">
-                          <small>{formik.errors.primaryEmailID}</small>
+                          <small>{formik.errors.empPriEmail}</small>
                         </div>
                       )}
                   </div>
@@ -154,33 +213,38 @@ const EmpPersonalInfoAdd = forwardRef(
                       <input
                         type={showPassword ? "text" : "password"}
                         onChange={(e) => setPassword(e.target.value)}
-                        className={`form-control  ${formik.touched.primaryEmailPassword && formik.errors.primaryEmailPassword
-                          ? "is-invalid"
-                          : ""
-                          }`}
-                        {...formik.getFieldProps("primaryEmailPassword")}
+                        className={`form-control  ${
+                          formik.touched.empPriEmailPassword &&
+                          formik.errors.empPriEmailPassword
+                            ? "is-invalid"
+                            : ""
+                        }`}
+                        {...formik.getFieldProps("empPriEmailPassword")}
                         style={{
                           borderRight: "none",
                           borderTopRightRadius: "0px",
                           borderBottomRightRadius: "0px",
                         }}
-                        name="primaryEmailPassword"
+                        name="empPriEmailPassword"
                       />
                       <span
                         className={`input-group-text bg-white`}
                         id="basic-addon1"
                         onClick={togglePasswordVisibility}
                         style={{
-                          cursor: "pointer", borderRadius: "5px", borderLeft: "none", borderTopLeftRadius: "0px",
-                          borderBottomLeftRadius: "0px"
+                          cursor: "pointer",
+                          borderRadius: "5px",
+                          borderLeft: "none",
+                          borderTopLeftRadius: "0px",
+                          borderBottomLeftRadius: "0px",
                         }}
                       >
                         {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
                       </span>
-                      {formik.touched.primaryEmailPassword &&
-                        formik.errors.primaryEmailPassword && (
+                      {formik.touched.empPriEmailPassword &&
+                        formik.errors.empPriEmailPassword && (
                           <div className="invalid-feedback">
-                            {formik.errors.primaryEmailPassword}
+                            {formik.errors.empPriEmailPassword}
                           </div>
                         )}
                     </div>
@@ -193,15 +257,15 @@ const EmpPersonalInfoAdd = forwardRef(
                     <input
                       className="form-control "
                       type="text"
-                      name="primaryPhoneNumber"
+                      name="empPriPhNumber"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.primaryPhoneNumber}
+                      value={formik.values.empPriPhNumber}
                     />
-                    {formik.touched.primaryPhoneNumber &&
-                      formik.errors.primaryPhoneNumber && (
+                    {formik.touched.empPriPhNumber &&
+                      formik.errors.empPriPhNumber && (
                         <div className="text-danger">
-                          <small>{formik.errors.primaryPhoneNumber}</small>
+                          <small>{formik.errors.empPriPhNumber}</small>
                         </div>
                       )}
                   </div>
@@ -244,15 +308,15 @@ const EmpPersonalInfoAdd = forwardRef(
                         </lable>
                         <input
                           className="form-control"
-                          name="nricFin"
+                          name="nricfin"
                           type="text"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.nricFin}
+                          value={formik.values.nricfin}
                         />
-                        {formik.touched.nricFin && formik.errors.nricFin && (
+                        {formik.touched.nricfin && formik.errors.nricfin && (
                           <div className="error text-danger">
-                            <small>{formik.errors.nricFin}</small>
+                            <small>{formik.errors.nricfin}</small>
                           </div>
                         )}
                       </div>
@@ -262,24 +326,26 @@ const EmpPersonalInfoAdd = forwardRef(
                         </lable>
                         <select
                           className="form-select"
-                          name="nricType"
+                          name="nrictype"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.nricType}
+                          value={formik.values.nrictype}
                         >
                           <option selected></option>
                           <option value="Singapore Citizen">
                             Singapore Citizen
                           </option>
                           <option value="Singapore PR">Singapore PR</option>
-                          <option value="Employment Pass">Employment Pass</option>
+                          <option value="Employment Pass">
+                            Employment Pass
+                          </option>
                           <option value="Dependant Pass">Dependant Pass</option>
                           <option value="S-Pass">S-Pass</option>
                           <option value="Work Permit">Work Permit</option>
                         </select>
-                        {formik.touched.nricType && formik.errors.nricType && (
+                        {formik.touched.nrictype && formik.errors.nrictype && (
                           <div className="error text-danger">
-                            <small>{formik.errors.nricType}</small>
+                            <small>{formik.errors.nrictype}</small>
                           </div>
                         )}
                       </div>
@@ -307,7 +373,7 @@ const EmpPersonalInfoAdd = forwardRef(
                     </div>
                   )}
                   <div className="col-md-6 col-12 mb-3">
-                    <lable>Photo</lable><span className="text-danger">*</span>
+                    <lable>Photo</lable>
                     <input
                       type="file"
                       name="file"
@@ -317,6 +383,7 @@ const EmpPersonalInfoAdd = forwardRef(
                       }}
                       onBlur={formik.handleBlur}
                     />
+                    <img src={employeProfile} alt="emp_photo" className="img-fluid mt-3" style={{ width: "200px", height: "150px" }}></img>
                     {formik.touched.file && formik.errors.file && (
                       <div className="error text-danger ">
                         <small>{formik.errors.file}</small>

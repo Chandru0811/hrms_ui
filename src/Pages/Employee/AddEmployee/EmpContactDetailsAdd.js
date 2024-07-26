@@ -1,69 +1,62 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-
-const validationSchema = Yup.object().shape({
-  dob: Yup.string().required("*Date of birth is required"),
-  gender: Yup.string().required("*Select a gender"),
-  maritalStatus: Yup.string().required("*Select a marital status"),
-  religion: Yup.string().required("*Religion is required "),
-  address: Yup.string().required("*Address is required "),
-  city: Yup.string().required("*City is required "),
-  pincode: Yup.number()
-    .required("*Pincode is required")
-    .typeError("*Must be a number"),
-  secondaryEmail: Yup.string().required("*Secondary email id is required "),
-  secondaryEmailPassword: Yup.string().required(
-    "*Secondary email password is required "
-  ),
-  secondaryPhoneNumber: Yup.number()
-    .required("*Secondary phone number is required ")
-    .typeError("*Must be a number"),
-});
+import api from "../../../config/URL";
 
 const EmpContactDetailsAdd = forwardRef(
-  ({ formData, setFormData, handleNext }, ref) => {
-    const [centerData, setCenterData] = useState(null);
-    const fetchData = async () => {
-      try {
-        setCenterData(centerData);
-      } catch (error) {
-        toast.error(error);
-      }
-    };
-
-    useEffect(() => {
-      fetchData();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+  ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
+    const validationSchema = Yup.object().shape({
+      dob: Yup.string().required("*Date of birth is required"),
+      gender: Yup.string().required("*Select a gender"),
+      // maritalStatus: Yup.string().required("*Select a marital status"),
+      religion: Yup.string().required("*Religion is required "),
+      empAddr: Yup.string().required("*Address is required "),
+      city: Yup.string().required("*City is required "),
+      pincode: Yup.number()
+        .required("*Pincode is required")
+        .typeError("*Must be a number"),
+      empSecEmail: Yup.string().required("*Secondary email id is required "),
+      empSecEmailPassword: Yup.string().required(
+        "*Secondary email password is required "
+      ),
+      empSecPhNumber: Yup.number()
+        .required("*Secondary phone number is required ")
+        .typeError("*Must be a number"),
+    });
 
     const formik = useFormik({
       initialValues: {
-        dob: formData.dob || "",
-        gender: formData.gender || "",
-        maritalStatus: formData.maritalStatus || "",
-        religion: formData.religion || "",
-        address: formData.address || "",
-        city: formData.city || "",
-        pincode: formData.pincode || "",
-        secondaryEmail: formData.secondaryEmail || "",
-        secondaryEmailPassword: formData.secondaryEmailPassword || "",
-        secondaryPhoneNumber: formData.secondaryPhoneNumber || "",
+        dob: formData.dob,
+        gender: formData.gender,
+        maritalStatus: formData.maritalStatus,
+        religion: formData.religion,
+        address: formData.address,
+        city: formData.city,
+        pincode: formData.pincode,
+        empSecEmail: formData.empSecEmail,
+        empSecEmailPassword: formData.empSecEmailPassword,
+        empSecPhNumber: formData.empSecPhNumber,
       },
-      validationSchema: validationSchema,
+      // validationSchema: validationSchema,
       onSubmit: async (values) => {
+        setLoadIndicators(true);
+        values.perDetailsEmpId = formData.empId;
+        // console.log("Body Values is ", values);
         try {
-          setFormData((prv) => ({ ...prv, ...values }));
-          handleNext();
+          const response = await api.post(`/addEmpPersonalDetails`, values);
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            setFormData((prv) => ({ ...prv, ...values }));
+            handleNext();
+          } else {
+            toast.error(response.data.message);
+          }
         } catch (error) {
           toast.error(error);
+        } finally {
+          setLoadIndicators(false);
         }
       },
     });
@@ -88,7 +81,7 @@ const EmpContactDetailsAdd = forwardRef(
                 <div className="row mt-3">
                   <div className="col-md-6 col-12 mb-3">
                     <lable className="form-lable">
-                      Date Of Birth<span className="text-danger">*</span>
+                      Date of Birth<span className="text-danger">*</span>
                     </lable>
                     <input
                       className="form-control "
@@ -120,9 +113,9 @@ const EmpContactDetailsAdd = forwardRef(
                           type="radio"
                           name="gender"
                           id="inlineRadio1"
-                          value="yes"
+                          value="Male"
                           onChange={formik.handleChange}
-                          checked={formik.values.gender === "yes"}
+                          checked={formik.values.gender === "Male"}
                         />
                         <lable className="form-check-label" for="inlineRadio1">
                           Male
@@ -134,9 +127,9 @@ const EmpContactDetailsAdd = forwardRef(
                           type="radio"
                           name="gender"
                           id="inlineRadio2"
-                          value="no"
+                          value="Female"
                           onChange={formik.handleChange}
-                          checked={formik.values.gender === "no"}
+                          checked={formik.values.gender === "Female"}
                         />
                         <lable className="form-check-label" for="inlineRadio2">
                           Female
@@ -166,13 +159,13 @@ const EmpContactDetailsAdd = forwardRef(
                         <input
                           className="form-check-input"
                           type="radio"
-                          name="marital"
-                          id="inlineRadio1"
-                          value="yes"
+                          name="maritalStatus"
+                          id="inlineRadio3"
+                          value="No"
                           onChange={formik.handleChange}
-                          checked={formik.values.gender === "yes"}
+                          checked={formik.values.maritalStatus === "No"}
                         />
-                        <lable className="form-check-label" for="inlineRadio1">
+                        <lable className="form-check-label" for="inlineRadio3">
                           Single
                         </lable>
                       </div>
@@ -180,13 +173,13 @@ const EmpContactDetailsAdd = forwardRef(
                         <input
                           className="form-check-input"
                           type="radio"
-                          name="marital"
-                          id="inlineRadio2"
-                          value="no"
+                          name="maritalStatus"
+                          id="inlineRadio4"
+                          value="Yes"
                           onChange={formik.handleChange}
-                          checked={formik.values.maritalStatus === "no"}
+                          checked={formik.values.maritalStatus === "Yes"}
                         />
-                        <lable className="form-check-label" for="inlineRadio2">
+                        <lable className="form-check-label" for="inlineRadio4">
                           Married
                         </lable>
                       </div>
@@ -285,15 +278,15 @@ const EmpContactDetailsAdd = forwardRef(
                     <input
                       className="form-control "
                       type="email"
-                      name="secondaryEmail"
+                      name="empSecEmail"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.secondaryEmail}
+                      value={formik.values.empSecEmail}
                     />
-                    {formik.touched.secondaryEmail &&
-                      formik.errors.secondaryEmail && (
+                    {formik.touched.empSecEmail &&
+                      formik.errors.empSecEmail && (
                         <div className="text-danger">
-                          <small>{formik.errors.secondaryEmail}</small>
+                          <small>{formik.errors.empSecEmail}</small>
                         </div>
                       )}
                   </div>
@@ -307,18 +300,18 @@ const EmpContactDetailsAdd = forwardRef(
                         type={showPassword ? "text" : "password"}
                         onChange={(e) => setPassword(e.target.value)}
                         className={`form-control  ${
-                          formik.touched.secondaryEmailPassword &&
-                          formik.errors.secondaryEmailPassword
+                          formik.touched.empSecEmailPassword &&
+                          formik.errors.empSecEmailPassword
                             ? "is-invalid"
                             : ""
                         }`}
-                        {...formik.getFieldProps("secondaryEmailPassword")}
+                        {...formik.getFieldProps("empSecEmailPassword")}
                         style={{
                           borderRight: "none",
                           borderTopRightRadius: "0px",
                           borderBottomRightRadius: "0px",
                         }}
-                        name="secondaryEmailPassword"
+                        name="empSecEmailPassword"
                       />
                       <span
                         className={`input-group-text bg-white`}
@@ -334,10 +327,10 @@ const EmpContactDetailsAdd = forwardRef(
                       >
                         {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
                       </span>
-                      {formik.touched.secondaryEmailPassword &&
-                        formik.errors.secondaryEmailPassword && (
+                      {formik.touched.empSecEmailPassword &&
+                        formik.errors.empSecEmailPassword && (
                           <div className="invalid-feedback">
-                            {formik.errors.secondaryEmailPassword}
+                            {formik.errors.empSecEmailPassword}
                           </div>
                         )}
                     </div>
@@ -350,15 +343,15 @@ const EmpContactDetailsAdd = forwardRef(
                     <input
                       className="form-control "
                       type="text"
-                      name="secondaryPhoneNumber"
+                      name="empSecPhNumber"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.secondaryPhoneNumber}
+                      value={formik.values.empSecPhNumber}
                     />
-                    {formik.touched.secondaryPhoneNumber &&
-                      formik.errors.secondaryPhoneNumber && (
+                    {formik.touched.empSecPhNumber &&
+                      formik.errors.empSecPhNumber && (
                         <div className="text-danger">
-                          <small>{formik.errors.secondaryPhoneNumber}</small>
+                          <small>{formik.errors.empSecPhNumber}</small>
                         </div>
                       )}
                   </div>

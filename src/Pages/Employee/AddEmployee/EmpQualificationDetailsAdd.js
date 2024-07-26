@@ -3,51 +3,69 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { FaRegTrashAlt } from "react-icons/fa";
-
-const validationSchema = Yup.object().shape({
-  empQualification: Yup.array().of(
-    Yup.object().shape({
-      qualificationName: Yup.string().required("*Qualification name is required"),
-      qualificationType: Yup.string().required("*Qualification type is required"),
-      fieldOfStudy: Yup.string().required("*Field of study is required"),
-      modeOfStudy: Yup.string().required("*Mode of study is required"),
-      startDate: Yup.string().required("*Start date is required"),
-      endDate: Yup.string().required("*End date is required"),
-      institution: Yup.string().required("*Institution is required"),
-      employeeSkill: Yup.string().required("*Employee skill is required"),
-      skillDescription: Yup.string().required("*Skill description is required"),
-    })
-  ),
-});
+import api from "../../../config/URL";
 
 const EmpQualificationDetailsAdd = forwardRef(
-  ({ formData, setFormData, handleNext }, ref) => {
+  ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
     const [rows1, setRows1] = useState([{}]);
 
+    const validationSchema = Yup.object().shape({
+      empQualificationEntities: Yup.array().of(
+        Yup.object().shape({
+          qualName: Yup.string().required(
+            "*Qualification name is required"
+          ),
+          qualType: Yup.string().required(
+            "*Qualification type is required"
+          ),
+          qualFldOfStudy: Yup.string().required("*Field of study is required"),
+          qualModeOfStudy: Yup.string().required("*Mode of study is required"),
+          qualStartDate: Yup.string().required("*Start date is required"),
+          qualEndDate: Yup.string().required("*End date is required"),
+          qualInstitution: Yup.string().required("*Institution is required"),
+          employeeSkill: Yup.string().required("*Employee skill is required"),
+          skillDescription: Yup.string().required("*Skill description is required"),
+        })
+      ),
+    });
+
     const formik = useFormik({
       initialValues: {
-        empQualification: [
+        empQualificationEntities: [
           {
-            qualificationName: formData.qualificationName || "",
-            qualificationType: formData.qualificationType || "",
-            fieldOfStudy: formData.fieldOfStudy || "",
-            modeOfStudy: formData.modeOfStudy || "",
-            startDate: formData.startDate || "",
-            endDate: formData.endDate || "",
-            institution: formData.institution || "",
+            qualName: formData.qualName || "",
+            qualType: formData.qualType || "",
+            qualFldOfStudy: formData.qualFldOfStudy || "",
+            qualModeOfStudy: formData.qualModeOfStudy || "",
+            qualStartDate: formData.qualStartDate || "",
+            qualEndDate: formData.qualEndDate || "",
+            qualInstitution: formData.qualInstitution || "",
             employeeSkill: formData.employeeSkill || "",
             skillDescription: formData.skillDescription || "",
           },
         ],
       },
-      validationSchema: validationSchema,
+      // validationSchema: validationSchema,
       onSubmit: async (values) => {
+        // console.log("Body Values is ", values)
+        setLoadIndicators(true);
+        values.qualEmpId = formData.empId;
         try {
-          setFormData((prevFormData) => ({ ...prevFormData, ...values }));
-          handleNext();
+          const response = await api.post(
+            `/addEmpQualification`, values
+          );
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            setFormData((prv) => ({ ...prv, ...values }));
+            handleNext();
+          } else {
+            toast.error(response.data.message);
+          }
         } catch (error) {
           toast.error(error);
+        } finally {
+          setLoadIndicators(false);
         }
       },
     });
@@ -75,23 +93,23 @@ const EmpQualificationDetailsAdd = forwardRef(
                         <input
                           className="form-control "
                           type="text"
-                          name={`empQualification[${index}].qualificationName`}
+                          name={`empQualificationEntities[${index}].qualName`}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={
-                            formik.values.empQualification[index]
-                              ?.qualificationName || ""
+                            formik.values.empQualificationEntities[index]
+                              ?.qualName || ""
                           }
                         />
-                        {formik.touched.empQualification?.[index]
-                          ?.qualificationName &&
-                          formik.errors.empQualification?.[index]
-                            ?.qualificationName && (
+                        {formik.touched.empQualificationEntities?.[index]
+                          ?.qualName &&
+                          formik.errors.empQualificationEntities?.[index]
+                            ?.qualName && (
                             <div className="text-danger">
                               <small>
                                 {
-                                  formik.errors.empQualification[index]
-                                    .qualificationName
+                                  formik.errors.empQualificationEntities[index]
+                                    .qualName
                                 }
                               </small>
                             </div>
@@ -103,29 +121,30 @@ const EmpQualificationDetailsAdd = forwardRef(
                           <span className="text-danger">*</span>
                         </lable>
                         <select
-                        className="form-select"
-                        name={`empQualification[${index}].qualificationType`}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={
-                          formik.values.empQualification[index]
-                            ?.qualificationType || ""
-                        }>
-                        <option selected></option>
-                          <option value="Masters" >Masters</option>
-                          <option value="Bachelor" >Bachelor</option>
-                          <option value="Diploma" >Diploma</option>
-                          <option value="PG Diploma" >PG Diploma</option>
+                          className="form-select"
+                          name={`empQualificationEntities[${index}].qualType`}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={
+                            formik.values.empQualificationEntities[index]
+                              ?.qualType || ""
+                          }
+                        >
+                          <option selected></option>
+                          <option value="Masters">Masters</option>
+                          <option value="Bachelor">Bachelor</option>
+                          <option value="Diploma">Diploma</option>
+                          <option value="PG Diploma">PG Diploma</option>
                         </select>
-                        {formik.touched.empQualification?.[index]
-                          ?.qualificationType &&
-                          formik.errors.empQualification?.[index]
-                            ?.qualificationType && (
+                        {formik.touched.empQualificationEntities?.[index]
+                          ?.qualType &&
+                          formik.errors.empQualificationEntities?.[index]
+                            ?.qualType && (
                             <div className="text-danger">
                               <small>
                                 {
-                                  formik.errors.empQualification[index]
-                                    .qualificationType
+                                  formik.errors.empQualificationEntities[index]
+                                    .qualType
                                 }
                               </small>
                             </div>
@@ -137,32 +156,34 @@ const EmpQualificationDetailsAdd = forwardRef(
                           <span className="text-danger">*</span>
                         </lable>
                         <select
-                        className="form-select"
-                        name={`empQualification[${index}].fieldOfStudy`}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={
-                          formik.values.empQualification[index]
-                            ?.fieldOfStudy || ""
-                        }>
-                        <option selected></option>
-                          <option value="Information Technology" >Information Technology</option>
-                          <option value="Business" >Business</option>
-                          <option value="Engineering" >Engineering</option>
-                          <option value="Accounting" >Accounting</option>
-                          <option value="Banking" >Banking</option>
-                          <option value="Finance" >Finance</option>
-
+                          className="form-select"
+                          name={`empQualificationEntities[${index}].qualFldOfStudy`}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={
+                            formik.values.empQualificationEntities[index]
+                              ?.qualFldOfStudy || ""
+                          }
+                        >
+                          <option selected></option>
+                          <option value="Information Technology">
+                            Information Technology
+                          </option>
+                          <option value="Business">Business</option>
+                          <option value="Engineering">Engineering</option>
+                          <option value="Accounting">Accounting</option>
+                          <option value="Banking">Banking</option>
+                          <option value="Finance">Finance</option>
                         </select>
-                        {formik.touched.empQualification?.[index]
-                          ?.fieldOfStudy &&
-                          formik.errors.empQualification?.[index]
-                            ?.fieldOfStudy && (
+                        {formik.touched.empQualificationEntities?.[index]
+                          ?.qualFldOfStudy &&
+                          formik.errors.empQualificationEntities?.[index]
+                            ?.qualFldOfStudy && (
                             <div className="text-danger">
                               <small>
                                 {
-                                  formik.errors.empQualification[index]
-                                    .fieldOfStudy
+                                  formik.errors.empQualificationEntities[index]
+                                    .qualFldOfStudy
                                 }
                               </small>
                             </div>
@@ -174,28 +195,31 @@ const EmpQualificationDetailsAdd = forwardRef(
                           <span className="text-danger">*</span>
                         </lable>
                         <select
-                        className="form-select"
-                        name={`empQualification[${index}].modeOfStudy`}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={
-                          formik.values.empQualification[index]
-                            ?.modeOfStudy || ""
-                        }>
-                        <option selected></option>
-                          <option value="Full time" >Full time</option>
-                          <option value="Part time" >Part time</option>
-                          <option value="Distance Education" >Distance Education</option>
+                          className="form-select"
+                          name={`empQualificationEntities[${index}].qualModeOfStudy`}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={
+                            formik.values.empQualificationEntities[index]
+                              ?.qualModeOfStudy || ""
+                          }
+                        >
+                          <option selected></option>
+                          <option value="Full time">Full time</option>
+                          <option value="Part time">Part time</option>
+                          <option value="Distance Education">
+                            Distance Education
+                          </option>
                         </select>
-                        {formik.touched.empQualification?.[index]
-                          ?.modeOfStudy &&
-                          formik.errors.empQualification?.[index]
-                            ?.modeOfStudy && (
+                        {formik.touched.empQualificationEntities?.[index]
+                          ?.qualModeOfStudy &&
+                          formik.errors.empQualificationEntities?.[index]
+                            ?.qualModeOfStudy && (
                             <div className="text-danger">
                               <small>
                                 {
-                                  formik.errors.empQualification[index]
-                                    .modeOfStudy
+                                  formik.errors.empQualificationEntities[index]
+                                    .qualModeOfStudy
                                 }
                               </small>
                             </div>
@@ -209,24 +233,23 @@ const EmpQualificationDetailsAdd = forwardRef(
                         <input
                           className="form-control  form-contorl-sm"
                           type="date"
-                          name={`empQualification[${index}].startDate`}
+                          name={`empQualificationEntities[${index}].qualStartDate`}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={
-                            formik.values.empQualification[index]
-                              ?.startDate || ""
+                            formik.values.empQualificationEntities[index]?.qualStartDate ||
+                            ""
                           }
                         />
 
-                        {formik.touched.empQualification?.[index]
-                          ?.startDate &&
-                          formik.errors.empQualification?.[index]
-                            ?.startDate && (
+                        {formik.touched.empQualificationEntities?.[index]?.qualStartDate &&
+                          formik.errors.empQualificationEntities?.[index]
+                            ?.qualStartDate && (
                             <div className="text-danger">
                               <small>
                                 {
-                                  formik.errors.empQualification[index]
-                                    .startDate
+                                  formik.errors.empQualificationEntities[index]
+                                    .qualStartDate
                                 }
                               </small>
                             </div>
@@ -240,24 +263,19 @@ const EmpQualificationDetailsAdd = forwardRef(
                         <input
                           className="form-control  form-contorl-sm"
                           type="date"
-                          name={`empQualification[${index}].endDate`}
+                          name={`empQualificationEntities[${index}].qualEndDate`}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={
-                            formik.values.empQualification[index]?.endDate ||
-                            ""
+                            formik.values.empQualificationEntities[index]?.qualEndDate || ""
                           }
                         />
 
-                        {formik.touched.empQualification?.[index]?.endDate &&
-                          formik.errors.empQualification?.[index]
-                            ?.endDate && (
+                        {formik.touched.empQualificationEntities?.[index]?.qualEndDate &&
+                          formik.errors.empQualificationEntities?.[index]?.qualEndDate && (
                             <div className="text-danger">
                               <small>
-                                {
-                                  formik.errors.empQualification[index]
-                                    .endDate
-                                }
+                                {formik.errors.empQualificationEntities[index].qualEndDate}
                               </small>
                             </div>
                           )}
@@ -270,24 +288,24 @@ const EmpQualificationDetailsAdd = forwardRef(
                         <input
                           className="form-control  form-contorl-sm"
                           type="text"
-                          name={`empQualification[${index}].institution`}
+                          name={`empQualificationEntities[${index}].qualInstitution`}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={
-                            formik.values.empQualification[index]
-                              ?.institution || ""
+                            formik.values.empQualificationEntities[index]
+                              ?.qualInstitution || ""
                           }
                         />
 
-                        {formik.touched.empQualification?.[index]
-                          ?.institution &&
-                          formik.errors.empQualification?.[index]
-                            ?.institution && (
+                        {formik.touched.empQualificationEntities?.[index]
+                          ?.qualInstitution &&
+                          formik.errors.empQualificationEntities?.[index]
+                            ?.qualInstitution && (
                             <div className="text-danger">
                               <small>
                                 {
-                                  formik.errors.empQualification[index]
-                                    .institution
+                                  formik.errors.empQualificationEntities[index]
+                                    .qualInstitution
                                 }
                               </small>
                             </div>
@@ -328,7 +346,6 @@ const EmpQualificationDetailsAdd = forwardRef(
             <div className="border-0 mb-5" key={index}>
               <div>
                 <div className=" border-0 my-2">
-
                   <p className="headColor">Skills</p>
                   <div className="container pt-3">
                     <div className="row mt-2">
@@ -340,22 +357,22 @@ const EmpQualificationDetailsAdd = forwardRef(
                         <input
                           className="form-control"
                           type="text"
-                          name={`empQualification[${index}].employeeSkill`}
+                          name={`empQualificationEntities[${index}].employeeSkill`}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={
-                            formik.values.empQualification[index]
+                            formik.values.empQualificationEntities[index]
                               ?.employeeSkill || ""
                           }
                         />
-                        {formik.touched.empQualification?.[index]
+                        {formik.touched.empQualificationEntities?.[index]
                           ?.employeeSkill &&
-                          formik.errors.empQualification?.[index]
+                          formik.errors.empQualificationEntities?.[index]
                             ?.employeeSkill && (
                             <div className="text-danger">
                               <small>
                                 {
-                                  formik.errors.empQualification[index]
+                                  formik.errors.empQualificationEntities[index]
                                     .employeeSkill
                                 }
                               </small>
@@ -371,23 +388,23 @@ const EmpQualificationDetailsAdd = forwardRef(
                           className="form-control  form-contorl-sm"
                           type="text"
                           rows={5}
-                          name={`empQualification[${index}].skillDescription`}
+                          name={`empQualificationEntities[${index}].skillDescription`}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={
-                            formik.values.empQualification[index]
+                            formik.values.empQualificationEntities[index]
                               ?.skillDescription || ""
                           }
                         />
 
-                        {formik.touched.empQualification?.[index]
+                        {formik.touched.empQualificationEntities?.[index]
                           ?.skillDescription &&
-                          formik.errors.empQualification?.[index]
+                          formik.errors.empQualificationEntities?.[index]
                             ?.skillDescription && (
                             <div className="text-danger">
                               <small>
                                 {
-                                  formik.errors.empQualification[index]
+                                  formik.errors.empQualificationEntities[index]
                                     .skillDescription
                                 }
                               </small>

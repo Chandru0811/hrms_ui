@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../config/URL";
@@ -8,30 +7,10 @@ import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 
 function ExitManagementAdmin() {
-  const navigate = useNavigate();
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
-  const [currentDate, setCurrentDate] = useState('');
-  const fetchData = async () => {
-    try {
-      const companyData = await fetchAllCompanyNamesWithId();
-      const employeeData = await fetchAllEmployeeNamesWithId();
-      setCompanyData(companyData);
-      setEmployeeData(employeeData);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setCurrentDate(today);
-  }, []);
-
+  console.log("Employee" ,employeeData);
+  const [currentDate, setCurrentDate] = useState("");
 
   const validationSchema = Yup.object({
     employeeId: Yup.string().required("*Employee name is required"),
@@ -76,6 +55,26 @@ function ExitManagementAdmin() {
     },
   });
 
+  const fetchData = async () => {
+    try {
+      // const companyData = await fetchAllCompanyNamesWithId();
+      const employeeData = await fetchAllEmployeeNamesWithId();
+      // setCompanyData(companyData);
+      setEmployeeData(employeeData);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    setCurrentDate(today);
+  }, []);
+
   return (
     <section className="ExitAdd p-3">
       <div className="container-fluid">
@@ -113,7 +112,7 @@ function ExitManagementAdmin() {
                     </div>
                   )}
               </div> */}
-                <div className="col-md-6 col-12 mb-2">
+              <div className="col-md-6 col-12 mb-2">
                 <lable className="form-lable">
                   Company Name<span className="text-danger">*</span>
                 </lable>
@@ -205,8 +204,6 @@ function ExitManagementAdmin() {
                       : ""
                   }`}
                   {...formik.getFieldProps("dateOfRelieving")}
-                  value={formik.values.expenseDate || currentDate}
-                  min={currentDate}
                 />
                 {formik.touched.dateOfRelieving &&
                   formik.errors.dateOfRelieving && (

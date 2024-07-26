@@ -3,44 +3,56 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { FaRegTrashAlt } from "react-icons/fa";
+import api from "../../../config/URL";
 
 const validationSchema = Yup.object().shape({
   empPrevious: Yup.array().of(
     Yup.object().shape({
-      companyName: Yup.string().required("*Company name is required"),
-      jobTitle: Yup.string().required("*Referral job title is required"),
-      referralContactNo: Yup.number().required(
+      prevCompRefcmpName: Yup.string().required("*Company name is required"),
+      prevCompReferralJobTitle: Yup.string().required("*Referral job title is required"),
+      prevCompReferralContactNum: Yup.number().required(
         "*Referral contact number is required"
       ).typeError("*Must be a number"),
-      companyAddress: Yup.string().required("*Company address is required"),
-      referralName: Yup.string().required("*Referral name is required"),
+      prevCompRefCmpAddr: Yup.string().required("*Company address is required"),
+      prevCompReferralName: Yup.string().required("*Referral name is required"),
     })
   )
 });
 
 const EmpPreviousCompanyAdd = forwardRef(
-  ({ formData, setFormData, handleNext }, ref) => {
+  ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
 
     const formik = useFormik({
       initialValues: {
         empPrevious: [
           {
-            companyName: formData.companyName || "",
-            jobTitle: formData.jobTitle || "",
-            companyAddress: formData.companyAddress || "",
-            referralName: formData.referralName || "",
-            referralContactNo: formData.referralContactNo || "",
+            prevCompRefcmpName: formData.prevCompRefcmpName || "",
+            prevCompReferralJobTitle: formData.prevCompReferralJobTitle || "",
+            prevCompRefCmpAddr: formData.prevCompRefCmpAddr || "",
+            prevCompReferralName: formData.prevCompReferralName || "",
+            prevCompReferralContactNum: formData.prevCompReferralContactNum || "",
           }
         ]
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        setLoadIndicators(true);
+        values.prevCompRefEmpId = formData.empId;
+        // console.log("Body Values is ", values);
         try {
-          setFormData((prv) => ({ ...prv, ...values }));
-          handleNext();
+          const response = await api.post(`/addEmpPrevCmpRef`, values);
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            setFormData((prv) => ({ ...prv, ...values }));
+            handleNext();
+          } else {
+            toast.error(response.data.message);
+          }
         } catch (error) {
           toast.error(error);
+        } finally {
+          setLoadIndicators(false);
         }
       },
     });
@@ -65,23 +77,23 @@ const EmpPreviousCompanyAdd = forwardRef(
                       <input
                         className="form-control "
                         type="text"
-                        name={`empPrevious[${index}].companyName`}
+                        name={`empPrevious[${index}].prevCompRefcmpName`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={
                           formik.values.empPrevious[index]
-                            ?.companyName || ""
+                            ?.prevCompRefcmpName || ""
                         }
                       />
                       {formik.touched.empPrevious?.[index]
-                      ?.companyName &&
+                      ?.prevCompRefcmpName &&
                       formik.errors.empPrevious?.[index]
-                        ?.companyName && (
+                        ?.prevCompRefcmpName && (
                         <div className="text-danger">
                           <small>
                             {
                               formik.errors.empPrevious[index]
-                                .companyName
+                                .prevCompRefcmpName
                             }
                           </small>
                         </div>
@@ -95,23 +107,23 @@ const EmpPreviousCompanyAdd = forwardRef(
                       </lable>
                       <textarea rows="5"
                         className="form-control "
-                        name={`empPrevious[${index}].companyAddress`}
+                        name={`empPrevious[${index}].prevCompRefCmpAddr`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={
                           formik.values.empPrevious[index]
-                            ?.companyAddress || ""
+                            ?.prevCompRefCmpAddr || ""
                         }
                       />
                       {formik.touched.empPrevious?.[index]
-                      ?.companyAddress &&
+                      ?.prevCompRefCmpAddr &&
                       formik.errors.empPrevious?.[index]
-                        ?.companyAddress && (
+                        ?.prevCompRefCmpAddr && (
                         <div className="text-danger">
                           <small>
                             {
                               formik.errors.empPrevious[index]
-                                .companyAddress
+                                .prevCompRefCmpAddr
                             }
                           </small>
                         </div>
@@ -125,23 +137,23 @@ const EmpPreviousCompanyAdd = forwardRef(
 
                       <input
                         className="form-control  form-contorl-sm"
-                        name={`empPrevious[${index}].referralContactNo`}
+                        name={`empPrevious[${index}].prevCompReferralContactNum`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={
                           formik.values.empPrevious[index]
-                            ?.referralContactNo || ""
+                            ?.prevCompReferralContactNum || ""
                         }
                       />
                       {formik.touched.empPrevious?.[index]
-                      ?.referralContactNo &&
+                      ?.prevCompReferralContactNum &&
                       formik.errors.empPrevious?.[index]
-                        ?.referralContactNo && (
+                        ?.prevCompReferralContactNum && (
                         <div className="text-danger">
                           <small>
                             {
                               formik.errors.empPrevious[index]
-                                .referralContactNo
+                                .prevCompReferralContactNum
                             }
                           </small>
                         </div>
@@ -156,23 +168,23 @@ const EmpPreviousCompanyAdd = forwardRef(
                       <input
                       type="text"
                       className="form-control"
-                        name={`empPrevious[${index}].jobTitle`}
+                        name={`empPrevious[${index}].prevCompReferralJobTitle`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={
                           formik.values.empPrevious[index]
-                            ?.jobTitle || ""
+                            ?.prevCompReferralJobTitle || ""
                         }
                       />
                       {formik.touched.empPrevious?.[index]
-                      ?.jobTitle &&
+                      ?.prevCompReferralJobTitle &&
                       formik.errors.empPrevious?.[index]
-                        ?.jobTitle && (
+                        ?.prevCompReferralJobTitle && (
                         <div className="text-danger">
                           <small>
                             {
                               formik.errors.empPrevious[index]
-                                .jobTitle
+                                .prevCompReferralJobTitle
                             }
                           </small>
                         </div>
@@ -187,23 +199,23 @@ const EmpPreviousCompanyAdd = forwardRef(
                       <input
                         type="text"
                         className="form-control"
-                        name={`empPrevious[${index}].referralName`}
+                        name={`empPrevious[${index}].prevCompReferralName`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={
                           formik.values.empPrevious[index]
-                            ?.referralName || ""
+                            ?.prevCompReferralName || ""
                         }
                       />
                       {formik.touched.empPrevious?.[index]
-                      ?.referralName &&
+                      ?.prevCompReferralName &&
                       formik.errors.empPrevious?.[index]
-                        ?.referralName && (
+                        ?.prevCompReferralName && (
                         <div className="text-danger">
                           <small>
                             {
                               formik.errors.empPrevious[index]
-                                .referralName
+                                .prevCompReferralName
                             }
                           </small>
                         </div>

@@ -145,11 +145,11 @@ function Admin({ handleLogout }) {
               <Route path="/employeeadmin" element={<EmployeeAdmin />} />
               <Route path="/employeeadmin/add" element={<EmployeeAdminAdd />} />
               <Route
-                path="/employeeadmin/edit"
+                path="/employeeadmin/edit/:id"
                 element={<EmployeeAdminEdit />}
               />
               <Route
-                path="/employeeadmin/view"
+                path="/employeeadmin/view/:id"
                 element={<EmployeeAdminView />}
               />
 
