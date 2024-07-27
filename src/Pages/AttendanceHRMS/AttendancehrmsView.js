@@ -58,6 +58,28 @@ function AttendancehrmsView() {
             <div className="col-md-6 col-12">
               <div className="row    mb-2">
                 <div className="col-6 ">
+                  <p className="fw-medium">Company Name </p>
+                </div>
+                <div className="col-6">
+                  {/* {data.attendanceId || "--"} */}:{" "}
+                  {findEmployeeName(data.dailyAttendanceCmpId)}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-12">
+              <div className="row    mb-2">
+                <div className="col-6 ">
+                  <p className="fw-medium">Department Name </p>
+                </div>
+                <div className="col-6">
+                  {/* {data.attendanceId || "--"} */}:{" "}
+                  {findEmployeeName(data.dailyAttendanceDptId)}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-12">
+              <div className="row    mb-2">
+                <div className="col-6 ">
                   <p className="fw-medium">Employee Name </p>
                 </div>
                 <div className="col-6">

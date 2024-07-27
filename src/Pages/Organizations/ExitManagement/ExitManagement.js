@@ -95,9 +95,11 @@ const ExitManagement = () => {
       {!loading && (
         <div className="container my-5">
           <div className="my-3 d-flex align-items-end justify-content-end">
-            {/* <button type="button" className="btn btn-button btn-sm">
+         <Link to="/exitmanagementadmin">
+         <button type="button" className="btn btn-button btn-sm">
               Add <i class="bx bx-plus"></i>
-            </button> */}
+            </button>
+         </Link>
           </div>
           <table ref={tableRef} className="display">
             <thead>
@@ -122,9 +124,9 @@ const ExitManagement = () => {
                   <td>{data.reasonForRelieving}</td>
                   {/* <td>{data.exitMgmtNoticePeriod}</td> */}
                   <td>
-                    {data.relievingApprovalStatus === "Approved" ? (
+                    {data.relievingApproverStatus === "Approved" ? (
                       <span className="badge text-bg-success">Approved</span>
-                    ) : data.relievingApprovalStatus === "Rejected" ? (
+                    ) : data.relievingApproverStatus === "Rejected" ? (
                       <span className="badge text-bg-danger">Rejected</span>
                     ) : (
                       <span className="badge text-bg-warning">Pending</span>

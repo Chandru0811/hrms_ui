@@ -77,7 +77,7 @@ function DeductionAdd() {
       console.log(values);
       const payload = {
         ...values,
-        deductionEmpId:34,
+        deductionEmpId:values.deductionEmpId,
         cmpId: parseInt(values.cmpId),
         deptId: parseInt(values.deptId),
       };
@@ -224,7 +224,7 @@ function DeductionAdd() {
                   <option selected></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.employeeId}>
+                      <option key={employeeId.id} value={employeeId.id}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}

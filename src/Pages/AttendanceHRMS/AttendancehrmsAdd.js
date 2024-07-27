@@ -5,19 +5,24 @@ import * as Yup from "yup";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import { toast } from "react-toastify";
 import api from "../../config/URL";
+import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
+import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 
 function AttendancehrmsAdd() {
-  const [employeeData, setEmployeeData] = useState(null);
+  const [employeeData, setEmployeeData] = useState(null);  
+  const [departmentData, setDepartmentData] = useState(null);
   // const [datas, setDatas] = useState([]);
   const [companyData, setCompanyData] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
-      const companyData = await fetchAllEmployeeNamesWithId();
+      const companyData = await fetchAllCompanyNamesWithId();
       const employeeData = await fetchAllEmployeeNamesWithId();
+      const departmentData = await fetchAllDepartmentNamesWithId();
       setCompanyData(companyData);
       setEmployeeData(employeeData);
+      setDepartmentData(departmentData);
     } catch (error) {
       toast.error(error);
     }
@@ -43,7 +48,9 @@ function AttendancehrmsAdd() {
   const formik = useFormik({
     initialValues: {
       attendanceId:1,
-      dailyAttendanceEmpId: 34,
+      dailyAttendanceEmpId: "",
+      dailyAttendanceCmpId: "",
+      dailyAttendanceDptId: "",
       // employeeName: "",
       attendanceDate: "",
       attendanceStatus: "",
@@ -115,6 +122,60 @@ function AttendancehrmsAdd() {
               </div>
             </div>
             <div className="row mt-3">
+            <div className="col-md-6 col-12 mb-2">
+              <lable className="form-lable">
+                Company Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("cmpId")}
+                  className={`form-select  ${
+                    formik.touched.cmpId && formik.errors.cmpId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {companyData &&
+                    companyData.map((cmpId) => (
+                      <option key={cmpId.id} value={cmpId.cmpId}>
+                        {cmpId.cmpName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.cmpId && formik.errors.cmpId && (
+                  <div className="invalid-feedback">{formik.errors.cmpId}</div>
+                )}
+              </div>
+            </div>
+            <div className="col-md-6 col-12 mb-2">
+              <lable className="form-lable">
+                Department Name<span className="text-danger">*</span>
+              </lable>
+              <div className="input-group mb-3">
+                <select
+                  {...formik.getFieldProps("deptId")}
+                  className={`form-select  ${
+                    formik.touched.deptId && formik.errors.deptId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {departmentData &&
+                    departmentData.map((deptId) => (
+                      <option key={deptId.id} value={deptId.deptId}>
+                        {deptId.deptName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.deptId && formik.errors.deptId && (
+                  <div className="invalid-feedback">{formik.errors.deptId}</div>
+                )}
+              </div>
+            </div>
               <div className="col-md-6 col-12 mb-2">
                 <lable className="form-lable">
                   Employee Name<span className="text-danger">*</span>
@@ -135,7 +196,7 @@ function AttendancehrmsAdd() {
                       employeeData.map((employeeId) => (
                         <option
                           key={employeeId.id}
-                          value={employeeId.employeeId}
+                          value={employeeId.id}
                         >
                           {employeeId.firstName} {employeeId.lastName}
                         </option>

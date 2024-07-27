@@ -9,73 +9,61 @@ import api from "../../config/URL";
 
 const Leave = () => {
   const tableRef = useRef(null);
-  const [data, setData] = useState([]);
-  const [loading, setloading] = useState(true);
+  const [data, setDatas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  // const userRole = sessionStorage.getItem("userName");
+  // console.log("object",)
 
-  const fetchData = async () => {
-    try {
-      // setLoading(true);
-      const response = await api.get(`getAllLeaveRequests`, {
-        headers: {
-          "Content-Type": "application/json",
-          //Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        setData(response.data);
-        console.log("object", data);
-        setloading(false)
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get("getAllLeaveRequests");
+        setDatas(response.data);
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data ", error);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      initializeDataTable();
+    }
+    return () => {
+      destroyDataTable();
+    };
+  }, [loading]);
+  const initializeDataTable = () => {
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      return;
+    }
+    $(tableRef.current).DataTable({
+      responsive: true,
+    });
+  };
+
+  const destroyDataTable = () => {
+    const table = $(tableRef.current).DataTable();
+    if (table && $.fn.DataTable.isDataTable(tableRef.current)) {
+      table.destroy();
     }
   };
 
-  // const datas = [
-  //   {
-  //     id: 1,
-  //     fromdate: "25-02-2022",
-  //     todate: "27-02-2022",
-  //     reasonforleave: "Fever",
-  //     // leavetype:"",
-  //     approverid: "ecs101",
-  //     approvername: "Meena",
-  //     status: "active",
-  //   },
-  //   {
-  //     id: 2,
-  //     fromdate: "20-06-2022",
-  //     todate: "21-06-2022",
-  //     reasonforleave: "Casual leave",
-  //     // leavetype:"",
-  //     approverid: "ecs121",
-  //     approvername: "Dilip",
-  //     status: "in_active",
-  //   },
-  //   {
-  //     id: 3,
-  //     fromdate: "15-03-2022",
-  //     todate: "17-03-2022",
-  //     reasonforleave: "Relative marriage",
-  //     // leavetype:"",
-  //     approverid: "",
-  //     approvername: "",
-  //     status: "pending",
-  //   },
-  // ];
-
-  useEffect(() => {
-    fetchData();
-    if (!loading) {
-      const table = $(tableRef.current).DataTable({
-        responsive: true,
-      });
-      return () => {
-        table.destroy();
-      };
+  const refreshData = async () => {
+    destroyDataTable();
+    setLoading(true);
+    try {
+      const response = await api.get("getAllLeaveRequests");
+      setDatas(response.data);
+      // initializeDataTable(); // Reinitialize DataTable after successful data update
+    } catch (error) {
+      console.error("Error refreshing data:", error.message);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setLoading(false);
+  };
 
   return (
     <div className="container my-3">

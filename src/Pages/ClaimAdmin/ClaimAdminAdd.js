@@ -74,7 +74,7 @@ function ClaimAdminAdd() {
       formData.append("files",values.claimsAttachment)
       formData.append("deptId",values.deptId)
       formData.append("cmpId",values.cmpId)
-      formData.append("claimsEmpId",34)
+      formData.append("claimsEmpId",values.claimsEmpId)
       formData.append("claimsDate",values.claimsDate)
       formData.append("claimsAmt",values.claimsAmt)
       formData.append("remarks",values.remarks)
@@ -224,7 +224,7 @@ function ClaimAdminAdd() {
                   <option selected></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.employeeId}>
+                      <option key={employeeId.id} value={employeeId.id}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}

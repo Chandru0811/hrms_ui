@@ -288,9 +288,10 @@ function ExpenseAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
+                  {...formik.getFieldProps("expenseAmount")}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("expenseAmount")}
+                
                 />
                 {formik.touched.expenseAmount &&
                   formik.errors.expenseAmount && (

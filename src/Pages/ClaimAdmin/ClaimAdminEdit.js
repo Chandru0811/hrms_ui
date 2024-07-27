@@ -90,7 +90,7 @@ function ClaimAdminEdit() {
       formData.append("files",values.claimsAttachment)
       formData.append("deptId",values.deptId)
       formData.append("cmpId",values.cmpId)
-      formData.append("claimsEmpId",34)
+      formData.append("claimsEmpId",values.claimsEmpId)
       formData.append("claimsDate",values.claimsDate)
       formData.append("claimsAmt",values.claimsAmt)
       formData.append("remarks",values.remarks)
@@ -266,7 +266,7 @@ function ClaimAdminEdit() {
                     employeeData.map((claimsEmpId) => (
                       <option
                         key={claimsEmpId.id}
-                        value={claimsEmpId.employeeId}
+                        value={claimsEmpId.id}
                       >
                         {claimsEmpId.firstName} {claimsEmpId.lastName}
                       </option>

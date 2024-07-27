@@ -220,7 +220,7 @@ function DeductionEdit() {
                   <option value=""></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.employeeId}>
+                      <option key={employeeId.id} value={employeeId.id}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}

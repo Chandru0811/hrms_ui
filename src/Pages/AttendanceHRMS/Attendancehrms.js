@@ -116,7 +116,9 @@ const Attendancehrms = () => {
                 <th scope="col">S No</th>
                 <th scope="col">Employee ID</th>
                 <th scope="col">Employee Name</th>
-                <th scope="col">Date</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Department Name</th>
+                {/* <th scope="col">Date</th> */}
                 <th scope="col">Mode of Working</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
@@ -128,14 +130,16 @@ const Attendancehrms = () => {
                   <td>{index + 1}</td>
                   <td>{findEmployeeName(data.dailyAttendanceName)}</td>
                   <td>{findEmployeeName(data.dailyAttendanceEmpId)}</td>
-                  <td>
+                  <td>{findEmployeeName(data.dailyAttendanceCmpId)}</td>
+                  <td>{findEmployeeName(data.dailyAttendanceDptId)}</td>
+                  {/* <td>
                     {data.attendanceDate &&
                       data.attendanceDate
                         .split("T")[0]
                         .split("-")
                         .reverse()
                         .join("-")}
-                  </td>
+                  </td> */}
                   <td>{data.attendanceModeOfWorking}</td>
                   <td>
                     {data.attendanceStatus === "Present" ? (

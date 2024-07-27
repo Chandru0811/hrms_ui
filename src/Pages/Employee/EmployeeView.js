@@ -641,7 +641,8 @@ export default function ExpensesView() {
                                 {data.empQualificationEntities &&
                                 data.empQualificationEntities.length > 0 &&
                                 data.empQualificationEntities[0].qualFldOfStudy
-                                  ? data.empQualificationEntities[0].qualFldOfStudy
+                                  ? data.empQualificationEntities[0]
+                                      .qualFldOfStudy
                                   : "--"}
                               </p>
                             </div>
@@ -658,7 +659,8 @@ export default function ExpensesView() {
                                 {data.empQualificationEntities &&
                                 data.empQualificationEntities.length > 0 &&
                                 data.empQualificationEntities[0].qualModeOfStudy
-                                  ? data.empQualificationEntities[0].qualModeOfStudy
+                                  ? data.empQualificationEntities[0]
+                                      .qualModeOfStudy
                                   : "--"}
                               </p>
                             </div>
@@ -675,7 +677,8 @@ export default function ExpensesView() {
                                 {data.empQualificationEntities &&
                                 data.empQualificationEntities.length > 0 &&
                                 data.empQualificationEntities[0].qualStartDate
-                                  ? data.empQualificationEntities[0].qualStartDate
+                                  ? data.empQualificationEntities[0]
+                                      .qualStartDate
                                   : "--"}
                               </p>
                             </div>
@@ -722,7 +725,45 @@ export default function ExpensesView() {
                                 {data.empQualificationEntities &&
                                 data.empQualificationEntities.length > 0 &&
                                 data.empQualificationEntities[0].qualInstitution
-                                  ? data.empQualificationEntities[0].qualInstitution
+                                  ? data.empQualificationEntities[0]
+                                      .qualInstitution
+                                  : "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Employee Skill</p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {data.empQualificationEntities &&
+                                data.empQualificationEntities.length > 0 &&
+                                data.empQualificationEntities[0].employeeSkill
+                                  ? data.empQualificationEntities[0]
+                                      .employeeSkill
+                                  : "--"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="row  mb-2">
+                            <div className="col-6  ">
+                              <p className="fw-medium">Skill Description</p>
+                            </div>
+                            <div className="col-6">
+                              <p className="text-muted text-sm">
+                                <b className="mx-2">:</b>
+                                {data.empQualificationEntities &&
+                                data.empQualificationEntities.length > 0 &&
+                                data.empQualificationEntities[0]
+                                  .skillDescription
+                                  ? data.empQualificationEntities[0]
+                                      .skillDescription
                                   : "--"}
                               </p>
                             </div>
@@ -734,6 +775,259 @@ export default function ExpensesView() {
                     </div>
                   </div>
                 ))}
+            </div>
+            {/* <div class="container mt-3">
+              <h4>Skills</h4>
+              {data.empQualificationEntities &&
+                data.empQualificationEntities.length > 0 &&
+                data.empQualificationEntities.map((parent, index) => (
+                  <div key={index}>
+                    <div className="row">
+          
+                        </div>
+                  </div>
+                ))}
+            </div> */}
+
+            <div className="container mt-5">
+              <h4>Experience</h4>
+              <div className="row mt-5 pb-3">
+                <div className="col-md-6 col-12">
+                  <div className="row mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Previous Company</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.prevCmpName}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Previous Company Address</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.prevCmpAddr}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row  mb-2  ">
+                    <div className="col-6  ">
+                      <p className="fw-medium">Designation</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.designation}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">ExperienceDesc</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.experienceDesc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Experience Start Date</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.experienceStartDate}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Experience En dDate</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.experienceEndDate}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="container mt-5">
+              <h4>Previous Company</h4>
+              <div className="row mt-5 pb-3">
+                <div className="col-md-6 col-12">
+                  <div className="row mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Previous Company RefcmpName</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.prevCompRefcmpName}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">
+                        Previous Company Referral JobTitle
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.prevCompReferralJobTitle}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row  mb-2  ">
+                    <div className="col-6  ">
+                      <p className="fw-medium">Previous Company Address</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.prevCompRefCmpAddr}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">
+                        Previous Company Referral Name
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.prevCompReferralName}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">
+                        Previous Company Referral Contact
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.prevCompReferralContactNum}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="container mt-5">
+              <h4>Emergency Contact</h4>
+              <div className="row mt-5 pb-3">
+                <div className="col-md-6 col-12">
+                  <div className="row mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Emergency Contact Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.emergencyContactName}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Emergency Contact No</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.emergencyContactNo}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row  mb-2  ">
+                    <div className="col-6  ">
+                      <p className="fw-medium">Emergency Contact Addresss</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.emergencyContactAddress}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Relationship Of Employee</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.relationshipOfEmployee}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="container mt-5">
+              <h4>Bank Details</h4>
+              <div className="row mt-5 pb-3">
+                <div className="col-md-6 col-12">
+                  <div className="row mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Bank Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.bankName}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Branch Name</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.brName}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row  mb-2  ">
+                    <div className="col-6  ">
+                      <p className="fw-medium">IFSC Code</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.IFSCCode}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row    mb-2">
+                    <div className="col-6 ">
+                      <p className="fw-medium">Account Number</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.accNumber}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

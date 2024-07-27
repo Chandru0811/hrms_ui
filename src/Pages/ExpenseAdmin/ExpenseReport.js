@@ -83,8 +83,8 @@ const Payroll = () => {
         <thead>
           <tr>
             <th scope="col">S No</th>
-            <th scope="col">Employee ID</th>
             <th scope="col">Expense ID</th>
+            <th scope="col">Employee ID</th>
             <th scope="col">Date</th>
             <th scope="col">Type</th>
             <th scope="col">Amount</th>
@@ -96,8 +96,8 @@ const Payroll = () => {
           {datas?.map((data, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
-              <td>{data.expensesEmpId}</td>
               <td>{data.expenseId}</td>
+              <td>{data.expensesEmpId}</td>
               <td>{new Date(data.expenseDate).toLocaleDateString()}</td>
               <td>{data.expenseType}</td>
               <td>{data.expenseAmt}</td>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
 import { toast } from "react-toastify";
@@ -12,8 +12,14 @@ import api from "../../config/URL";
 function LeaveAdminEdit() {
   const { id } = useParams();
   const [companyData, setCompanyData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [showSecondSelect, setShowSecondSelect] = useState(false);
+  const [showThirdField, setShowThirdField] = useState(false);
+  const [showFourthField, setShowFourthField] = useState(false);
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     // employeeId: Yup.string().required("*Employee id is required"),
@@ -41,25 +47,46 @@ function LeaveAdminEdit() {
   const formik = useFormik({
     initialValues: {
       // employeeId: "ecs01",
-      employeeId: "",
+      leaveReqId:id,
+      leaveReqEmpId: "",
+      // leaveReqApproverId: "",
+      leaveReqApproverName: "",
       // departmentId: "ecsdp01",
-      deptId: "",
+      leaveDeptId: "",
       // companyId: "cmp01",
-      cmpId: "",
-      fromDate: "",
-      toDate: "",
+      leaveCmpId: "",
+      leaveReqStartDate: "",
+      leaveReqEndDate: "",
       reasonForrequestedLeave: "",
       leaveReqType: "",
       // approverId: "",
       approverName: "",
-      status: "",
+      leaveReqStatus: "",
       reason: "",
       subject: "",
-      description: "",
+      leaveReqRemarks: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+      setLoading(true);
+      try {
+        const response = await api.put(`/updateLeaveRequestsById/${id}`, values, {
+          // headers: {
+          //   "Content-Type": "multipart/form-data",
+          // },
+        });
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          navigate("/leave");
+        }
+      } catch (error) {
+        toast.error(
+          error.message || "An error occurred while submitting the form"
+        );
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
@@ -91,13 +118,6 @@ function LeaveAdminEdit() {
   useEffect(() => {
     fetchData();
   }, []);
-
-
-
-  const [selectedValue, setSelectedValue] = useState("");
-  const [showSecondSelect, setShowSecondSelect] = useState(false);
-  const [showThirdField, setShowThirdField] = useState(false);
-  const [showFourthField, setShowFourthField] = useState(false);
 
   const handleFirstSelectChange = (e) => {
     const selected = e.target.value;
