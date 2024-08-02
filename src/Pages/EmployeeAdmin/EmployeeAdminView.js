@@ -52,7 +52,7 @@ const EmployeeAdminView = () => {
                   </div>
                 </div>
                 <div className="col-md-6 col-12">
-                  <div className="row    mb-2">
+                  <div className="row mb-2">
                     <div className="col-6 ">
                       <p className="fw-medium">Last Name</p>
                     </div>
@@ -93,8 +93,8 @@ const EmployeeAdminView = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 col-12">
-                  <div className="row    mb-2">
+                {/* <div className="col-md-6 col-12">
+                  <div className="row mb-2">
                     <div className="col-6 ">
                       <p className="fw-medium">Primary Email Password</p>
                     </div>
@@ -104,7 +104,7 @@ const EmployeeAdminView = () => {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="col-md-6 col-12">
                   <div className="row    mb-2">
                     <div className="col-6 ">
