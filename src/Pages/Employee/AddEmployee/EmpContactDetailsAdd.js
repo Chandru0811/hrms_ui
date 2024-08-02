@@ -12,7 +12,7 @@ const EmpContactDetailsAdd = forwardRef(
       gender: Yup.string().required("*Select a gender"),
       // maritalStatus: Yup.string().required("*Select a marital status"),
       religion: Yup.string().required("*Religion is required "),
-      empAddr: Yup.string().required("*Address is required "),
+      // empAddr: Yup.string().required("*Address is required "),
       city: Yup.string().required("*City is required "),
       pincode: Yup.number()
         .required("*Pincode is required")
@@ -39,7 +39,7 @@ const EmpContactDetailsAdd = forwardRef(
         empSecEmailPassword: formData.empSecEmailPassword,
         empSecPhNumber: formData.empSecPhNumber,
       },
-      // validationSchema: validationSchema,
+      validationSchema: validationSchema,
       onSubmit: async (values) => {
         setLoadIndicators(true);
         values.perDetailsEmpId = formData.empId;

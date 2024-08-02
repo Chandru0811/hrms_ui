@@ -17,33 +17,20 @@ const EmpPersonalInfoAdd = forwardRef(
     console.log("Employee Data", formData.empId)
 
     const validationSchema = Yup.object({
-      // firstName: Yup.string().required("*First name is required"),
-      // lastName: Yup.string().required("*Last name is required"),
-      // empPriPhNumber: Yup.number()
-      //   .required("*Primary phone number is required")
-      //   .typeError("*Must be a number"),
-      // empPriEmail: Yup.string()
-      //   .email("*Enter valid email")
-      //   .required("*Primary email id is required"),
-      // empPriEmailPassword: Yup.string().required(
-      //   "*Primary email password is required"
-      // ),
-      // empRegCmpId: Yup.string().required("*Company name is required"),1
-      // employeeID: Yup.string().required("*Employee id is required"),
-      // empRegDeptId: Yup.string().required("*Department name is required"),1
+      firstName: Yup.string().required("*First name is required"),
+      lastName: Yup.string().required("*Last name is required"),
+      empPriPhNumber: Yup.number()
+        .required("*Primary phone number is required")
+        .typeError("*Must be a number"),
+      empPriEmail: Yup.string()
+        .email("*Enter valid email")
+        .required("*Primary email id is required"),
+      empPriEmailPassword: Yup.string().required(
+        "*Primary email password is required"
+      ),
+      file: Yup.string().required("*File is required"),
       // employeedesignation: Yup.string().required(
       //   "*Employee designation is required"
-      // ),1
-      // employeeDateOfJoining: Yup.string().required(
-      //   "*Employee date of joining is required"
-      // ),1
-      // employeeType: Yup.string().required("*Employee type is required"),1
-      // noticePeriod: Yup.string().required("*Notice period is required"),1
-      // reportingManagerName: Yup.string().required(
-      //   "*Reporting manager name is required"
-      // ),1
-      // reportingManagerID: Yup.string().required(
-      //   "*Reporting manager id is required"
       // ),
       // ...(selectedIdType === "nric" && {
       //   NRICFin: Yup.string().required("*NRIC fin is required"),
@@ -76,6 +63,7 @@ const EmpPersonalInfoAdd = forwardRef(
         // console.log("Api Data:", data);
         try {
           const formDatas = new FormData();
+          formDatas.append("id", formData.empId);
           formDatas.append("firstName", values.firstName);
           formDatas.append("lastName", values.lastName);
           formDatas.append("empPriPhNumber", values.empPriPhNumber);
@@ -84,11 +72,16 @@ const EmpPersonalInfoAdd = forwardRef(
           formDatas.append("NRICFin", values.nricfin);
           formDatas.append("NRICType", values.nrictype);
           // formDatas.append("aadharNumber", values.aadharNumber);
-          formDatas.append("empRegCmpId", "1");
-          formDatas.append("empRegDeptId", "2");
+          formDatas.append("empRegCmpId", 1);
+          formDatas.append("empRegDeptId", 2);
           formDatas.append("file", values.file);
-          formDatas.append("aadharNumber", "gytrhh56696");
-          formDatas.append("proof", "NRIC");
+          formDatas.append("aadharNumber", values.aadharNumber);
+          formDatas.append("proof", values.proof);
+          formDatas.append("empDesignation", values.proof);
+          formDatas.append("empDateOfJoin", "2024-08-02");
+          formDatas.append("empType ", values.proof);
+          formDatas.append("noticePeriod ", "30days");
+          formDatas.append("repManagerName ", "sakthivel");
           // formDatas.append("employeedesignation", values.employeedesignation);
           // formDatas.append("proof", values.proof);
           // formDatas.append("employeeDateOfJoining", values.employeeDateOfJoining);
@@ -275,7 +268,7 @@ const EmpPersonalInfoAdd = forwardRef(
                       <input
                         className="form-check-input"
                         type="radio"
-                        name="idType"
+                        name="proof"
                         id="nricRadio"
                         value="nric"
                         checked={selectedIdType === "nric"}
@@ -289,7 +282,7 @@ const EmpPersonalInfoAdd = forwardRef(
                       <input
                         className="form-check-input"
                         type="radio"
-                        name="idType"
+                        name="proof"
                         id="aadharRadio"
                         value="aadhar"
                         checked={selectedIdType === "aadhar"}
@@ -373,7 +366,7 @@ const EmpPersonalInfoAdd = forwardRef(
                     </div>
                   )}
                   <div className="col-md-6 col-12 mb-3">
-                    <lable>Photo</lable>
+                    <lable>Photo<span className="text-danger">*</span></lable>
                     <input
                       type="file"
                       name="file"
@@ -383,7 +376,7 @@ const EmpPersonalInfoAdd = forwardRef(
                       }}
                       onBlur={formik.handleBlur}
                     />
-                    <img src={employeProfile} alt="emp_photo" className="img-fluid mt-3" style={{ width: "200px", height: "150px" }}></img>
+                    {/* <img src={employeProfile} alt="emp_photo" className="img-fluid mt-3" style={{ width: "200px", height: "150px" }}></img> */}
                     {formik.touched.file && formik.errors.file && (
                       <div className="error text-danger ">
                         <small>{formik.errors.file}</small>

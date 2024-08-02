@@ -57,7 +57,7 @@ function ExpensesEdit() {
     initialValues: {
       expensesId:1,
       expenseDate: "",
-      files:null,
+      attachment:null,
       expenseType: "",
       expenseAmt: "",
       employeeId: "",
@@ -107,16 +107,16 @@ function ExpensesEdit() {
   });
  
 
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-    formik.setFieldValue("status", e.target.value);
-    if (e.target.value === "Rejected") {
-      setShowReasonSelect(true);
-    } else {
-      setShowReasonSelect(false);
-      formik.setFieldValue("reason", "");
-    }
-  };
+  // const handleStatusChange = (e) => {
+  //   setStatus(e.target.value);
+  //   formik.setFieldValue("status", e.target.value);
+  //   if (e.target.value === "Rejected") {
+  //     setShowReasonSelect(true);
+  //   } else {
+  //     setShowReasonSelect(false);
+  //     formik.setFieldValue("reason", "");
+  //   }
+  // };
 
   const handleReasonChange = (e) => {
     setReason(e.target.value);
@@ -243,7 +243,7 @@ function ExpensesEdit() {
                   <option selected></option>
                   {employeeData &&
                     employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.employeeId}>
+                      <option key={employeeId.id} value={employeeId.id}>
                         {employeeId.firstName} {employeeId.lastName}
                       </option>
                     ))}
@@ -438,8 +438,6 @@ function ExpensesEdit() {
                     : ""
                 }`}
                 aria-label="Default select example"
-                value={status}
-                onChange={handleStatusChange}
               >
                 <option selected></option>
                 <option value="PENDING">Pending</option>

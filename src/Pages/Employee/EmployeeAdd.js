@@ -29,7 +29,7 @@ function EmployeeAdd() {
   const [skipped, setSkipped] = React.useState(new Set());
   // const id = sessionStorage.getItem('employeeId')
   // const id = useParams()
-  const [formData, setFormData] = useState({ empId: 49 });
+  const [formData, setFormData] = useState({ empId: 66 });
   const childRef = React.useRef();
   const [loadIndicator, setLoadIndicator] = useState(false);
 

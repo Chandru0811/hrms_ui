@@ -17,7 +17,7 @@ const LeaveAdmin = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllLeaveRequests");
+        const response = await api.get("getAllLeaveRequestWithId");
         setDatas(response.data);
 
         setLoading(false);
@@ -56,7 +56,7 @@ const LeaveAdmin = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllLeaveRequests");
+      const response = await api.get("getAllLeaveRequestWithId");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -101,7 +101,7 @@ const LeaveAdmin = () => {
             <tr key={index}>
               <th scope="row">{index + 1}</th>
               <td>{data.leaveRequestId}</td>
-              <td>{data.leaveReqApproverName}</td>
+              <td>{data.firstName}</td>
               {/* <td>{data.department}</td> */}
               {/* <td>{data.leaveReqRemarks}</td> */}
               {/* <td>{data.fromdate}</td>

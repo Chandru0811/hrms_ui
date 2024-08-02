@@ -32,7 +32,7 @@ const Compliance = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllCompanyComplianceInfo");
+        const response = await api.get("getAllCompanyCompliance");
         setDatas(response.data);
         setLoading(false);
       } catch (error) {
@@ -71,7 +71,7 @@ const Compliance = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllCompanyComplianceInfo");
+      const response = await api.get("getAllCompanyCompliance");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -123,7 +123,7 @@ const Compliance = () => {
                           : ""
                       )}
                   </td> */}
-                  <td>{data.compComplianceCmpId}</td>
+                  <td>{data.cmpName}</td>
                   <td>{data.compComplianceDesignationName}</td>
                   <td>{data.compComplianceDesignationCategory}</td>
                   {/* <td>{data.compComplianceLeaveLimit}</td> */}

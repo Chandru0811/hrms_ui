@@ -28,7 +28,7 @@ const Deduction = () => {
 
     const getData = async () => {
       try {
-        const response = await api.get("getAllDeduction");
+        const response = await api.get("getAllDeductionWithIds");
         setDatas(response.data);
         setLoading(false);
         console.log("Deduction data fetched:", response.data);
@@ -70,7 +70,7 @@ const Deduction = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllDeduction");
+      const response = await api.get("getAllDeductionWithIds");
       setDatas(response.data);
     } catch (error) {
       console.error("Error refreshing data:", error);
@@ -78,21 +78,21 @@ const Deduction = () => {
     setLoading(false);
   };
 
-  const getEmployeeNameById = (deductionEmpId) => {
-    if (employeeData) {
-      const employee = employeeData.find(
-        (employee) => employee.employeeId === deductionEmpId
-      );
-      console.log(
-        "Finding employee for ID:",
-        deductionEmpId,
-        "Found:",
-        employee
-      );
-      return employee ? `${employee.firstName} ${employee.lastName}` : "";
-    }
-    return ""; // Return empty string if employeeData is not defined
-  };
+  // const getEmployeeNameById = (deductionEmpId) => {
+  //   if (employeeData) {
+  //     const employee = employeeData.find(
+  //       (employee) => employee.employeeId === deductionEmpId
+  //     );
+  //     console.log(
+  //       "Finding employee for ID:",
+  //       deductionEmpId,
+  //       "Found:",
+  //       employee
+  //     );
+  //     return employee ? `${employee.firstName} ${employee.lastName}` : "";
+  //   }
+  //   return ""; // Return empty string if employeeData is not defined
+  // };
 
   return (
     <div className="container my-4">
@@ -121,7 +121,7 @@ const Deduction = () => {
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{data.deductionId}</td>
-              <td>{getEmployeeNameById(data.deductionEmpId)}</td>
+              <td>{data.firstName}</td>
               {/* <td>{data.deductionId}</td> */}
               <td>{data.deductionName}</td>
               <td>{data.deductionAmt}</td>

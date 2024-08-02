@@ -51,7 +51,7 @@ const EmpBankAccountAdd = forwardRef(
           if (response.status === 201) {
             toast.success(response.data.message);
             setFormData((prv) => ({ ...prv, ...values }));
-            handleNext();
+            navigate("/employee/view")
           } else {
             toast.error(response.data.message);
           }

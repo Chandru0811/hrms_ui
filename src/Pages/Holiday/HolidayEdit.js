@@ -62,7 +62,7 @@ function EditNewBublicHoliday() {
             },
           }
         );
-        if (response.status === 201) {
+        if (response.status === 200) {
           toast.success(response.data.message);
           navigate("/Holiday");
         } else {
@@ -129,7 +129,7 @@ function EditNewBublicHoliday() {
                     ) : (
                       <span></span>
                     )}
-                    &nbsp;<span>Save</span>
+                    &nbsp;<span>Update</span>
                   </button>
                 </div>
               </div>

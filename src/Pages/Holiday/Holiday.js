@@ -36,7 +36,7 @@ const Holiday = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllPublicHolidays");
+        const response = await api.get("getAllPublicHolidayWithId");
         setDatas(response.data);
         setLoading(false);
       } catch (error) {
@@ -76,7 +76,7 @@ const Holiday = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllPublicHolidays");
+      const response = await api.get("getAllPublicHolidayWithId");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -85,15 +85,15 @@ const Holiday = () => {
     setLoading(false);
   };
 
-  const getCompanyNameById = (pubHolidayCmpId) => {
-    if (companyData) {
-      const company = companyData.find(
-        (company) => company.cmpId === pubHolidayCmpId
-      );
-      console.log("name", datas.pubHolidayCmpId);
-      return company ? company.cmpName : "";
-    }
-  };
+  // const getCompanyNameById = (pubHolidayCmpId) => {
+  //   if (companyData) {
+  //     const company = companyData.find(
+  //       (company) => company.cmpId === pubHolidayCmpId
+  //     );
+  //     console.log("name", datas.pubHolidayCmpId);
+  //     return company ? company.cmpName : "";
+  //   }
+  // };
 
   return (
     <section>
@@ -128,8 +128,8 @@ const Holiday = () => {
               {datas.map((data, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{getCompanyNameById(data.pubHolidayId)}</td>
-                  <td>{getCompanyNameById(data.pubHolidayCmpId)}</td>
+                  <td>{data.pubHolidayId}</td>
+                  <td>{data.cmpName}</td>
                   <td>{data.pubHolidayName}</td>
                   <td>
                     {data.startDate &&

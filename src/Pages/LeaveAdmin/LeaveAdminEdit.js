@@ -28,8 +28,8 @@ function LeaveAdminEdit() {
     deptId: Yup.string().required("*Department name is required"),
     // companyId: Yup.string().required("*Company id is required"),
     cmpId: Yup.string().required("*Company name is required"),
-    fromDate: Yup.string().required("*From date is required"),
-    toDate: Yup.string().required("*To date is required"),
+    leaveReqStartDate: Yup.string().required("*From date is required"),
+    leaveReqEndDate: Yup.string().required("*To date is required"),
     reasonForrequestedLeave: Yup.string().required(
       "*Reason for requested leave is required"
     ),
@@ -105,7 +105,7 @@ function LeaveAdminEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getAllLeaveRequests/${id}`);
+        const response = await api.get(`/getLeaveRequestsById/${id}`);
         formik.setValues(response.data);
         
       } catch (error) {
@@ -345,15 +345,15 @@ function LeaveAdminEdit() {
                   <input
                     type="date"
                     className={`form-control ${
-                      formik.touched.fromDate && formik.errors.fromDate
+                      formik.touched.leaveReqStartDate && formik.errors.leaveReqStartDate
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("fromDate")}
+                    {...formik.getFieldProps("leaveReqStartDate")}
                   />
-                  {formik.touched.fromDate && formik.errors.fromDate && (
+                  {formik.touched.leaveReqStartDate && formik.errors.leaveReqStartDate && (
                     <div className="invalid-feedback">
-                      {formik.errors.fromDate}
+                      {formik.errors.leaveReqStartDate}
                     </div>
                   )}
                 </div>
@@ -365,15 +365,15 @@ function LeaveAdminEdit() {
                   <input
                     type="date"
                     className={`form-control ${
-                      formik.touched.toDate && formik.errors.toDate
+                      formik.touched.leaveReqEndDate && formik.errors.leaveReqEndDate
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("toDate")}
+                    {...formik.getFieldProps("leaveReqEndDate")}
                   />
-                  {formik.touched.toDate && formik.errors.toDate && (
+                  {formik.touched.leaveReqEndDate && formik.errors.leaveReqEndDate && (
                     <div className="invalid-feedback">
-                      {formik.errors.toDate}
+                      {formik.errors.leaveReqEndDate}
                     </div>
                   )}
                 </div>

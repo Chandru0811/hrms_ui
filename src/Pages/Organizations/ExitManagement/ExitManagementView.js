@@ -220,7 +220,7 @@ function ExitManagementView() {
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.relievingApprovalStatus}
+                        : {data.relievingApproverStatus}
                       </p>
                     </div>
                   </div>

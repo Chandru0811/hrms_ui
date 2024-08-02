@@ -39,9 +39,18 @@ const EmpPreviousCompanyAdd = forwardRef(
       onSubmit: async (values) => {
         setLoadIndicators(true);
         values.prevCompRefEmpId = formData.empId;
+
+        const payload = values.empPrevious.map((preCompany)=>({
+          prevCompRefcmpName: preCompany.prevCompRefcmpName,
+          prevCompReferralJobTitle: preCompany.prevCompReferralJobTitle,
+          prevCompRefCmpAddr: preCompany.prevCompRefCmpAddr,
+          prevCompReferralName: preCompany.prevCompReferralName,
+          prevCompReferralContactNum: preCompany.prevCompReferralContactNum,
+          prevCompRefEmpId : formData.empId
+        }))
         // console.log("Body Values is ", values);
         try {
-          const response = await api.post(`/addEmpPrevCmpRef`, values);
+          const response = await api.post(`/createEmpPrevCompanyRefs`, payload);
           if (response.status === 201) {
             toast.success(response.data.message);
             setFormData((prv) => ({ ...prv, ...values }));

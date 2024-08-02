@@ -69,7 +69,9 @@ function LeaveAdd() {
     onSubmit: async (values, { resetForm }) => {
       console.log(values);
       const payload = {
-        leaveReqEmpId: 34,
+        leaveReqEmpId: values.employeeId,
+        leaveCmpId: values.cmpId,
+        leaveDeptId: values.deptId,
         leaveReqStartDate: values.fromDate,
         leaveReqEndDate: values.toDate,
         leaveReqRemarks: values.reasonForrequestedLeave,
@@ -164,7 +166,7 @@ function LeaveAdd() {
                     <option selected></option>
                     {companyData &&
                       companyData.map((cmpId) => (
-                        <option key={cmpId.id} value={cmpId.id}>
+                        <option key={cmpId.id} value={cmpId.cmpId}>
                           {cmpId.cmpName}
                         </option>
                       ))}
@@ -193,7 +195,7 @@ function LeaveAdd() {
                     <option selected></option>
                     {departmentData &&
                       departmentData.map((deptId) => (
-                        <option key={deptId.id} value={deptId.id}>
+                        <option key={deptId.id} value={deptId.deptId}>
                           {deptId.deptName}
                         </option>
                       ))}

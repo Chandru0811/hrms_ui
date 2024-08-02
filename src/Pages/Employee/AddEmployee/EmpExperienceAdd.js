@@ -37,17 +37,27 @@ const EmpExperienceAdd = forwardRef(
             designation: formData.designation || "",
             experienceDesc: formData.experienceDesc || "",
             experienceStartDate: formData.experienceStartDate || "",
-            experienceEndDate: formData.experienceEndDate || ""
-          }
-        ]
+            experienceEndDate: formData.experienceEndDate || "",
+          },
+        ],
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         setLoadIndicators(true);
         values.experienceEmpId = formData.empId;
-        // console.log("Body Values is ", values);
+
+        const payload = values.empExperience.map((experience) => ({
+          prevCmpName: experience.prevCmpName,
+          prevCmpAddr: experience.prevCmpAddr,
+          designation: experience.designation,
+          experienceDesc: experience.experienceDesc,
+          experienceStartDate: experience.experienceStartDate,
+          experienceEndDate: experience.experienceEndDate,
+          experienceEmpId: formData.empId,
+        }));
+
         try {
-          const response = await api.post(`/addEmpExperience`, values);
+          const response = await api.post(`/createEmpExperiences`, payload);
           if (response.status === 201) {
             toast.success(response.data.message);
             setFormData((prv) => ({ ...prv, ...values }));
@@ -88,20 +98,14 @@ const EmpExperienceAdd = forwardRef(
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={
-                        formik.values.empExperience[index]
-                          ?.prevCmpName || ""
+                        formik.values.empExperience[index]?.prevCmpName || ""
                       }
                     />
-                    {formik.touched.empExperience?.[index]
-                      ?.prevCmpName &&
-                      formik.errors.empExperience?.[index]
-                        ?.prevCmpName && (
+                    {formik.touched.empExperience?.[index]?.prevCmpName &&
+                      formik.errors.empExperience?.[index]?.prevCmpName && (
                         <div className="text-danger">
                           <small>
-                            {
-                              formik.errors.empExperience[index]
-                                .prevCmpName
-                            }
+                            {formik.errors.empExperience[index].prevCmpName}
                           </small>
                         </div>
                       )}
@@ -111,25 +115,21 @@ const EmpExperienceAdd = forwardRef(
                       Previous Company Address
                       <span className="text-danger">*</span>
                     </lable>
-                    <textarea rows="5"
+                    <textarea
+                      rows="5"
                       className="form-control "
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       name={`empExperience[${index}].prevCmpAddr`}
                       value={
-                        formik.values.empExperience[index]
-                          ?.prevCmpAddr || ""
-                      }></textarea>
-                    {formik.touched.empExperience?.[index]
-                      ?.prevCmpAddr &&
-                      formik.errors.empExperience?.[index]
-                        ?.prevCmpAddr && (
+                        formik.values.empExperience[index]?.prevCmpAddr || ""
+                      }
+                    ></textarea>
+                    {formik.touched.empExperience?.[index]?.prevCmpAddr &&
+                      formik.errors.empExperience?.[index]?.prevCmpAddr && (
                         <div className="text-danger">
                           <small>
-                            {
-                              formik.errors.empExperience[index]
-                                .prevCmpAddr
-                            }
+                            {formik.errors.empExperience[index].prevCmpAddr}
                           </small>
                         </div>
                       )}
@@ -147,18 +147,14 @@ const EmpExperienceAdd = forwardRef(
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={
-                        formik.values.empExperience[index]?.designation ||
-                        ""
+                        formik.values.empExperience[index]?.designation || ""
                       }
                     />
                     {formik.touched.empExperience?.[index]?.designation &&
                       formik.errors.empExperience?.[index]?.designation && (
                         <div className="text-danger">
                           <small>
-                            {
-                              formik.errors.empExperience[index].designation
-
-                            }
+                            {formik.errors.empExperience[index].designation}
                           </small>
                         </div>
                       )}
@@ -176,20 +172,14 @@ const EmpExperienceAdd = forwardRef(
                       onBlur={formik.handleBlur}
                       name={`empExperience[${index}].experienceDesc`}
                       value={
-                        formik.values.empExperience[index]
-                          ?.experienceDesc || ""
+                        formik.values.empExperience[index]?.experienceDesc || ""
                       }
                     />
-                    {formik.touched.empExperience?.[index]
-                      ?.experienceDesc &&
-                      formik.errors.empExperience?.[index]
-                        ?.experienceDesc && (
+                    {formik.touched.empExperience?.[index]?.experienceDesc &&
+                      formik.errors.empExperience?.[index]?.experienceDesc && (
                         <div className="text-danger">
                           <small>
-                            {
-                              formik.errors.empExperience[index]
-                                .experienceDesc
-                            }
+                            {formik.errors.empExperience[index].experienceDesc}
                           </small>
                         </div>
                       )}
@@ -207,16 +197,19 @@ const EmpExperienceAdd = forwardRef(
                       onBlur={formik.handleBlur}
                       name={`empExperience[${index}].experienceStartDate`}
                       value={
-                        formik.values.empExperience[index]?.experienceStartDate || ""
+                        formik.values.empExperience[index]
+                          ?.experienceStartDate || ""
                       }
                     />
-                    {formik.touched.empExperience?.[index]?.experienceStartDate &&
-                      formik.errors.empExperience?.[index]?.experienceStartDate && (
+                    {formik.touched.empExperience?.[index]
+                      ?.experienceStartDate &&
+                      formik.errors.empExperience?.[index]
+                        ?.experienceStartDate && (
                         <div className="text-danger">
                           <small>
                             {
-                              formik.errors.empExperience[index].experienceStartDate
-
+                              formik.errors.empExperience[index]
+                                .experienceStartDate
                             }
                           </small>
                         </div>
@@ -235,16 +228,18 @@ const EmpExperienceAdd = forwardRef(
                       onBlur={formik.handleBlur}
                       name={`empExperience[${index}].experienceEndDate`}
                       value={
-                        formik.values.empExperience[index]?.experienceEndDate || ""
+                        formik.values.empExperience[index]?.experienceEndDate ||
+                        ""
                       }
                     />
                     {formik.touched.empExperience?.[index]?.experienceEndDate &&
-                      formik.errors.empExperience?.[index]?.experienceEndDate && (
+                      formik.errors.empExperience?.[index]
+                        ?.experienceEndDate && (
                         <div className="text-danger">
                           <small>
                             {
-                              formik.errors.empExperience[index].experienceEndDate
-
+                              formik.errors.empExperience[index]
+                                .experienceEndDate
                             }
                           </small>
                         </div>

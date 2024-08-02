@@ -73,6 +73,8 @@ function AddPayroll() {
       const payload = {
         ...values,
         cmpId: parseInt(values.cmpId),
+        deptId: parseInt(values.deptId),
+        payrollEmpId: parseInt(values.payrollEmpId),
         basicSalary: parseInt(values.basicSalary),
         bonus: parseInt(values.bonus),
         deduction: parseInt(values.deduction),

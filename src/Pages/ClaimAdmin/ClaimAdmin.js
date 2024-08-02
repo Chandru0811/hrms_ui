@@ -43,7 +43,7 @@ const ClaimAdmin = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllClaims");
+        const response = await api.get("getAllClaimsWithIds");
         setDatas(response.data);
         setLoading(false);
       } catch (error) {
@@ -83,7 +83,7 @@ const ClaimAdmin = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllClaims");
+      const response = await api.get("getAllClaimsWithIds");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -129,8 +129,8 @@ const ClaimAdmin = () => {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   {/* <td>{data.employeeID}</td> */}
-                  <td> {findEmployeeName(data.claimsId)}</td>
-                  <td> {findEmployeeName(data.claimsEmpId)}</td>
+                  <td> {data.claimsId}</td>
+                  <td> {data.firstName}</td>
                   {/* <td>{data.AppliedDate}</td> */}
                   {/* <td>{data.ClaimDate}</td>
               <td>{data.ClaimType}</td> */}

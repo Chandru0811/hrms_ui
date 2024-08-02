@@ -5,12 +5,14 @@ import api from "../../config/URL";
 import { toast } from "react-toastify";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import fetchAllEmployeeNamesWithId from "../List/EmployeeNameList";
+import { useNavigate } from "react-router-dom";
 
 function ExitManagementAdmin() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   console.log("Employee" ,employeeData);
   const [currentDate, setCurrentDate] = useState("");
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     employeeId: Yup.string().required("*Employee name is required"),
@@ -45,7 +47,7 @@ function ExitManagementAdmin() {
         if (response.status === 201) {
           toast.success(response.data.message);
           resetForm();
-          // navigate("/exitmanagement");
+          navigate("/exitmanagement");
         } else {
           toast.error(response.data.message);
         }
@@ -57,9 +59,9 @@ function ExitManagementAdmin() {
 
   const fetchData = async () => {
     try {
-      // const companyData = await fetchAllCompanyNamesWithId();
+      const companyData = await fetchAllCompanyNamesWithId();
       const employeeData = await fetchAllEmployeeNamesWithId();
-      // setCompanyData(companyData);
+      setCompanyData(companyData);
       setEmployeeData(employeeData);
     } catch (error) {
       toast.error(error);
@@ -129,7 +131,7 @@ function ExitManagementAdmin() {
                     <option selected></option>
                     {companyData &&
                       companyData.map((cmpId) => (
-                        <option key={cmpId.id} value={cmpId.id}>
+                        <option key={cmpId.id} value={cmpId.cmpId}>
                           {cmpId.cmpName}
                         </option>
                       ))}

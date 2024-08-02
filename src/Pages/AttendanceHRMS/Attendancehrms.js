@@ -37,7 +37,7 @@ const Attendancehrms = () => {
 
   const fetchData = async () => {
     try {
-      const response = await api.get(`getAllDailyAttendance`, {
+      const response = await api.get(`dailyAttendanceWithIds`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -67,7 +67,7 @@ const Attendancehrms = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllDailyAttendance");
+      const response = await api.get("dailyAttendanceWithIds");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -116,7 +116,7 @@ const Attendancehrms = () => {
                 <th scope="col">S No</th>
                 <th scope="col">Employee ID</th>
                 <th scope="col">Employee Name</th>
-                <th scope="col">Company Name</th>
+                {/* <th scope="col">Company Name</th> */}
                 <th scope="col">Department Name</th>
                 {/* <th scope="col">Date</th> */}
                 <th scope="col">Mode of Working</th>
@@ -128,10 +128,10 @@ const Attendancehrms = () => {
               {datas.map((data, index) => (
                 <tr key={data.id}>
                   <td>{index + 1}</td>
-                  <td>{findEmployeeName(data.dailyAttendanceName)}</td>
-                  <td>{findEmployeeName(data.dailyAttendanceEmpId)}</td>
-                  <td>{findEmployeeName(data.dailyAttendanceCmpId)}</td>
-                  <td>{findEmployeeName(data.dailyAttendanceDptId)}</td>
+                  <td>{data.dailyAttendanceName}</td>
+                  <td>{data.firstName}</td>
+                  {/* <td>{findEmployeeName(data.dailyAttendanceCmpId)}</td> */}
+                  <td>{data.deptName}</td>
                   {/* <td>
                     {data.attendanceDate &&
                       data.attendanceDate

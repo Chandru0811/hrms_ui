@@ -46,7 +46,7 @@ const EmpQualificationDetailsAdd = forwardRef(
           },
         ],
       },
-      // validationSchema: validationSchema,
+      validationSchema: validationSchema,
       onSubmit: async (values) => {
         // console.log("Body Values is ", values)
         setLoadIndicators(true);

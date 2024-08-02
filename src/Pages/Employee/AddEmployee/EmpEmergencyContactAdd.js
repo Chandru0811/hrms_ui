@@ -47,9 +47,17 @@ const EmpEmergencyContactAdd = forwardRef(
       onSubmit: async (values) => {
         setLoadIndicators(true);
         values.emergencyEmpId = formData.empId;
+
+        const payload = values.empEmergencyContact.map((empEmergency)=>({
+          emergencyContactName: empEmergency.emergencyContactName,
+            emergencyContactNo: empEmergency.emergencyContactNo,
+            emergencyContactAddress: empEmergency.emergencyContactAddress,
+            relationshipOfEmployee: empEmergency.relationshipOfEmployee,
+            emergencyEmpId:formData.empId
+        }))
         // console.log("Body Values is ", values);
         try {
-          const response = await api.post(`/createEmpEmergencyContact`, values);
+          const response = await api.post(`/createEmpEmergencyContacts`, payload);
           if (response.status === 201) {
             toast.success(response.data.message);
             setFormData((prv) => ({ ...prv, ...values }));

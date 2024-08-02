@@ -78,7 +78,7 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                  : {findEmployeeName(data.claimsEmpId)}
+                  : {data.claimsEmpId}
                 </p>
               </div>
             </div>
@@ -100,13 +100,13 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                  :{" "}
-                  {companyData &&
+                  :{data.cmpName}
+                  {/* {companyData &&
                   companyData.find((cmp) => cmp.cmpId === parseInt(data.cmpId))
                     ? companyData.find(
                         (cmp) => cmp.cmpId === parseInt(data.cmpId)
                       ).cmpName
-                    : ""}
+                    : ""} */}
                 </p>
               </div>
             </div>
@@ -128,15 +128,15 @@ function ClaimView() {
               </div>
               <div className="col-6">
                 <p className="text-muted text-sm">
-                  :{" "}
-                  {departmentData &&
+                  :{data.dptName}
+                  {/* {departmentData &&
                   departmentData.find(
                     (dept) => dept.deptId === parseInt(data.deptId)
                   )
                     ? departmentData.find(
                         (dept) => dept.deptId === parseInt(data.deptId)
                       ).deptName
-                    : ""}
+                    : ""} */}
                 </p>
               </div>
             </div>
@@ -251,7 +251,7 @@ function ClaimView() {
                 <p className="fw-medium">Attachment</p>
               </div>
               <div className="col-6">
-                <p className="text-muted text-sm d-flex">:<img src={data.attachment} alt="invoice"></img></p>
+                <p className="text-muted text-sm d-flex">:<img src={data.attachment} alt="" className="img-fluid w-50"></img></p>
               </div>
             </div>
           </div>

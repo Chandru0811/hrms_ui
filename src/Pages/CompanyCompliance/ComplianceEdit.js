@@ -52,7 +52,7 @@ function ComplianceEdit() {
             },
           }
         );
-        if (response.status === 201) {
+        if (response.status === 200) {
           toast.success(response.data.message);
           navigate("/compliance");
         } else {
@@ -179,17 +179,17 @@ function ComplianceEdit() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.compComplianceDesignationName &&
-                      formik.errors.compComplianceDesignationName
+                      formik.touched.compComplianceDesignationCategory &&
+                      formik.errors.compComplianceDesignationCategory
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("compComplianceDesignationName")}
+                    {...formik.getFieldProps("compComplianceDesignationCategory")}
                   ></input>
-                  {formik.touched.compComplianceDesignationName &&
-                    formik.errors.compComplianceDesignationName && (
+                  {formik.touched.compComplianceDesignationCategory &&
+                    formik.errors.compComplianceDesignationCategory && (
                       <div className="invalid-feedback">
-                        {formik.errors.compComplianceDesignationName}
+                        {formik.errors.compComplianceDesignationCategory}
                       </div>
                     )}
                 </div>

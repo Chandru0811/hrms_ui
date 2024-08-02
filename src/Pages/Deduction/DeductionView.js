@@ -13,13 +13,13 @@ function DeductionView() {
   const [employeeData, setEmployeeData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
 
-  const findEmployeeName = (employeeId) => {
-    if (!employeeData) return "Employee data not available"; // Check if employeeData is null or undefined
-    const employee = employeeData.find((emp) => emp.employeeId === employeeId);
-    return employee
-      ? `${employee.firstName} ${employee.lastName}`
-      : "";
-  };
+  // const findEmployeeName = (employeeId) => {
+  //   if (!employeeData) return "Employee data not available"; // Check if employeeData is null or undefined
+  //   const employee = employeeData.find((emp) => emp.employeeId === employeeId);
+  //   return employee
+  //     ? `${employee.firstName} ${employee.lastName}`
+  //     : "";
+  // };
 
   const fetchData = async () => {
     try {
@@ -76,7 +76,7 @@ function DeductionView() {
                 </div>
                 <div className="col-6">
                   <p className="text-muted text-sm">
-                    : {findEmployeeName(data.claimsEmpId)}
+                    : {data.claimsEmpId}
                   </p>
                 </div>
               </div>
@@ -98,15 +98,15 @@ function DeductionView() {
                 </div>
                 <div className="col-6">
                   <p className="text-muted text-sm">
-                    :{" "}
-                    {companyData &&
+                    :{data.cmpName}
+                    {/* {companyData &&
                     companyData.find(
                       (cmp) => cmp.cmpId === parseInt(data.cmpId)
                     )
                       ? companyData.find(
                           (cmp) => cmp.cmpId === parseInt(data.cmpId)
                         ).cmpName
-                      : ""}
+                      : ""} */}
                   </p>
                 </div>
               </div>
@@ -128,15 +128,15 @@ function DeductionView() {
                 </div>
                 <div className="col-6">
                   <p className="text-muted text-sm">
-                    :{" "}
-                    {departmentData &&
+                    :{data.dptName}
+                    {/* {departmentData &&
                     departmentData.find(
                       (dept) => dept.deptId === parseInt(data.deptId)
                     )
                       ? departmentData.find(
                           (dept) => dept.deptId === parseInt(data.deptId)
                         ).deptName
-                      : ""}
+                      : ""} */}
                   </p>
                 </div>
               </div>
