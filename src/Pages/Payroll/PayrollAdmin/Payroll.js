@@ -84,7 +84,7 @@ const Payroll = () => {
               <tr>
                 <th scope="col">S No</th>
                 <th scope="col">Employee ID</th>
-                <th scope="col">Emplopee Name</th>
+                <th scope="col">Employee Name</th>
                 {/* <th scope="col">Bonus</th> */}
                 <th scope="col">Basic Pay</th>
                 {/* <th scope="col">Deduction</th> */}

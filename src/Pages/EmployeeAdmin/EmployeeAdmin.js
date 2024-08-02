@@ -99,7 +99,7 @@ const EmployeeAdmin = () => {
                     {data.firstName}&nbsp;
                     {data.lastName}
                   </td>
-                  <td>{data.empDes}</td>
+                  <td>{data.empDesignation}</td>
                   <td>
                     <div className="d-flex">
                       <Link to={`/employeeadmin/view/${data.id}`}>
