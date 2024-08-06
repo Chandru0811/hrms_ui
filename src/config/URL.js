@@ -4,4 +4,20 @@ const api = axios.create({
   baseURL: "http://13.213.208.92:7081/ecshrms/api/",
 });
 
+// Add a request interceptor
+api.interceptors.request.use(
+  function (config) {
+    const token = sessionStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
 export default api;

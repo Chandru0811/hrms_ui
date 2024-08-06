@@ -4,29 +4,55 @@ import logo from "../../assets/images/Logo.png";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import api from "../../config/URL";
+import { toast } from "react-toastify";
 
 function Login({ onLogin }) {
   const navigate = useNavigate();
   const validationSchema = Yup.object({
-    username: Yup.string()
+    email: Yup.string()
       .email("*Invalid email address")
       .required("*Username is required"),
     password: Yup.string()
       .min(8, "*Password must be 8 characters")
       .required("*Password is required"),
-    companyId: Yup.string().required("*Company Id is required"),
+    // companyId: Yup.string().required("*Company Id is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
-      companyId: "",
+      // companyId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      onLogin(values.username, values.password, values.companyId);
-      // navigate('/hrms')
+      console.log("Values is ", values);
+      try {
+        const response = await api.post(`appLogin`, values);
+        if (response.status === 200) {
+          toast.success(response.data.message);
+          sessionStorage.setItem("roleId", response.data.roleId);
+          sessionStorage.setItem("role", response.data.role);
+          sessionStorage.setItem("token", response.data.accessToken);
+          sessionStorage.setItem("userName", "Super Admin");
+          sessionStorage.setItem("loginUserId", response.data.loginUserId);
+          sessionStorage.setItem("empId", response.data.employeeInfo[0].empId);
+          sessionStorage.setItem("cmpId", response.data.employeeInfo[0].cmpId);
+          sessionStorage.setItem(
+            "deptId",
+            response.data.employeeInfo[0].deptId
+          );
+          onLogin();
+          navigate("/");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (e) {
+        console.log("Error Login ", e?.response?.data?.message);
+        toast.error(e?.response?.data?.message);
+      }
+      // onLogin(values.email, values.password, values.companyId);
     },
   });
 
@@ -63,24 +89,25 @@ function Login({ onLogin }) {
         <form onSubmit={formik.handleSubmit}>
           <div className="card-body">
             <h4 className="card-title text-center mb-5">Login</h4>
+
             <div className="mb-2">
-              <label className="form-label fw-medium">Username</label>
+              <label className="form-label fw-medium">Email</label>
               <span className="text-danger">*</span>
               <input
-                type="text"
-                {...formik.getFieldProps("username")}
+                type="email"
+                {...formik.getFieldProps("email")}
                 className={`form-control ${
-                  formik.touched.username && formik.errors.username
+                  formik.touched.email && formik.errors.email
                     ? "is-invalid"
                     : ""
                 }`}
               />
-              {formik.touched.username && formik.errors.username && (
-                <div className="invalid-feedback">{formik.errors.username}</div>
+              {formik.touched.email && formik.errors.email && (
+                <div className="invalid-feedback">{formik.errors.email}</div>
               )}
             </div>
 
-            <div className="mb-2"> 
+            <div className="mb-2">
               <label className="form-label fw-medium">Password</label>
               <span className="text-danger">*</span>
               <div className={`input-group mb-3`}>
@@ -94,7 +121,7 @@ function Login({ onLogin }) {
                   }`}
                   name="password"
                 />
-                
+
                 <span
                   className={`input-group-text iconInputBackground`}
                   id="basic-addon1"
@@ -109,26 +136,8 @@ function Login({ onLogin }) {
                   </div>
                 )}
               </div>
-            </div> 
-
-            <div className="mb-4">
-              <label className="form-label fw-medium">Company ID</label>
-              <span className="text-danger">*</span>
-              <input
-                type="text"
-                {...formik.getFieldProps("companyId")}
-                className={`form-control ${
-                  formik.touched.companyId && formik.errors.companyId
-                    ? "is-invalid"
-                    : ""
-                }`}
-              />
-              {formik.touched.companyId && formik.errors.companyId && (
-                <div className="invalid-feedback">
-                  {formik.errors.companyId}
-                </div>
-              )}
             </div>
+
             <div className="d-flex justify-content-center mb-3">
               <button
                 type="submit"
