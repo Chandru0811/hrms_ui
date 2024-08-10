@@ -84,6 +84,11 @@ import Compliance from "../Pages/CompanyCompliance/Compliance";
 import ComplianceAdd from "../Pages/CompanyCompliance/ComplianceAdd";
 import ComplianceEdit from "../Pages/CompanyCompliance/ComplianceEdit";
 import ComplianceView from "../Pages/CompanyCompliance/ComplianceView";
+import Roles from "../Pages/Roles/Roles";
+import RolesAdd from "../Pages/Roles/RolesAdd";
+import RolesEdit from "../Pages/Roles/RolesEdit";
+import RolesView from "../Pages/Roles/RoleView";
+import RolesAndMatrix from "../Pages/RolesAndMatrix";
 
 function Admin({ handleLogout }) {
   useEffect(() => {
@@ -140,6 +145,13 @@ function Admin({ handleLogout }) {
               <Route path="/employee/add" element={<EmployeeAdd />} />
               <Route path="/employee/edit" element={<EmployeeEdit />} />
               <Route path="/employee/view" element={<EmployeeView />} />
+
+              {/* Roles */}
+              <Route path="/roles" element={<Roles />} />
+              <Route path="/roles/add" element={<RolesAdd />} />
+              <Route path="/roles/edit/:id" element={<RolesEdit />} />
+              <Route path="/roles/view/:id" element={<RolesView />} />
+              <Route path="/rolesandmatrix" element={<RolesAndMatrix />} />
 
               {/* EmployeeAdmin */}
               <Route path="/employeeadmin" element={<EmployeeAdmin />} />

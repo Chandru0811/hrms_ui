@@ -6,6 +6,7 @@ import Logo from "../../assets/images/Logo.png";
 
 function Sidebar() {
   const [activeMenu, setActiveMenu] = useState(null);
+  const [activeMenus, setActiveMenus] = useState(null);
   const userRole = sessionStorage.getItem("userName");
 
   const [menuItems, setMenuItems] = useState([
@@ -36,30 +37,74 @@ function Sidebar() {
     },
   ]);
 
+  const [menusItems, setMenusItems] = useState([
+    {
+      title: "Settings",
+      icon: "bx bx-buildings",
+      isOpen: false,
+      subsMenus: [
+        (userRole === "Admin" ||
+          userRole === "Super Admin" ||
+          userRole === "Employee") && {
+          title: "Roles",
+          path: "/roles",
+        },
+        {
+          title: "RolesAndMatrix",
+          path: "/rolesandmatrix",
+        },
+      ],
+    },
+  ]);
+
   const handleMenuClick = (index) => {
-    if (index === null) {
-      // If Home is clicked, deactivate all menus
-      setMenuItems(menuItems.map((item) => ({ ...item, isOpen: false })));
-      setActiveMenu(null);
-    } else {
-      const updatedMenuItems = menuItems.map((item, i) => {
-        if (i === index) {
-          return {
-            ...item,
-            isOpen: !item.isOpen,
-          };
-        } else {
-          return {
-            ...item,
-            isOpen: false,
-          };
-        }
-      });
-      setMenuItems(updatedMenuItems);
-      setActiveMenu(
-        updatedMenuItems[index].isOpen ? updatedMenuItems[index].title : null
-      );
-    }
+    // Close "Settings" when "Organization" is clicked
+    setMenusItems(menusItems.map((item) => ({ ...item, isOpen: false })));
+
+    const updatedMenuItems = menuItems.map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          isOpen: !item.isOpen,
+        };
+      } else {
+        return {
+          ...item,
+          isOpen: false,
+        };
+      }
+    });
+
+    setMenuItems(updatedMenuItems);
+    setActiveMenu(
+      updatedMenuItems[index]?.isOpen ? updatedMenuItems[index].title : null
+    );
+    setActiveMenus(null); // Deactivate "Settings" menu if open
+  };
+
+  const handleMenusClick = (index) => {
+    // Close "Organization" when "Settings" is clicked
+    setMenuItems(menuItems.map((item) => ({ ...item, isOpen: false })));
+
+    const updatedMenusItems = menusItems.map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          isOpen: !item.isOpen,
+        };
+      } else {
+        return {
+          ...item,
+          isOpen: false,
+        };
+      }
+    });
+
+    setMenusItems(updatedMenusItems);
+    setActiveMenus(
+      updatedMenusItems[index]?.isOpen ? updatedMenusItems[index].title : null
+    );
+    setActiveMenu(null); // Deactivate "Organization" menu if open
   };
 
   return (
@@ -126,7 +171,6 @@ function Sidebar() {
               <ul className="submenu">
                 {item.subMenus.map(
                   (subMenu, subIndex) =>
-                    // Check if subMenu.title is truthy before rendering the list item
                     subMenu.title && (
                       <li key={subIndex}>
                         <NavLink
@@ -134,7 +178,6 @@ function Sidebar() {
                           className="links_name"
                           activeClassName="active-submenu"
                         >
-                          {/* Render the radio icon and title */}
                           <i className="bx bx-radio-circle-marked ps-3"></i>
                           <span className="links_name links_names">
                             {subMenu.title}
@@ -155,12 +198,6 @@ function Sidebar() {
             </NavLink>
           </li>
         )}
-        {/* <li>
-          <NavLink to="/employee" onClick={() => handleMenuClick(null)}>
-            <i class="bx bx-male-female"></i>
-            <span className="links_name">Employee Info</span>
-          </NavLink>
-        </li> */}
         <li>
           <NavLink to="/attendancehrms" onClick={() => handleMenuClick(null)}>
             <i class="bx bx-spreadsheet"></i>
@@ -180,21 +217,6 @@ function Sidebar() {
             <NavLink to="/leave" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-pie-chart-alt-2"></i>
               <span className="links_name">Leave</span>
-            </NavLink>
-          </li>
-        )}
-        {/* <li>
-          <NavLink to="/payroll" onClick={() => handleMenuClick(null)}>
-            <i className="bx bx-coin-stack"></i>
-            <span className="links_name">Payroll</span>
-          </NavLink>
-        </li> */}
-        {(userRole === "Admin" || userRole === "Super Admin") && (
-          <li>
-            <NavLink to="/performance" onClick={() => handleMenuClick(null)}>
-              {/*  */}
-              <i class="bx bx-signal-4"></i>
-              <span className="links_name">Performance</span>
             </NavLink>
           </li>
         )}
@@ -223,7 +245,6 @@ function Sidebar() {
         {userRole === "Employee" && (
           <li>
             <NavLink to="/claim" onClick={() => handleMenuClick(null)}>
-              {/* <i className="bx bx-grid-alt"></i> */}
               <i className="bx bx-book-open"></i>
               <span className="links_name">Claims</span>
             </NavLink>
@@ -232,39 +253,73 @@ function Sidebar() {
         {(userRole === "Admin" || userRole === "Super Admin") && (
           <li>
             <NavLink to="/claimadmin" onClick={() => handleMenuClick(null)}>
-              {/* <i className="bx bx-grid-alt"></i> */}
               <i className="bx bx-book-open"></i>
               <span className="links_name">Claims</span>
             </NavLink>
           </li>
         )}
-        {(userRole === "Admin" || userRole === "Super Admin") && (
-          <li>
-            <NavLink to="/deductions" onClick={() => handleMenuClick(null)}>
-              <i className="bx bx-grid-alt"></i>
-              <span className="links_name">Deductions</span>
-            </NavLink>
-          </li>
-        )}
-        {(userRole === "Admin" || userRole === "Super Admin") && (
-          <li>
-            <NavLink to="/payrolladmin" onClick={() => handleMenuClick(null)}>
-              <i class="bx bx-book-alt"></i>
-              <span className="links_name">Payroll</span>
-            </NavLink>
-          </li>
-        )}
-        {userRole === "Employee" && (
-          <li>
-            <NavLink
-              to="/employeepayslip"
-              onClick={() => handleMenuClick(null)}
+        <li>
+          <NavLink to="/training" onClick={() => handleMenuClick(null)}>
+            <i className="bx bx-cog"></i>
+            <span className="links_name">Training</span>
+          </NavLink>
+        </li>
+
+        {/*Settings */}
+
+        {menusItems.map((item, index) => (
+          <li key={index}>
+            <Nav.Link
+              to="#"
+              onClick={() => handleMenusClick(index)}
+              className={activeMenus === item.title ? "active" : ""}
             >
-              <i class="bx bx-book-alt"></i>
-              <span className="links_name">Payslip</span>
-            </NavLink>
+              <div
+                className="w-100 d-flex justify-content-between"
+                style={{ overflow: "hidden", whiteSpace: "nowrap" }}
+              >
+                <span>
+                  <i className={item.icon}></i>
+                  <span className="links_name">{item.title}</span>
+                </span>
+                <span>
+                  <i
+                    className={`bx bx-chevron-down arrow ${
+                      item.isOpen ? "open" : ""
+                    }`}
+                    style={{
+                      paddingRight: "5px",
+                      minWidth: "0px",
+                      fontWeight: "700",
+                    }}
+                  ></i>
+                </span>
+              </div>
+            </Nav.Link>
+
+            <Collapse in={item.isOpen}>
+              <ul className="submenu">
+                {item.subsMenus.map(
+                  (subMenu, subIndex) =>
+                    subMenu.title && (
+                      <li key={subIndex}>
+                        <NavLink
+                          to={subMenu.path}
+                          className="links_name"
+                          activeClassName="active-submenu"
+                        >
+                          <i className="bx bx-radio-circle-marked ps-3"></i>
+                          <span className="links_name links_names">
+                            {subMenu.title}
+                          </span>
+                        </NavLink>
+                      </li>
+                    )
+                )}
+              </ul>
+            </Collapse>
           </li>
-        )}
+        ))}
       </ul>
     </div>
   );
