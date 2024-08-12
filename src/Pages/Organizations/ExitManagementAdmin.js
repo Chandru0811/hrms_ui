@@ -12,6 +12,8 @@ function ExitManagementAdmin() {
   const [employeeData, setEmployeeData] = useState(null);
   console.log("Employee" ,employeeData);
   const [currentDate, setCurrentDate] = useState("");
+  const today = new Date().toISOString().split('T')[0];
+
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
@@ -194,27 +196,6 @@ function ExitManagementAdmin() {
                   )}
               </div>
               <div class="col-md-6 col-12 mb-3">
-                <lable className="form-lable">
-                  Date of Relieving<span className="text-danger">*</span>
-                </lable>
-                <input
-                  type="date"
-                  className={`form-control  ${
-                    formik.touched.dateOfRelieving &&
-                    formik.errors.dateOfRelieving
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("dateOfRelieving")}
-                />
-                {formik.touched.dateOfRelieving &&
-                  formik.errors.dateOfRelieving && (
-                    <div className="invalid-feedback">
-                      {formik.errors.dateOfRelieving}
-                    </div>
-                  )}
-              </div>
-              <div class="col-md-6 col-12 mb-3">
                 <lable class="form-lable">
                   Date of Apply<span className="text-danger">*</span>
                 </lable>
@@ -237,6 +218,28 @@ function ExitManagementAdmin() {
                     </div>
                   )}
               </div>
+              <div className="col-md-6 col-12 mb-3">
+      <label className="form-label">
+        Date of Relieving<span className="text-danger">*</span>
+      </label>
+      <input
+        type="date"
+        className={`form-control ${
+          formik.touched.dateOfRelieving && formik.errors.dateOfRelieving
+            ? 'is-invalid'
+            : ''
+        }`}
+        {...formik.getFieldProps('dateOfRelieving')}
+        min={today} // Set min attribute to today's date
+        defaultValue={today} // Set default value to today's date
+      />
+      {formik.touched.dateOfRelieving && formik.errors.dateOfRelieving && (
+        <div className="invalid-feedback">
+          {formik.errors.dateOfRelieving}
+        </div>
+      )}
+    </div>
+              
               <div className="col-md-6 col-12 mb-3">
                 <lable className="">Notice Period</lable>
                 <span className="text-danger">*</span>

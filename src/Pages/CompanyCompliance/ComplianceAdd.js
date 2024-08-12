@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 function ComplianceAdd() {
   const [loading, setLoading] = useState(false);
   const [companyData, setCompanyData] = useState(null);
+  const [calcDate, setCalcDate] = useState('');
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
@@ -72,6 +73,12 @@ function ComplianceAdd() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleCalcDateChange = (event) => {
+    const { value } = event.target;
+    setCalcDate(value);
+    formik.setFieldValue('compComplianceSalaryCalculationDay', value);
+  };
 
   return (
     <section className="HolidayAdd p-3">
@@ -205,54 +212,55 @@ function ComplianceAdd() {
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                    Salary Calculation Date
-                    <span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="date"
-                    className={`form-control  ${
-                      formik.touched.compComplianceSalaryCalculationDay &&
-                      formik.errors.compComplianceSalaryCalculationDay
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps(
-                      "compComplianceSalaryCalculationDay"
-                    )}
-                  />
-                  {formik.touched.compComplianceSalaryCalculationDay &&
-                    formik.errors.compComplianceSalaryCalculationDay && (
-                      <div className="invalid-feedback">
-                        {formik.errors.compComplianceSalaryCalculationDay}
-                      </div>
-                    )}
-                </div>
+        <div className="text-start mt-2 mb-3">
+          <label className="form-label">
+            Salary Calculation Date
+            <span className="text-danger">*</span>
+          </label>
+          <input
+            type="date"
+            className={`form-control ${
+              formik.touched.compComplianceSalaryCalculationDay &&
+              formik.errors.compComplianceSalaryCalculationDay
+                ? 'is-invalid'
+                : ''
+            }`}
+            {...formik.getFieldProps('compComplianceSalaryCalculationDay')}
+            onChange={handleCalcDateChange}
+          />
+          {formik.touched.compComplianceSalaryCalculationDay &&
+            formik.errors.compComplianceSalaryCalculationDay && (
+              <div className="invalid-feedback">
+                {formik.errors.compComplianceSalaryCalculationDay}
               </div>
-              <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                    Salary Date<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="date"
-                    className={`form-control  ${
-                      formik.touched.compComplianceSalaryDay &&
-                      formik.errors.compComplianceSalaryDay
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("compComplianceSalaryDay")}
-                  />
-                  {formik.touched.compComplianceSalaryDay &&
-                    formik.errors.compComplianceSalaryDay && (
-                      <div className="invalid-feedback">
-                        {formik.errors.compComplianceSalaryDay}
-                      </div>
-                    )}
-                </div>
+            )}
+        </div>
+      </div>
+      <div className="col-lg-6 col-md-6 col-12">
+        <div className="text-start mt-2 mb-3">
+          <label className="form-label">
+            Salary Date
+            <span className="text-danger">*</span>
+          </label>
+          <input
+            type="date"
+            className={`form-control ${
+              formik.touched.compComplianceSalaryDay &&
+              formik.errors.compComplianceSalaryDay
+                ? 'is-invalid'
+                : ''
+            }`}
+            {...formik.getFieldProps('compComplianceSalaryDay')}
+            min={calcDate} // Ensure Salary Date is not before Calculation Date
+          />
+          {formik.touched.compComplianceSalaryDay &&
+            formik.errors.compComplianceSalaryDay && (
+              <div className="invalid-feedback">
+                {formik.errors.compComplianceSalaryDay}
               </div>
+            )}
+        </div>
+      </div>
               <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start mt-2 mb-3">
                   <lable className="form-lable">Remarks</lable>

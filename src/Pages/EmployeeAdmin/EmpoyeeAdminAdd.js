@@ -17,6 +17,7 @@ function EmployeeAdminAdd() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loadIndicator, setLoadIndicators] = useState(false);
   const navigate = useNavigate();
+  const roleName = sessionStorage.getItem("role")
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("*First name is required"),
@@ -24,36 +25,36 @@ function EmployeeAdminAdd() {
     empPriPhNumber: Yup.number()
       .required("*Primary phone number is required")
       .typeError("*Must be a number"),
-    empPriEmail: Yup.string()
+    email: Yup.string()
       .email("*Enter valid email")
       .required("*Primary email id is required"),
-    empPriEmailPassword: Yup.string().required(
+    password: Yup.string().required(
       "*Primary email password is required"
     ),
-    // empRegCmpId: Yup.string().required("*Company name is required"),1
-    // employeeID: Yup.string().required("*Employee id is required"),
-    // empRegDeptId: Yup.string().required("*Department name is required"),1
+    // empRegCmpId: Yup.string().required("*Company name is required"),
+    // // employeeID: Yup.string().required("*Employee id is required"),
+    // empRegDeptId: Yup.string().required("*Department name is required"),
     // empDesignation: Yup.string().required(
     //   "*Employee designation is required"
-    // ),1
-    // employeeDateOfJoining: Yup.string().required(
+    // ),
+    // empDateOfJoin: Yup.string().required(
     //   "*Employee date of joining is required"
-    // ),1
-    // employeeType: Yup.string().required("*Employee type is required"),1
-    // noticePeriod: Yup.string().required("*Notice period is required"),1
-    // reportingManagerName: Yup.string().required(
+    // ),
+    // empType: Yup.string().required("*Employee type is required"),
+    // noticePeriod: Yup.string().required("*Notice period is required"),
+    // repManagerName: Yup.string().required(
     //   "*Reporting manager name is required"
-    // ),1
+    // ),
     // reportingManagerID: Yup.string().required(
     //   "*Reporting manager id is required"
     // ),
-    ...(selectedIdType === "NRIC" && {
-      NRICFin: Yup.string().required("*NRIC fin is required"),
-      NRICType: Yup.string().required("*Select a NRIC type"),
-    }),
-    ...(selectedIdType === "AADHAR" && {
-      aadharNumber: Yup.string().required("*Aadhar number is required"),
-    }),
+    // ...(selectedIdType === "NRIC" && {
+    //   NRICFin: Yup.string().required("*NRIC fin is required"),
+    //   NRICType: Yup.string().required("*Select a NRIC type"),
+    // }),
+    // ...(selectedIdType === "AADHAR" && {
+    //   aadharNumber: Yup.string().required("*Aadhar number is required"),
+    // }),
   });
 
   const formik = useFormik({
@@ -61,8 +62,8 @@ function EmployeeAdminAdd() {
       firstName: "",
       lastName: "",
       empPriPhNumber: "",
-      empPriEmail: "",
-      empPriEmailPassword: "",
+      email: "",
+      password: "",
       NRICFin: "",
       NRICType: "",
       aadharNumber: "",
@@ -70,11 +71,24 @@ function EmployeeAdminAdd() {
       empRegDeptId: "",
       empDesignation: "",
       proof: "",
-      employeeDateOfJoining: "",
-      employeeType: "",
+      empDateOfJoin: "",
+      empType: "",
       noticePeriod: "",
-      reportingManagerName: "",
+      repManagerName: "",
       reportingManagerID: "",
+      file: "",
+    },
+    validate: (values) => {
+      const errors = {};
+      if (values.file) {
+        // Check if the file is one of the allowed types
+        const file = values.file;
+        const validTypes = ['image/jpeg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+          errors.file = 'Only JPG and PNG files are accepted';
+        }
+      }
+      return errors;
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -86,25 +100,25 @@ function EmployeeAdminAdd() {
         formData.append("firstName", values.firstName);
         formData.append("lastName", values.lastName);
         formData.append("empPriPhNumber", values.empPriPhNumber);
-        formData.append("empPriEmail", values.empPriEmail);
-        formData.append("empPriEmailPassword", values.empPriEmailPassword);
+        formData.append("email", values.email);
+        formData.append("password", values.password);
         formData.append("NRICFin", values.NRICFin);
         formData.append("NRICType", values.NRICType);
-        // formData.append("aadharNumber", values.aadharNumber);
+        formData.append("aadharNumber", values.aadharNumber);
         formData.append("empRegCmpId", values.empRegCmpId);
         formData.append("empRegDeptId", values.empRegDeptId);
         formData.append("file", values.file);
-        // formData.append("aadharNumber", values.aadharNumber);
+        
         formData.append("proof", selectedIdType);
         formData.append("empDesignation", values.empDesignation);
-        // formData.append("proof", values.proof);
         formData.append("empDateOfJoin", values.empDateOfJoin);
         formData.append("empType", values.empType);
         formData.append("noticePeriod", values.noticePeriod);
         formData.append("repManagerName", values.repManagerName);
+        formData.append("roleName", roleName);
         // formData.append("reportingManagerID", values.reportingManagerID);
 
-        const response = await api.post("/addEmployee", formData);
+        const response = await api.post("/addEmployeeReg", formData);
         if (response.status === 201) {
           toast.success(response.data.message);
           navigate("/employeeadmin");
@@ -188,8 +202,7 @@ function EmployeeAdminAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
+                 
                   {...formik.getFieldProps("firstName")}
                 />
                 {formik.touched.firstName && formik.errors.firstName && (
@@ -212,8 +225,7 @@ function EmployeeAdminAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
+                  
                   {...formik.getFieldProps("lastName")}
                 />
                 {formik.touched.lastName && formik.errors.lastName && (
@@ -230,19 +242,18 @@ function EmployeeAdminAdd() {
                 </lable>
                 <input
                   type="email"
-                  name="empPriEmail"
+                  name="email"
                   className={`form-control  ${
-                    formik.touched.empPriEmail && formik.errors.empPriEmail
+                    formik.touched.email && formik.errors.email
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("empPriEmail")}
+                 
+                  {...formik.getFieldProps("email")}
                 />
-                {formik.touched.empPriEmail && formik.errors.empPriEmail && (
+                {formik.touched.email && formik.errors.email && (
                   <div className="invalid-feedback">
-                    {formik.errors.empPriEmail}
+                    {formik.errors.email}
                   </div>
                 )}
               </div>
@@ -254,21 +265,22 @@ function EmployeeAdminAdd() {
                 </lable>
                 <div className={`input-group mb-3`}>
                   <input
+                  name="password"
                     type={showPassword ? "text" : "password"}
                     onChange={(e) => setPassword(e.target.value)}
                     className={`form-control  ${
-                      formik.touched.empPriEmailPassword &&
-                      formik.errors.empPriEmailPassword
+                      formik.touched.password &&
+                      formik.errors.password
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("empPriEmailPassword")}
+                    {...formik.getFieldProps("password")}
                     style={{
                       borderRight: "none",
                       borderTopRightRadius: "0px",
                       borderBottomRightRadius: "0px",
                     }}
-                    name="empPriEmailPassword"
+                    
                   />
                   <span
                     className={`input-group-text bg-white`}
@@ -284,10 +296,10 @@ function EmployeeAdminAdd() {
                   >
                     {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
                   </span>
-                  {formik.touched.empPriEmailPassword &&
-                    formik.errors.empPriEmailPassword && (
+                  {formik.touched.password &&
+                    formik.errors.password && (
                       <div className="invalid-feedback">
-                        {formik.errors.empPriEmailPassword}
+                        {formik.errors.password}
                       </div>
                     )}
                 </div>
@@ -307,8 +319,7 @@ function EmployeeAdminAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
+                 
                   {...formik.getFieldProps("empPriPhNumber")}
                 />
                 {formik.touched.empPriPhNumber &&
@@ -331,7 +342,7 @@ function EmployeeAdminAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Default select example"
+                 
                 >
                   <option selected></option>
                   {companyData &&
@@ -360,7 +371,7 @@ function EmployeeAdminAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Default select example"
+                 
                 >
                   <option selected></option>
                   {departmentData &&
@@ -391,8 +402,7 @@ function EmployeeAdminAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
+                 
                   {...formik.getFieldProps("empDesignation")}
                 />
                 {formik.touched.empDesignation &&
@@ -472,6 +482,7 @@ function EmployeeAdminAdd() {
                         NRIC Type<span className="text-danger">*</span>
                       </lable>
                       <select
+                      name="NRICType"
                         className={`form-select  ${
                           formik.touched.NRICType && formik.errors.NRICType
                             ? "is-invalid"
@@ -516,8 +527,7 @@ function EmployeeAdminAdd() {
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
+                     
                       {...formik.getFieldProps("aadharNumber")}
                     />
                     {formik.touched.aadharNumber &&
@@ -545,8 +555,7 @@ function EmployeeAdminAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
+                 
                   {...formik.getFieldProps("empDateOfJoin")}
                 />
                 {formik.touched.empDateOfJoin &&
@@ -558,33 +567,40 @@ function EmployeeAdminAdd() {
               </div>
             </div>
             <div className="col-md-6 col-12 mb-3">
-              <lable>Photo</lable>
-              <input
-                type="file"
-                name="file"
-                className="form-control"
-                onChange={(event) => {
-                  formik.setFieldValue("file", event.target.files[0]);
-                }}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.file && formik.errors.file && (
-                <div className="error text-danger ">
-                  <small>{formik.errors.file}</small>
-                </div>
-              )}
-            </div>
+        <label className="form-label">Photo</label>
+        <input
+          type="file"
+          name="file"
+          className={`form-control ${
+            formik.touched.file && formik.errors.file ? 'is-invalid' : ''
+          }`}
+          accept=".jpg, .jpeg, .png" // Restrict file types
+          onChange={(event) => {
+            const file = event.target.files[0];
+            if (file) {
+              formik.setFieldValue('file', file);
+            }
+          }}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.file && formik.errors.file && (
+          <div className="invalid-feedback">
+            {formik.errors.file}
+          </div>
+        )}
+      </div>
             <div className="col-md-6 col-12 mb-4">
               <lable className="">Employee Type</lable>
               <span className="text-danger">*</span>
               <select
                 {...formik.getFieldProps("empType")}
+                name="empType"
                 className={`form-select    ${
                   formik.touched.empType && formik.errors.empType
                     ? "is-invalid"
                     : ""
                 }`}
-                aria-label="Default select example"
+                
               >
                 <option selected></option>
                 <option value="Full Time">Full Time</option>
@@ -600,18 +616,21 @@ function EmployeeAdminAdd() {
                 <lable for="exampleFormControlInput1" className="form-label">
                   Notice Period<span className="text-danger">*</span>
                 </lable>
-                <input
-                  type="text"
-                  name="noticePeriod"
-                  className={`form-control  ${
-                    formik.touched.noticePeriod && formik.errors.noticePeriod
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("noticePeriod")}
-                />
+                <select
+                    type="text"
+                    className={`form-select  ${
+                      formik.touched.noticePeriod &&
+                      formik.errors.noticePeriod
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("noticePeriod")}
+                  >
+                    <option selected></option>
+                    <option value="30 days">30 days</option>
+                    <option value="60 days">60 days</option>
+                    <option value="90 days">90 days</option>
+                  </select>
                 {formik.touched.noticePeriod && formik.errors.noticePeriod && (
                   <div className="invalid-feedback">
                     {formik.errors.noticePeriod}
@@ -633,8 +652,7 @@ function EmployeeAdminAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
+                 
                   {...formik.getFieldProps("repManagerName")}
                 />
                 {formik.touched.repManagerName &&

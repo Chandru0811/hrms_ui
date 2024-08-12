@@ -62,7 +62,7 @@ function AttendancehrmsView() {
                 </div>
                 <div className="col-6">
                   {/* {data.attendanceId || "--"} */}:{" "}
-                  {findEmployeeName(data.dailyAttendanceCmpId)}
+                  {findEmployeeName(data.dailyAttendanceName)}
                 </div>
               </div>
             </div>
