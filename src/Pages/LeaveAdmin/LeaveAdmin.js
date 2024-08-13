@@ -100,7 +100,7 @@ const LeaveAdmin = () => {
           {data.map((data, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
-              <td>{data.leaveRequestId}</td>
+              <td>{data.leaveReqEmpId}</td>
               <td>{data.firstName}</td>
               {/* <td>{data.department}</td> */}
               {/* <td>{data.leaveReqRemarks}</td> */}
