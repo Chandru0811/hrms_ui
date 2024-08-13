@@ -239,48 +239,6 @@ function EditNewBublicHoliday() {
                 <div className="col-lg-6 col-md-6 col-12">
                   <div className="text-start mt-2 mb-3">
                     <lable className="form-lable">
-                      Start Date<span className="text-danger">*</span>
-                    </lable>
-                    <input
-                      type="date"
-                      className={`form-control  ${
-                        formik.touched.startDate && formik.errors.startDate
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      {...formik.getFieldProps("startDate")}
-                    />
-                    {formik.touched.startDate && formik.errors.startDate && (
-                      <div className="invalid-feedback">
-                        {formik.errors.startDate}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="col-lg-6 col-md-6 col-12">
-                  <div className="text-start mt-2 mb-3">
-                    <lable className="form-lable">
-                      End Date<span className="text-danger">*</span>
-                    </lable>
-                    <input
-                      type="date"
-                      className={`form-control  ${
-                        formik.touched.endDate && formik.errors.endDate
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      {...formik.getFieldProps("endDate")}
-                    />
-                    {formik.touched.endDate && formik.errors.endDate && (
-                      <div className="invalid-feedback">
-                        {formik.errors.endDate}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="col-lg-6 col-md-6 col-12">
-                  <div className="text-start mt-2 mb-3">
-                    <lable className="form-lable">
                       Country<span className="text-danger">*</span>
                     </lable>
                     <select
@@ -304,6 +262,48 @@ function EditNewBublicHoliday() {
                       )}
                   </div>
                 </div>
+                <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <label className="form-label">
+                    Start Date<span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    className={`form-control  ${formik.touched.startDate && formik.errors.startDate ? "is-invalid" : ""
+                      }`}
+                    {...formik.getFieldProps("startDate")}
+                    onChange={(e) => {
+                      formik.setFieldValue("startDate", e.target.value);
+                      formik.setFieldValue("endDate", ""); // Reset endDate when startDate changes
+                    }}
+                  />
+                  {formik.touched.startDate && formik.errors.startDate && (
+                    <div className="invalid-feedback">
+                      {formik.errors.startDate}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <label className="form-label">
+                    End Date<span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    className={`form-control  ${formik.touched.endDate && formik.errors.endDate ? "is-invalid" : ""
+                      }`}
+                    {...formik.getFieldProps("endDate")}
+                    min={formik.values.startDate || ""}
+                  />
+                  {formik.touched.endDate && formik.errors.endDate && (
+                    <div className="invalid-feedback">
+                      {formik.errors.endDate}
+                    </div>
+                  )}
+                </div>
+              </div>
+               
                 <div className="col-lg-12 col-md-12 col-12">
                 <div className="text-start mt-2 mb-3">
                   <lable className="form-lable">

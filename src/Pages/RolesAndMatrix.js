@@ -577,15 +577,15 @@ function RolesAndMatrix() {
                           onChange={handleCheckboxChange(`leaveRead`)}
                         />
                       </td>
-                      {/* <td>
-                        <input
+                      <td>
+                        {/* <input
                           class="form-check-input"
                           type="checkbox"
                           name="leaveCreate"
                           checked={formik.values.leaveCreate}
                           onChange={handleCheckboxChange(`leaveCreate`)}
-                        />
-                      </td> */}
+                        /> */}
+                      </td>
                       <td>
                         <input
                           class="form-check-input"
@@ -595,15 +595,15 @@ function RolesAndMatrix() {
                           onChange={handleCheckboxChange(`leaveUpdate`)}
                         />
                       </td>
-                      {/* <td>
-                        <input
+                      <td>
+                        {/* <input
                           class="form-check-input"
                           type="checkbox"
                           name="leaveDelete"
                           checked={formik.values.leaveDelete}
                           onChange={handleCheckboxChange(`leaveDelete`)}
-                        />
-                      </td> */}
+                        /> */}
+                      </td>
                     </tr>
                     <tr>
                       <th colspan="6">Performance</th>
@@ -1014,15 +1014,15 @@ function RolesAndMatrix() {
                           onChange={handleCheckboxChange(`rolesAndMatrixRead`)}
                         />
                       </td>
-                      {/* <td>
-                        <input
+                      <td>
+                        {/* <input
                           class="form-check-input"
                           type="checkbox"
                           name="rolesAndMatrixCreate"
                           checked={formik.values.rolesAndMatrixCreate}
                           onChange={handleCheckboxChange(`rolesAndMatrixCreate`)}
-                        />
-                      </td> */}
+                        /> */}
+                      </td>
                       <td>
                         <input
                           class="form-check-input"
@@ -1032,15 +1032,15 @@ function RolesAndMatrix() {
                           onChange={handleCheckboxChange(`rolesAndMatrixUpdate`)}
                         />
                       </td>
-                      {/* <td>
-                        <input
+                      <td>
+                        {/* <input
                           class="form-check-input"
                           type="checkbox"
                           name="rolesAndMatrixDelete"
                           checked={formik.values.rolesAndMatrixDelete}
                           onChange={handleCheckboxChange(`rolesAndMatrixDelete`)}
-                        />
-                      </td> */}
+                        /> */}
+                      </td>
                     </tr>
 
 

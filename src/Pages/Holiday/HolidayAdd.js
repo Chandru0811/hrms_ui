@@ -58,7 +58,7 @@ function AddNewBublicHoliday() {
         }
       } catch (error) {
         toast.error("Error Submiting Data, ", error);
-      }finally {
+      } finally {
         setLoading(false);
       }
     },
@@ -78,20 +78,20 @@ function AddNewBublicHoliday() {
                 </Link>
                 &nbsp;&nbsp;
                 <button
-                    type="submit"
-                    className="btn btn-sm btn-button"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span></span>
-                    )}
-                    &nbsp;<span>Save</span>
-                  </button>
+                  type="submit"
+                  className="btn btn-sm btn-button"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    <span></span>
+                  )}
+                  &nbsp;<span>Save</span>
+                </button>
               </div>
             </div>
             <div className="row mt-3">
@@ -102,12 +102,11 @@ function AddNewBublicHoliday() {
                 <div className="input-group mb-3">
                   <select
                     {...formik.getFieldProps("pubHolidayCmpId")}
-                    className={`form-select  ${
-                      formik.touched.pubHolidayCmpId &&
-                      formik.errors.pubHolidayCmpId
+                    className={`form-select  ${formik.touched.pubHolidayCmpId &&
+                        formik.errors.pubHolidayCmpId
                         ? "is-invalid"
                         : ""
-                    }`}
+                      }`}
                     aria-label="Default select example"
                   >
                     <option selected></option>
@@ -134,12 +133,11 @@ function AddNewBublicHoliday() {
                   </lable>
                   <input
                     type="text"
-                    className={`form-control  ${
-                      formik.touched.pubHolidayName &&
-                      formik.errors.pubHolidayName
+                    className={`form-control  ${formik.touched.pubHolidayName &&
+                        formik.errors.pubHolidayName
                         ? "is-invalid"
                         : ""
-                    }`}
+                      }`}
                     {...formik.getFieldProps("pubHolidayName")}
                   />
                   {formik.touched.pubHolidayName &&
@@ -155,12 +153,11 @@ function AddNewBublicHoliday() {
                 <span className="text-danger">*</span>
                 <select
                   {...formik.getFieldProps("pubHolidayType")}
-                  className={`form-select    ${
-                    formik.touched.pubHolidayType &&
-                    formik.errors.pubHolidayType
+                  className={`form-select    ${formik.touched.pubHolidayType &&
+                      formik.errors.pubHolidayType
                       ? "is-invalid"
                       : ""
-                  }`}
+                    }`}
                   aria-label="Default select example"
                 >
                   <option selected></option>
@@ -182,57 +179,14 @@ function AddNewBublicHoliday() {
               <div className="col-lg-6 col-md-6 col-12">
                 <div className="text-start mt-2 mb-3">
                   <lable className="form-lable">
-                    Start Date<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="date"
-                    className={`form-control  ${
-                      formik.touched.startDate && formik.errors.startDate
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("startDate")}
-                  />
-                  {formik.touched.startDate && formik.errors.startDate && (
-                    <div className="invalid-feedback">
-                      {formik.errors.startDate}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                    End Date<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="date"
-                    className={`form-control  ${
-                      formik.touched.endDate && formik.errors.endDate
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("endDate")}
-                  />
-                  {formik.touched.endDate && formik.errors.endDate && (
-                    <div className="invalid-feedback">
-                      {formik.errors.endDate}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
                     Country<span className="text-danger">*</span>
                   </lable>
                   <select
-                    className={`form-select ${
-                      formik.touched.pubHolidayCountryCode &&
-                      formik.errors.pubHolidayCountryCode
+                    className={`form-select ${formik.touched.pubHolidayCountryCode &&
+                        formik.errors.pubHolidayCountryCode
                         ? "is-invalid"
                         : ""
-                    }`}
+                      }`}
                     {...formik.getFieldProps("pubHolidayCountryCode")}
                   >
                     <option></option>
@@ -247,6 +201,49 @@ function AddNewBublicHoliday() {
                     )}
                 </div>
               </div>
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <label className="form-label">
+                    Start Date<span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    className={`form-control  ${formik.touched.startDate && formik.errors.startDate ? "is-invalid" : ""
+                      }`}
+                    {...formik.getFieldProps("startDate")}
+                    onChange={(e) => {
+                      formik.setFieldValue("startDate", e.target.value);
+                      formik.setFieldValue("endDate", ""); // Reset endDate when startDate changes
+                    }}
+                  />
+                  {formik.touched.startDate && formik.errors.startDate && (
+                    <div className="invalid-feedback">
+                      {formik.errors.startDate}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <label className="form-label">
+                    End Date<span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    className={`form-control  ${formik.touched.endDate && formik.errors.endDate ? "is-invalid" : ""
+                      }`}
+                    {...formik.getFieldProps("endDate")}
+                    min={formik.values.startDate || ""}
+                  />
+                  {formik.touched.endDate && formik.errors.endDate && (
+                    <div className="invalid-feedback">
+                      {formik.errors.endDate}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+
               <div className="col-lg-12 col-md-12 col-12">
                 <div className="text-start mt-2 mb-3">
                   <lable className="form-lable">
@@ -255,11 +252,10 @@ function AddNewBublicHoliday() {
                   <textarea
                     type="text"
                     rows={5}
-                    className={`form-control  ${
-                      formik.touched.holidayDescription && formik.errors.holidayDescription
+                    className={`form-control  ${formik.touched.holidayDescription && formik.errors.holidayDescription
                         ? "is-invalid"
                         : ""
-                    }`}
+                      }`}
                     {...formik.getFieldProps("holidayDescription")}
                   />
                   {formik.touched.holidayDescription && formik.errors.holidayDescription && (

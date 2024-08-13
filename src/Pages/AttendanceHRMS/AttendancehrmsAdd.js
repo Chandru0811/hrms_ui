@@ -12,6 +12,8 @@ function AttendancehrmsAdd() {
   const [employeeData, setEmployeeData] = useState(null);  
   const [departmentData, setDepartmentData] = useState(null);
   // const [datas, setDatas] = useState([]);
+  const [attendanceStatus, setAttendanceStatus] = useState('');
+
   const [companyData, setCompanyData] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -30,6 +32,7 @@ function AttendancehrmsAdd() {
   useEffect(() => {
     fetchData();
   }, []);
+   
 
   const validationSchema = Yup.object({
     dailyAttendanceEmpId: Yup.string().required("*Employee name is required"),
@@ -63,7 +66,8 @@ function AttendancehrmsAdd() {
       attendanceOtEndtime: "",
       attendanceRemarks: "",
     },
-    // validationSchema: validationSchema,
+    
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
       const payload = {
         ...values,
@@ -232,182 +236,150 @@ function AttendancehrmsAdd() {
                   )}
               </div>
               <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">Attendance Status</lable>
-                <span className="text-danger">*</span>
-                <select
-                  className={`form-select ${
-                    formik.touched.attendanceStatus &&
-                    formik.errors.attendanceStatus
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceStatus")}
-                  aria-label="Default select example"
-                >
-                  <option selected></option>
-                  <option value="Present">Present</option>
-                  <option value="Absent">Absent</option>
-                </select>
-                {formik.touched.attendanceStatus &&
-                  formik.errors.attendanceStatus && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceStatus}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">Mode of Working</lable>
-                <span className="text-danger">*</span>
-                <select
-                  className={`form-select ${
-                    formik.touched.attendanceModeOfWorking &&
-                    formik.errors.attendanceModeOfWorking
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceModeOfWorking")}
-                  aria-label="Default select example"
-                >
-                  <option selected></option>
-                  <option value="Work From Home">Work From Home</option>
-                  <option value="Work From Office">Work From Office</option>
-                  <option value="Onsite">Onsite</option>
-                </select>
-                {formik.touched.attendanceModeOfWorking &&
-                  formik.errors.attendanceModeOfWorking && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceModeOfWorking}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">Check In</lable>
-                <span className="text-danger">*</span>
-                <input
-                  type="time"
-                  className={`form-control iconInput ${
-                    formik.touched.attendanceCheckInTime &&
-                    formik.errors.attendanceCheckInTime
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceCheckInTime")}
-                />
-                {formik.touched.attendanceCheckInTime &&
-                  formik.errors.attendanceCheckInTime && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceCheckInTime}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">Check Out</lable>
-                <span className="text-danger">*</span>
-                <input
-                  type="time"
-                  className={`form-control iconInput  ${
-                    formik.touched.attendanceCheckOutTime &&
-                    formik.errors.attendanceCheckOutTime
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceCheckOutTime")}
-                />
-                {formik.touched.attendanceCheckOutTime &&
-                  formik.errors.attendanceCheckOutTime && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceCheckOutTime}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">Check In Mode</lable>
-                <span className="text-danger">*</span>
-                <select
-                  className={`form-select ${
-                    formik.touched.attendanceCheckInMode &&
-                    formik.errors.attendanceCheckInMode
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceCheckInMode")}
-                  aria-label="Default select example"
-                >
-                  <option selected></option>
-                  <option value="Tap In">Tap In</option>
-                  <option value="Face Recognition">Face Recognition</option>
-                </select>
-                {formik.touched.attendanceCheckInMode &&
-                  formik.errors.attendanceCheckInMode && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceCheckInMode}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">Check Out Mode</lable>
-                <span className="text-danger">*</span>
-                <select
-                  className={`form-select ${
-                    formik.touched.attendanceCheckOutMode &&
-                    formik.errors.attendanceCheckOutMode
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceCheckOutMode")}
-                  aria-label="Default select example"
-                >
-                  <option selected></option>
-                  <option value="Tap Out">Tap Out</option>
-                  <option value="Face Recognition">Face Recognition</option>
-                </select>
-                {formik.touched.attendanceCheckOutMode &&
-                  formik.errors.attendanceCheckOutMode && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceCheckOutMode}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">OT Start Time</lable>
-                <span className="text-danger">*</span>
-                <input
-                  type="time"
-                  className={`form-control iconInput ${
-                    formik.touched.attendanceOtStarttime &&
-                    formik.errors.attendanceOtStarttime
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceOtStarttime")}
-                />
-                {formik.touched.attendanceOtStarttime &&
-                  formik.errors.attendanceOtStarttime && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceOtStarttime}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">OT End Time</lable>
-                <span className="text-danger">*</span>
-                <input
-                  type="time"
-                  className={`form-control iconInput  ${
-                    formik.touched.attendanceOtEndtime &&
-                    formik.errors.attendanceOtEndtime
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceOtEndtime")}
-                />
-                {formik.touched.attendanceOtEndtime &&
-                  formik.errors.attendanceOtEndtime && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceOtEndtime}
-                    </div>
-                  )}
-              </div>
+        <label className="">Attendance Status</label>
+        <span className="text-danger">*</span>
+        <select
+          className={`form-select ${
+            formik.touched.attendanceStatus && formik.errors.attendanceStatus ? 'is-invalid' : ''
+          }`}
+          {...formik.getFieldProps('attendanceStatus')}
+          aria-label="Default select example"
+          onChange={e => {
+            formik.handleChange(e);
+            setAttendanceStatus(e.target.value);
+          }}
+          value={attendanceStatus}
+        >
+          <option value="">Select</option>
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+        </select>
+        {formik.touched.attendanceStatus && formik.errors.attendanceStatus && (
+          <div className="invalid-feedback">{formik.errors.attendanceStatus}</div>
+        )}
+      </div>
+
+      {attendanceStatus === 'Present' && (
+        <>
+          <div className="col-md-6 col-12 mb-3 ">
+            <label className="">Mode of Working</label>
+            <span className="text-danger">*</span>
+            <select
+              className={`form-select ${
+                formik.touched.attendanceModeOfWorking && formik.errors.attendanceModeOfWorking ? 'is-invalid' : ''
+              }`}
+              {...formik.getFieldProps('attendanceModeOfWorking')}
+              aria-label="Default select example"
+            >
+              <option value="">Select</option>
+              <option value="Work From Home">Work From Home</option>
+              <option value="Work From Office">Work From Office</option>
+              <option value="Onsite">Onsite</option>
+            </select>
+            {formik.touched.attendanceModeOfWorking && formik.errors.attendanceModeOfWorking && (
+              <div className="invalid-feedback">{formik.errors.attendanceModeOfWorking}</div>
+            )}
+          </div>
+
+          <div className="col-md-6 col-12 mb-3 ">
+            <label className="">Check In</label>
+            <span className="text-danger">*</span>
+            <input
+              type="time"
+              className={`form-control iconInput ${
+                formik.touched.attendanceCheckInTime && formik.errors.attendanceCheckInTime ? 'is-invalid' : ''
+              }`}
+              {...formik.getFieldProps('attendanceCheckInTime')}
+            />
+            {formik.touched.attendanceCheckInTime && formik.errors.attendanceCheckInTime && (
+              <div className="invalid-feedback">{formik.errors.attendanceCheckInTime}</div>
+            )}
+          </div>
+
+          <div className="col-md-6 col-12 mb-3 ">
+            <label className="">Check Out</label>
+            <span className="text-danger">*</span>
+            <input
+              type="time"
+              className={`form-control iconInput ${
+                formik.touched.attendanceCheckOutTime && formik.errors.attendanceCheckOutTime ? 'is-invalid' : ''
+              }`}
+              {...formik.getFieldProps('attendanceCheckOutTime')}
+            />
+            {formik.touched.attendanceCheckOutTime && formik.errors.attendanceCheckOutTime && (
+              <div className="invalid-feedback">{formik.errors.attendanceCheckOutTime}</div>
+            )}
+          </div>
+
+          <div className="col-md-6 col-12 mb-3 ">
+            <label className="">Check In Mode</label>
+            <span className="text-danger">*</span>
+            <select
+              className={`form-select ${
+                formik.touched.attendanceCheckInMode && formik.errors.attendanceCheckInMode ? 'is-invalid' : ''
+              }`}
+              {...formik.getFieldProps('attendanceCheckInMode')}
+              aria-label="Default select example"
+            >
+              <option value="">Select</option>
+              <option value="Tap In">Tap In</option>
+              <option value="Face Recognition">Face Recognition</option>
+            </select>
+            {formik.touched.attendanceCheckInMode && formik.errors.attendanceCheckInMode && (
+              <div className="invalid-feedback">{formik.errors.attendanceCheckInMode}</div>
+            )}
+          </div>
+
+          <div className="col-md-6 col-12 mb-3 ">
+            <label className="">Check Out Mode</label>
+            <span className="text-danger">*</span>
+            <select
+              className={`form-select ${
+                formik.touched.attendanceCheckOutMode && formik.errors.attendanceCheckOutMode ? 'is-invalid' : ''
+              }`}
+              {...formik.getFieldProps('attendanceCheckOutMode')}
+              aria-label="Default select example"
+            >
+              <option value="">Select</option>
+              <option value="Tap Out">Tap Out</option>
+              <option value="Face Recognition">Face Recognition</option>
+            </select>
+            {formik.touched.attendanceCheckOutMode && formik.errors.attendanceCheckOutMode && (
+              <div className="invalid-feedback">{formik.errors.attendanceCheckOutMode}</div>
+            )}
+          </div>
+
+          <div className="col-md-6 col-12 mb-3 ">
+            <label className="">OT Start Time</label>
+            <span className="text-danger">*</span>
+            <input
+              type="time"
+              className={`form-control iconInput ${
+                formik.touched.attendanceOtStarttime && formik.errors.attendanceOtStarttime ? 'is-invalid' : ''
+              }`}
+              {...formik.getFieldProps('attendanceOtStarttime')}
+            />
+            {formik.touched.attendanceOtStarttime && formik.errors.attendanceOtStarttime && (
+              <div className="invalid-feedback">{formik.errors.attendanceOtStarttime}</div>
+            )}
+          </div>
+
+          <div className="col-md-6 col-12 mb-3 ">
+            <label className="">OT End Time</label>
+            <span className="text-danger">*</span>
+            <input
+              type="time"
+              className={`form-control iconInput ${
+                formik.touched.attendanceOtEndtime && formik.errors.attendanceOtEndtime ? 'is-invalid' : ''
+              }`}
+              {...formik.getFieldProps('attendanceOtEndtime')}
+            />
+            {formik.touched.attendanceOtEndtime && formik.errors.attendanceOtEndtime && (
+              <div className="invalid-feedback">{formik.errors.attendanceOtEndtime}</div>
+            )}
+          </div>
+        </>
+      )}
               <div className="col-md-6 col-12">
               <div className="text-start mt-2">
                 <lable className="form-lable">Attendance Remark</lable>
