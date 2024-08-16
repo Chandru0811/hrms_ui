@@ -11,12 +11,13 @@ import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 function AttendancehrmsAdd() {
   const [employeeData, setEmployeeData] = useState(null);  
   const [departmentData, setDepartmentData] = useState(null);
-  // const [datas, setDatas] = useState([]);
   const [attendanceStatus, setAttendanceStatus] = useState('');
+  const currentDate = new Date().toISOString().split("T")[0];
 
   const [companyData, setCompanyData] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
   const fetchData = async () => {
     try {
       const companyData = await fetchAllCompanyNamesWithId();
@@ -26,36 +27,39 @@ function AttendancehrmsAdd() {
       setEmployeeData(employeeData);
       setDepartmentData(departmentData);
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
-   
 
-  const validationSchema = Yup.object({
-    dailyAttendanceEmpId: Yup.string().required("*Employee name is required"),
-    attendanceDate: Yup.string().required("*Date is required"),
-    attendanceStatus: Yup.string().required("*Attendance status is required"),
-    attendanceModeOfWorking: Yup.string().required("*Mode of working is required"),
-    attendanceCheckInTime: Yup.string().required("*Check-in is required"),
-    attendanceCheckOutTime: Yup.string().required("*Check-out is required"),
-    attendanceCheckInMode: Yup.string().required("*Check-in mode is required"),
-    attendanceCheckOutMode: Yup.string().required(
-      "*Check-out mode is required"
-    ),
-    attendanceOtStarttime: Yup.string().required("*OT start time is required"),
-    attendanceOtEndtime: Yup.string().required("*OT end time is required"),
-  });
+  const getValidationSchema = (status) => {
+    return Yup.object({
+      dailyAttendanceEmpId: Yup.string().required("*Employee name is required"),
+      attendanceDate: Yup.string().required("*Date is required"),
+      attendanceStatus: Yup.string().required("*Attendance status is required"),
+      attendanceRemarks: Yup.string(), // Optional field for remarks
+      ...(status === "Present" && {
+        attendanceModeOfWorking: Yup.string().required("*Mode of working is required"),
+        attendanceCheckInTime: Yup.string().required("*Check-in is required"),
+        attendanceCheckOutTime: Yup.string().required("*Check-out is required"),
+        attendanceCheckInMode: Yup.string().required("*Check-in mode is required"),
+        attendanceCheckOutMode: Yup.string().required("*Check-out mode is required"),
+        attendanceOtStarttime: Yup.string().required("*OT start time is required"),
+        attendanceOtEndtime: Yup.string().required("*OT end time is required"),
+      }),
+    });
+  };
+
   const formik = useFormik({
     initialValues: {
-      attendanceId:1,
+      attendanceId: 1,
       dailyAttendanceEmpId: "",
       dailyAttendanceCmpId: "",
       dailyAttendanceDptId: "",
-      // employeeName: "",
-      attendanceDate: "",
+      attendanceDate: currentDate,
       attendanceStatus: "",
       attendanceShiftMode: "",
       attendanceCheckInTime: "",
@@ -66,37 +70,49 @@ function AttendancehrmsAdd() {
       attendanceOtEndtime: "",
       attendanceRemarks: "",
     },
-    
-    validationSchema: validationSchema,
+    validationSchema: getValidationSchema(attendanceStatus),
+    enableReinitialize: true, // Reinitialize the form whenever the validation schema changes
     onSubmit: async (values) => {
-      const payload = {
-        ...values,
-        attendanceCheckInTime: `2024-05-05T${values.attendanceCheckInTime}`,
-        attendanceCheckOutTime: `2024-05-05T${values.attendanceCheckOutTime}`,
-        attendanceOtStarttime: `2024-05-05T${values.attendanceOtStarttime}`,
-        attendanceOtEndtime: `2024-05-05T${values.attendanceOtEndtime}`,
-      };
-      console.log("object", payload.attendanceCheckInTime);
+      let payload = { ...values };
+
+      if (values.attendanceStatus === "Absent") {
+        // Clear attendance details if the status is 'Absent'
+        payload = {
+          ...values,
+          attendanceCheckInTime: null,
+          attendanceCheckOutTime: null,
+          attendanceCheckInMode: null,
+          attendanceCheckOutMode: null,
+          attendanceOtStarttime: null,
+          attendanceOtEndtime: null,
+        };
+      } else {
+        payload = {
+          ...values,
+          attendanceCheckInTime: `2024-05-05T${values.attendanceCheckInTime}`,
+          attendanceCheckOutTime: `2024-05-05T${values.attendanceCheckOutTime}`,
+          attendanceOtStarttime: `2024-05-05T${values.attendanceOtStarttime}`,
+          attendanceOtEndtime: `2024-05-05T${values.attendanceOtEndtime}`,
+        };
+      }
+
       try {
         setLoading(true);
         const response = await api.post(`/addDailyAttendance`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            //Authorization: `Bearer ${token}`,
-          },
+          headers: { "Content-Type": "application/json" },
         });
         if (response.status === 201) {
           toast.success(response.data.message);
           navigate("/attendancehrms");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error submitting data:", error);
       } finally {
         setLoading(false);
       }
-      console.log(values);
     },
   });
+
   return (
     <section className="AttendanceAdd p-3">
       <div className="container-fluid">
@@ -214,27 +230,24 @@ function AttendancehrmsAdd() {
                     )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <lable className="">Attendance Date</lable>
-                <span className="text-danger">*</span>
-                <input
-                  type="date"
-                  className={`form-control iconInput  
-                  ${
-                    formik.touched.attendanceDate &&
-                    formik.errors.attendanceDate
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("attendanceDate")}
-                />
-                {formik.touched.attendanceDate &&
-                  formik.errors.attendanceDate && (
-                    <div className="invalid-feedback">
-                      {formik.errors.attendanceDate}
-                    </div>
-                  )}
-              </div>
+             <div className="col-md-6 col-12 mb-3 ">
+        <label className="">Attendance Date</label>
+        <span className="text-danger">*</span>
+        <input
+          type="date"
+          className={`form-control iconInput ${
+            formik.touched.attendanceDate && formik.errors.attendanceDate
+              ? "is-invalid"
+              : ""
+          }`}
+          {...formik.getFieldProps("attendanceDate")}
+        />
+        {formik.touched.attendanceDate && formik.errors.attendanceDate && (
+          <div className="invalid-feedback">
+            {formik.errors.attendanceDate}
+          </div>
+        )}
+      </div>
               <div className="col-md-6 col-12 mb-3 ">
         <label className="">Attendance Status</label>
         <span className="text-danger">*</span>

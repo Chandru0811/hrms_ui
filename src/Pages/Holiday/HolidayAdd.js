@@ -9,6 +9,8 @@ import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 function AddNewBublicHoliday() {
   const [companyData, setCompanyData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const currentDate = new Date().toISOString().split("T")[0];
+
   const fetchData = async () => {
     try {
       const companyData = await fetchAllCompanyNamesWithId();
@@ -39,7 +41,7 @@ function AddNewBublicHoliday() {
       // cmpId: "",
       pubHolidayName: "",
       pubHolidayType: "",
-      startDate: "",
+      startDate:currentDate,
       endDate: "",
       pubHolidayCountryCode: "",
     },
