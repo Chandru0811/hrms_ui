@@ -32,8 +32,8 @@ const Compliance = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllCompanyCompliance");
-        setDatas(response.data);
+        const response = await api.get("company-compliance");
+        setDatas(response.data); 
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data ", error);
@@ -71,7 +71,7 @@ const Compliance = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllCompanyCompliance");
+      const response = await api.get("company-compliance");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -114,19 +114,9 @@ const Compliance = () => {
               {datas.map((data, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  {/* <td>
-                    {" "}
-                    {companyData &&
-                      companyData.map((company) =>
-                        parseInt(data.compComplianceCmpId) === company.cmpId
-                          ? company.cmpName || "--"
-                          : ""
-                      )}
-                  </td> */}
                   <td>{data.cmpName}</td>
                   <td>{data.compComplianceDesignationName}</td>
                   <td>{data.compComplianceDesignationCategory}</td>
-                  {/* <td>{data.compComplianceLeaveLimit}</td> */}
                   <td>
                     {data.compComplianceSalaryDay &&
                       data.compComplianceSalaryDay
@@ -149,7 +139,7 @@ const Compliance = () => {
                       </Link>
                       <Delete
                         onSuccess={refreshData}
-                        path={`/deleteCompanyComplianceInfoById/${data.compComplianceId}`}
+                        path={`/company-compliance/${data.compComplianceId}`}
                       />
                     </div>
                   </td>

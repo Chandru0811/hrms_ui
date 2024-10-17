@@ -16,8 +16,7 @@ function ExpensesEdit() {
   const [showReasonSelect, setShowReasonSelect] = useState(false);
   const [showSubjectDescription, setShowSubjectDescription] = useState(false);
   const navigate = useNavigate();
-  const {id} =useParams()
-
+  const { id } = useParams();
 
   const fetchData = async () => {
     try {
@@ -41,37 +40,31 @@ function ExpensesEdit() {
       .required("*Expense amount is required")
       .typeError("*Must be a number"),
     attachment: Yup.string().required("*Attachment is required"),
-    // employeeId: Yup.string().required("*Employe id is required"),
-    employeeId: Yup.string().required("*Employee name is required"),
-    // companyId: Yup.string().required("*Company id is required"),
+    expensesEmpId: Yup.string().required("*Employee name is required"),
     cmpId: Yup.string().required("*Company name is required"),
-    // approvalId: Yup.string().required("*Approver id is required"),
-    // approvalName: Yup.string().required("*Approver name is required"),
     status: Yup.string().required("*Select the status"),
-    reason: Yup.string().required("*Select the reason"),
-    // subject: Yup.string().required("*Subject is required"),
-    // description: Yup.string().required("*Description is required"),
+    // reason: Yup.string().required("*Select the reason"),
   });
 
   const formik = useFormik({
     initialValues: {
-      expensesId:1,
+      expensesId: "",
       expenseDate: "",
-      attachment:null,
+      attachment: null,
       expenseType: "",
       expenseAmt: "",
-      employeeId: "",
+      expensesEmpId: "",
       cmpId: "",
       approvalId: "",
       approvalName: "",
-      status: "",
+      status: "REJECTED",
       reason: "",
       subject: "",
       description: "",
-      remarks: "",
+      expenseDetails: "",
     },
-    // validationSchema: validationSchema,
-    onSubmit: async(values) => {
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
       console.log(values);
       setLoading(true);
       const formData = new FormData();
@@ -79,15 +72,15 @@ function ExpensesEdit() {
       formData.append("files", values.attachment);
       formData.append("expenseType", values.expenseType);
       formData.append("expenseAmt", values.expenseAmt);
-      formData.append("expenseDetails", values.remarks);
+      formData.append("expenseDetails", values.expenseDetails);
       formData.append("expenseDate", values.expenseDate);
       formData.append("approverStatus", values.status);
       formData.append("approverName", values.approvalName);
-      formData.append("expensesEmpId", values.employeeId);
+      formData.append("expensesEmpId", values.expensesEmpId);
       formData.append("cmpId", values.cmpId);
-      
+
       try {
-        const response = await api.put(`/updateExpensesById/${id}`, formData, {
+        const response = await api.put(`/expenses/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -105,7 +98,6 @@ function ExpensesEdit() {
       }
     },
   });
- 
 
   // const handleStatusChange = (e) => {
   //   setStatus(e.target.value);
@@ -130,12 +122,12 @@ function ExpensesEdit() {
       formik.setFieldValue("description", "");
     }
   };
+
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getExpensesById/${id}`);
+        const response = await api.get(`/expenses/${id}`);
         formik.setValues(response.data);
-        
       } catch (error) {
         toast.error("Error Fetching Data ", error.message);
       }
@@ -157,20 +149,20 @@ function ExpensesEdit() {
               </Link>
               &nbsp;&nbsp;
               <button
-                    type="submit"
-                    className="btn btn-sm btn-button"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span></span>
-                    )}
-                    &nbsp;<span>Update</span>
-                  </button>
+                type="submit"
+                className="btn btn-sm btn-button"
+                disabled={loading}
+              >
+                {loading ? (
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    aria-hidden="true"
+                  ></span>
+                ) : (
+                  <span></span>
+                )}
+                &nbsp;<span>Update</span>
+              </button>
             </div>
           </div>
           <div className="row mt-3">
@@ -183,23 +175,23 @@ function ExpensesEdit() {
                   type="text"
                   placeholder="ECS01"
                   className={`form-control  ${
-                    formik.touched.employeeId && formik.errors.employeeId
+                    formik.touched.expensesEmpId && formik.errors.expensesEmpId
                       ? "is-invalid"
                       : ""
                   }`}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("employeeId")}
+                  {...formik.getFieldProps("expensesEmpId")}
                   disabled
                 />
-                {formik.touched.employeeId && formik.errors.employeeId && (
+                {formik.touched.expensesEmpId && formik.errors.expensesEmpId && (
                   <div className="invalid-feedback">
-                    {formik.errors.employeeId}
+                    {formik.errors.expensesEmpId}
                   </div>
                 )}
               </div>
             </div> */}
-             <div className="col-md-6 col-12 mb-2">
+            <div className="col-md-6 col-12 mb-2">
               <lable className="form-lable">
                 Company Name<span className="text-danger">*</span>
               </lable>
@@ -232,9 +224,9 @@ function ExpensesEdit() {
               </lable>
               <div className="input-group mb-3">
                 <select
-                  {...formik.getFieldProps("employeeId")}
+                  {...formik.getFieldProps("expensesEmpId")}
                   className={`form-select  ${
-                    formik.touched.employeeId && formik.errors.employeeId
+                    formik.touched.expensesEmpId && formik.errors.expensesEmpId
                       ? "is-invalid"
                       : ""
                   }`}
@@ -242,15 +234,15 @@ function ExpensesEdit() {
                 >
                   <option selected></option>
                   {employeeData &&
-                    employeeData.map((employeeId) => (
-                      <option key={employeeId.id} value={employeeId.id}>
-                        {employeeId.firstName} {employeeId.lastName}
+                    employeeData.map((expensesEmpId) => (
+                      <option key={expensesEmpId.id} value={expensesEmpId.id}>
+                        {expensesEmpId.firstName} {expensesEmpId.lastName}
                       </option>
                     ))}
                 </select>
-                {formik.touched.employeeId && formik.errors.employeeId && (
+                {formik.touched.expensesEmpId && formik.errors.expensesEmpId && (
                   <div className="invalid-feedback">
-                    {formik.errors.employeeId}
+                    {formik.errors.expensesEmpId}
                   </div>
                 )}
               </div>
@@ -280,7 +272,7 @@ function ExpensesEdit() {
                 )}
               </div>
             </div> */}
-           
+
             <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">
@@ -320,7 +312,7 @@ function ExpensesEdit() {
                   }`}
                   disabled
                 />
-                 {formik.touched.expenseType && formik.errors.expenseType && (
+                {formik.touched.expenseType && formik.errors.expenseType && (
                   <div className="invalid-feedback">
                     {formik.errors.expenseType}
                   </div>
@@ -345,12 +337,11 @@ function ExpensesEdit() {
                   {...formik.getFieldProps("expenseAmt")}
                   disabled
                 />
-                {formik.touched.expenseAmt &&
-                  formik.errors.expenseAmt && (
-                    <div className="invalid-feedback">
-                      {formik.errors.expenseAmt}
-                    </div>
-                  )}
+                {formik.touched.expenseAmt && formik.errors.expenseAmt && (
+                  <div className="invalid-feedback">
+                    {formik.errors.expenseAmt}
+                  </div>
+                )}
               </div>
             </div>
             <div className="col-md-6 col-12">
@@ -440,9 +431,10 @@ function ExpensesEdit() {
                 aria-label="Default select example"
               >
                 <option selected></option>
+                <option value="REJECTED">Rejected</option>
                 <option value="PENDING">Pending</option>
                 <option value="APPROVED">Approved</option>
-                <option value="REJECTED">Rejected</option>
+               
               </select>
               {formik.touched.status && formik.errors.status && (
                 <div className="invalid-feedback">{formik.errors.status}</div>
@@ -472,57 +464,15 @@ function ExpensesEdit() {
                 )}
               </div>
             )}
-            {/* {showSubjectDescription && (
-              <>
-                <div className="col-md-6 col-12 mb-4">
-                  <lable className="form-lable fw-medium">Subject</lable>
-                  <span className="text-danger ">*</span>
-                  <input
-                    type="text"
-                    className={`form-control  ${
-                      formik.touched.subject && formik.errors.subject
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                    {...formik.getFieldProps("subject")}
-                  />
-                  {formik.touched.subject && formik.errors.subject && (
-                    <div className="invalid-feedback">
-                      {formik.errors.subject}
-                    </div>
-                  )}
-                </div>
-                <div className="col-md-6 col-12 mb-4">
-                  <lable className="form-lable fw-medium">Description</lable>
-                  <span className="text-danger ">*</span>
-                  <textarea
-                    id="floatingTextarea2"
-                    style={{ height: "100px" }}
-                    className={`form-control  ${
-                      formik.touched.description && formik.errors.description
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("description")}
-                  ></textarea>
-                  {formik.touched.description && formik.errors.description && (
-                    <div className="invalid-feedback">
-                      {formik.errors.description}
-                    </div>
-                  )}
-                </div>
-              </>
-            )} */}
             <div className="col-md-6 col-12 mb-4">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">Remarks</lable>
                 <textarea
-                  id="floatingTextarea2"
+                  id="expenseDetails"
+                  name="expenseDetails"
                   style={{ height: "100px" }}
                   className="form-control"
-                  {...formik.getFieldProps("remarks")}
+                  {...formik.getFieldProps("expenseDetails")}
                 ></textarea>
               </div>
             </div>

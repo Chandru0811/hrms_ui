@@ -27,7 +27,7 @@ function PolicyAdd() {
       // values.hrPolicyCmpId = 106;
       setLoading(true);
       try {
-        const response = await api.post("addHRPolicy", values);
+        const response = await api.post("hR-policy", values);
         // console.log(response)
         if (response.status === 201) {
           toast.success(response.data.message);

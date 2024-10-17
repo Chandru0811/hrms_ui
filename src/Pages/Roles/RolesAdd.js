@@ -38,7 +38,7 @@ function RolesAdd() {
       
       try {
         setLoading(true);
-        const response = await api.post(`/addRoles`, values, {
+        const response = await api.post(`/roles`, values, {
           headers: {
             "Content-Type": "application/json",
             //Authorization: `Bearer ${token}`,

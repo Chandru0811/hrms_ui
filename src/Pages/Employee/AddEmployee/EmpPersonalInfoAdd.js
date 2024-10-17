@@ -111,7 +111,7 @@ const EmpPersonalInfoAdd = forwardRef(
     useEffect(() => {
       const getData = async () => {
         try {
-          const response = await api.get(`getEmployeeRegDetailsById/${formData.empId}`);
+          const response = await api.get(`emp-reg-details-by-companyId/${formData.empId}`);
           formik.setValues(response.data);
           console.log("Employee response", response.data)
           setEmployeeProfile(response.data.files);

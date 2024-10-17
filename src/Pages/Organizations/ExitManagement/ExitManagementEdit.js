@@ -66,7 +66,7 @@ function ExitManagementEdit() {
       // console.log(values);
       try {
         const response = await api.put(
-          `updateExitManagementById/${id}`,
+          `exit-management/${id}`,
           values,
           {
             headers: {

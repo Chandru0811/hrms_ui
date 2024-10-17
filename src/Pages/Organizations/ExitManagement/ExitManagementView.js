@@ -53,7 +53,7 @@ function ExitManagementView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getExitManagementById/${id}`);
+        const response = await api.get(`exit-management/${id}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {

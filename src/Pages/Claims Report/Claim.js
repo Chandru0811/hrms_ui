@@ -25,7 +25,7 @@ const Claim = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllClaims");
+        const response = await api.get("claims");
         setDatas(response.data);
         setLoading(false);
       } catch (error) {
@@ -64,7 +64,7 @@ const Claim = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllClaims");
+      const response = await api.get("claims");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -157,7 +157,7 @@ const Claim = () => {
                       )}
                       {(userRole === "Super Admin" || userRole === "Admin") && (
                         <Delete
-                          path={`/deleteClaimsById/${data.claimsId}`}
+                          path={`/claims/${data.claimsId}`}
                           onSuccess={refreshData}
                         />
                       )}

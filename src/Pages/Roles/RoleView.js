@@ -32,7 +32,7 @@ function RoleView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getRolesById/${id}`);
+        const response = await api.get(`/roles/${id}`);
         setData(response.data);
       } catch (error) {
         toast.error("Error Fetching Data", error);

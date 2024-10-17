@@ -13,7 +13,7 @@ export default function ExpensesView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getExpensesById/${id}`);
+        const response = await api.get(`expenses/${id}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {

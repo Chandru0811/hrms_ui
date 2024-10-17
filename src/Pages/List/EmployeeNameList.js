@@ -3,10 +3,10 @@ import api from "../../config/URL";
 
 const fetchAllEmployeeNamesWithId = async () => {
   try {
-    const response = await api.get("getAllEmployeeNamesWithId");
+    const response = await api.get("emp-reg-details-with-id");
     return response.data;
   } catch (error) {
-    toast.error("Error fetching Department data:", error);
+    toast.error(error);
     throw error;
   }
 };

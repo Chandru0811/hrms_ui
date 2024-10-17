@@ -17,7 +17,7 @@ const Policy = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllHRPolicy");
+        const response = await api.get("hR-policy");
         setDatas(response.data);
         setLoading(false);
       } catch (error) {
@@ -57,7 +57,7 @@ const Policy = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllHRPolicy");
+      const response = await api.get("hR-policy");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -116,7 +116,7 @@ const Policy = () => {
                       {(userRole === "Admin" || userRole === "Super Admin") && (
                         <Delete
                           onSuccess={refreshData}
-                          path={`/deleteHRPolicyById/${data.hrPolicyId}`}
+                          path={`/hR-policy/${data.hrPolicyId}`}
                         />
                       )}
                     </div>

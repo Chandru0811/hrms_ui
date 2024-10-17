@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 function Header({ onLogout }) {
   const userName = sessionStorage.getItem("userName");
+  const empId = sessionStorage.getItem("empId");
+
 
   // console.log(userName);
   const handelLogOutClick = () => {
@@ -30,7 +32,7 @@ function Header({ onLogout }) {
                 <div>
                   <li style={{ cursor: "pointer" }} className="text-center">
                     <Link
-                      to="/employee/view"
+                      to={`/employee/view/${empId}`}
                       style={{ textDecoration: "none", color: "#424242" }}
                     >
                       Account

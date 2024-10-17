@@ -50,7 +50,7 @@ function AddNewBublicHoliday() {
       console.log("add", values);
       setLoading(true);
       try {
-        const response = await api.post("addPublicHolidays", values);
+        const response = await api.post("public-holidays", values);
         // console.log(response)
         if (response.status === 201) {
           toast.success(response.data.message);

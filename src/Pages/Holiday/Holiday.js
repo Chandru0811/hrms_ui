@@ -36,7 +36,7 @@ const Holiday = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllPublicHolidayWithId");
+        const response = await api.get("public-holidays");
         setDatas(response.data);
         setLoading(false);
       } catch (error) {
@@ -76,7 +76,7 @@ const Holiday = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllPublicHolidayWithId");
+      const response = await api.get("public-holidays");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -163,7 +163,7 @@ const Holiday = () => {
                           </Link>
                           <Delete
                             onSuccess={refreshData}
-                            path={`/deletePublicHolidaysById/${data.pubHolidayId}`}
+                            path={`/public-holidays/${data.pubHolidayId}`}
                           />
                         </span>
                       )}

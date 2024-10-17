@@ -118,7 +118,7 @@ function EmployeeAdminAdd() {
         formData.append("roleName", roleName);
         // formData.append("reportingManagerID", values.reportingManagerID);
 
-        const response = await api.post("/addEmployeeReg", formData);
+        const response = await api.post("/emp-reg-details", formData);
         if (response.status === 201) {
           toast.success(response.data.message);
           navigate("/employeeadmin");

@@ -6,11 +6,9 @@ import api from "../../config/URL";
 import { toast } from "react-toastify";
 
 function EditCompanyRegistration() {
-
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
 
   const validationSchema = Yup.object({
     cmpName: Yup.string().required("*Company name is required"),
@@ -20,12 +18,10 @@ function EditCompanyRegistration() {
       .required("*Company pincode is required")
       .typeError("*Must be a number"),
     cmpEmail: Yup.string().required("*Company email is required"),
-    cmpPhNumber: Yup.number()
-      .required("*Company phone number is required")
-      .typeError("*Must be a number"),
-    cmpRegNumber: Yup.number()
-      .required("*Company registeration number is required")
-      .typeError("*Must be a number"),
+    cmpPhNumber: Yup.string()
+      .matches(/^\d{7}$|^\d{10}$/, "Phone number must be either 7 or 10 digits")
+      .required("*Phone is required"),
+    cmpRegNumber: Yup.string().required("*Company Registration Number is required"),
     cmpTaxCode: Yup.string().required("*Company tax code is required"),
   });
 
@@ -43,17 +39,13 @@ function EditCompanyRegistration() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
-     setLoading(true);
+      setLoading(true);
       try {
-        const response = await api.put(
-          `updateCompanyRegById/${id}`,
-          values,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await api.put(`company-reg/${id}`, values, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (response.status === 200) {
           toast.success(response.data.message);
           navigate("/companyregisteration");
@@ -62,7 +54,7 @@ function EditCompanyRegistration() {
         }
       } catch (error) {
         toast.error(error);
-      }finally{
+      } finally {
         setLoading(false);
       }
     },
@@ -71,11 +63,11 @@ function EditCompanyRegistration() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getCompanyRegById/${id}`);
-       if(response.status === 200 ){
-         formik.setValues(response.data);
-         setLoading(false);
-       }
+        const response = await api.get(`/company-reg/${id}`);
+        if (response.status === 200) {
+          formik.setValues(response.data);
+          setLoading(false);
+        }
       } catch (error) {
         toast.error("Error Fetching Data ", error);
       }
@@ -83,9 +75,6 @@ function EditCompanyRegistration() {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-    
-  
 
   return (
     <section className="HolidayAdd p-3">
@@ -101,20 +90,20 @@ function EditCompanyRegistration() {
                 </Link>
                 &nbsp;&nbsp;
                 <button
-                    type="submit"
-                    className="btn btn-sm btn-button"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span></span>
-                    )}
-                    &nbsp;<span>Update</span>
-                  </button>
+                  type="submit"
+                  className="btn btn-sm btn-button"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    <span></span>
+                  )}
+                  &nbsp;<span>Update</span>
+                </button>
               </div>
             </div>
             <div className="row mt-3">
@@ -140,26 +129,69 @@ function EditCompanyRegistration() {
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2">
-                  <lable className="form-lable">Company Address</lable>
-                  <span className="text-danger">*</span>
-                  <textarea
-                    id="floatingTextarea2"
-                    style={{ height: "100px" }}
+                <div className="text-start mt-2 mb-3">
+                  <lable className="form-lable">
+                    Company Registration Number
+                    <span className="text-danger">*</span>
+                  </lable>
+                  <input
+                    type="text"
                     className={`form-control  ${
-                      formik.touched.cmpAddr &&
-                      formik.errors.cmpAddr
+                      formik.touched.cmpRegNumber && formik.errors.cmpRegNumber
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("cmpAddr")}
-                  ></textarea>
-                  {formik.touched.cmpAddr &&
-                    formik.errors.cmpAddr && (
+                    {...formik.getFieldProps("cmpRegNumber")}
+                  />
+                  {formik.touched.cmpRegNumber &&
+                    formik.errors.cmpRegNumber && (
                       <div className="invalid-feedback">
-                        {formik.errors.cmpAddr}
+                        {formik.errors.cmpRegNumber}
                       </div>
                     )}
+                </div>
+              </div>
+
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <lable className="form-lable">
+                    Company Email<span className="text-danger">*</span>
+                  </lable>
+                  <input
+                    type="email"
+                    className={`form-control  ${
+                      formik.touched.cmpEmail && formik.errors.cmpEmail
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("cmpEmail")}
+                  />
+                  {formik.touched.cmpEmail && formik.errors.cmpEmail && (
+                    <div className="invalid-feedback">
+                      {formik.errors.cmpEmail}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="text-start mt-2 mb-3">
+                  <lable className="form-lable">
+                    Company Phone Number<span className="text-danger">*</span>
+                  </lable>
+                  <input
+                    type="text"
+                    className={`form-control  ${
+                      formik.touched.cmpPhNumber && formik.errors.cmpPhNumber
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("cmpPhNumber")}
+                  />
+                  {formik.touched.cmpPhNumber && formik.errors.cmpPhNumber && (
+                    <div className="invalid-feedback">
+                      {formik.errors.cmpPhNumber}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
@@ -191,88 +223,38 @@ function EditCompanyRegistration() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.cmpPincode &&
-                      formik.errors.cmpPincode
+                      formik.touched.cmpPincode && formik.errors.cmpPincode
                         ? "is-invalid"
                         : ""
                     }`}
                     {...formik.getFieldProps("cmpPincode")}
                   />
-                  {formik.touched.cmpPincode &&
-                    formik.errors.cmpPincode && (
-                      <div className="invalid-feedback">
-                        {formik.errors.cmpPincode}
-                      </div>
-                    )}
+                  {formik.touched.cmpPincode && formik.errors.cmpPincode && (
+                    <div className="invalid-feedback">
+                      {formik.errors.cmpPincode}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                    Company Email<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="email"
+                <div className="text-start mt-2">
+                  <lable className="form-lable">Company Address</lable>
+                  <span className="text-danger">*</span>
+                  <textarea
+                    id="floatingTextarea2"
+                    style={{ height: "100px" }}
                     className={`form-control  ${
-                      formik.touched.cmpEmail && formik.errors.cmpEmail
+                      formik.touched.cmpAddr && formik.errors.cmpAddr
                         ? "is-invalid"
                         : ""
                     }`}
-                    {...formik.getFieldProps("cmpEmail")}
-                  />
-                  {formik.touched.cmpEmail &&
-                    formik.errors.cmpEmail && (
-                      <div className="invalid-feedback">
-                        {formik.errors.cmpEmail}
-                      </div>
-                    )}
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                    Company Phone Number<span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="text"
-                    className={`form-control  ${
-                      formik.touched.cmpPhNumber &&
-                      formik.errors.cmpPhNumber
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("cmpPhNumber")}
-                  />
-                  {formik.touched.cmpPhNumber &&
-                    formik.errors.cmpPhNumber && (
-                      <div className="invalid-feedback">
-                        {formik.errors.cmpPhNumber}
-                      </div>
-                    )}
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-6 col-12">
-                <div className="text-start mt-2 mb-3">
-                  <lable className="form-lable">
-                    Company Registration Number
-                    <span className="text-danger">*</span>
-                  </lable>
-                  <input
-                    type="text"
-                    className={`form-control  ${
-                      formik.touched.cmpRegNumber &&
-                      formik.errors.cmpRegNumber
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("cmpRegNumber")}
-                  />
-                  {formik.touched.cmpRegNumber &&
-                    formik.errors.cmpRegNumber && (
-                      <div className="invalid-feedback">
-                        {formik.errors.cmpRegNumber}
-                      </div>
-                    )}
+                    {...formik.getFieldProps("cmpAddr")}
+                  ></textarea>
+                  {formik.touched.cmpAddr && formik.errors.cmpAddr && (
+                    <div className="invalid-feedback">
+                      {formik.errors.cmpAddr}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-12">
@@ -283,19 +265,17 @@ function EditCompanyRegistration() {
                   <input
                     type="text"
                     className={`form-control  ${
-                      formik.touched.cmpTaxCode &&
-                      formik.errors.cmpTaxCode
+                      formik.touched.cmpTaxCode && formik.errors.cmpTaxCode
                         ? "is-invalid"
                         : ""
                     }`}
                     {...formik.getFieldProps("cmpTaxCode")}
                   />
-                  {formik.touched.cmpTaxCode &&
-                    formik.errors.cmpTaxCode && (
-                      <div className="invalid-feedback">
-                        {formik.errors.cmpTaxCode}
-                      </div>
-                    )}
+                  {formik.touched.cmpTaxCode && formik.errors.cmpTaxCode && (
+                    <div className="invalid-feedback">
+                      {formik.errors.cmpTaxCode}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

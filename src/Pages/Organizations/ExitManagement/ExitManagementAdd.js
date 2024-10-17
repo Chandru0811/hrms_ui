@@ -12,7 +12,7 @@ function ExitManagementAdd() {
   const [companyData, setCompanyData] = useState(null);
   const [employeeData, setEmployeeData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [currentDate, setCurrentDate] = useState("");
+  const [ setCurrentDate] = useState("");
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -29,6 +29,7 @@ function ExitManagementAdd() {
   useEffect(() => {
     fetchData();
   }, []);
+
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     setCurrentDate(today);
@@ -78,6 +79,7 @@ function ExitManagementAdd() {
       }
     },
   });
+  
   return (
     <section className="ExitAdd p-3">
       <h5 class="text-start my-5">Add Exit Management</h5>
@@ -328,7 +330,7 @@ function ExitManagementAdd() {
           <lable class="form-lable">Approval Status </lable>
           <div class="input-group mb-3">
             <select
-              className="form-select iconInput"
+              // className="form-select iconInput"
               aria-label="Default select example"
               className={`form-select  ${
                 formik.touched.relievingApproverStatus && formik.errors.relievingApproverStatus

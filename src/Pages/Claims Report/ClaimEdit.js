@@ -86,7 +86,7 @@ function ClaimEdit() {
       console.log(values);
 
       try {
-        const response = await api.put(`/updateClaimsById/${id}`, values, {
+        const response = await api.put(`/claims/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -107,7 +107,7 @@ function ClaimEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getClaimsById/${id}`);
+        const response = await api.get(`/claims/${id}`);
         const formattedData = {
           ...response.data,
           claimsDate: response.data.claimsDate

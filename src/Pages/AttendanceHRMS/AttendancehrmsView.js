@@ -32,7 +32,7 @@ function AttendancehrmsView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getAllDailyAttendanceById/${id}`);
+        const response = await api.get(`/daily-attendance/${id}`);
         setData(response.data);
       } catch (error) {
         toast.error("Error Fetching Data", error);

@@ -18,7 +18,7 @@ const Department = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllDepartment");
+        const response = await api.get("department");
         // console.log(response)
         setDatas(response.data);
         setLoading(false);
@@ -59,7 +59,7 @@ const Department = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllDepartment");
+      const response = await api.get("department");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -115,7 +115,7 @@ const Department = () => {
                     {(userRole === "Admin" || userRole === "Super Admin") && (
                       <Delete
                         onSuccess={refreshData}
-                        path={`/deleteDepartmentById/${data.deptId}`}
+                        path={`/department/${data.deptId}`}
                       />
                     )}
                   </td>

@@ -72,7 +72,7 @@ function ClaimAdd() {
       console.log("object",payload)
       try {
        
-        const response = await api.post("/addClaims", payload, {
+        const response = await api.post("/claims", payload, {
           headers: {
             "Content-Type": "application/json",
           },

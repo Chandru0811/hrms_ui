@@ -78,7 +78,7 @@ function AttendancehrmsEdit() {
       try {
         setLoading(true);
         const response = await api.put(
-          `updateDailyAttendanceById/${id}`,
+          `daily-attendance/${id}`,
           payload,
           {
             headers: {

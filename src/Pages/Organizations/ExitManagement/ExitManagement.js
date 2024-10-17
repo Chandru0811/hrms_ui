@@ -35,7 +35,7 @@ const ExitManagement = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllExitManagement");
+        const response = await api.get("exit-management");
         setDatas(response.data);
         setLoading(false);
       } catch (error) {
@@ -76,7 +76,7 @@ const ExitManagement = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllExitManagement");
+      const response = await api.get("exit-management");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -146,7 +146,7 @@ const ExitManagement = () => {
                       </Link>
                       <Delete
                         onSuccess={refreshData}
-                        path={`/deleteExitManagementById/${data.exitMgmtId}`}
+                        path={`/exit-management/${data.exitMgmtId}`}
                       />
                     </div>
                   </td>

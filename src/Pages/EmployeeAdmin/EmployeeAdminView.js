@@ -11,7 +11,7 @@ const EmployeeAdminView = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getEmployeeRegDetailsById/${id}`);
+        const response = await api.get(`emp-reg-details/${id}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {

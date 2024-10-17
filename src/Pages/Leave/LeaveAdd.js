@@ -79,7 +79,7 @@ function LeaveAdd() {
       };
       setLoading(true);
       try {
-        const response = await api.post(`addLeaveRequests`, payload, {
+        const response = await api.post(`leave-request`, payload, {
           headers: {
             "Content-Type": "application/json",
             //Authorization: `Bearer ${token}`,

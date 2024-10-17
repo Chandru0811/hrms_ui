@@ -12,7 +12,7 @@ function DepartmentView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getDepartmentById/${id}`);
+        const response = await api.get(`department/${id}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {
@@ -42,22 +42,20 @@ function DepartmentView() {
           <div>
             <div className="container">
               <div className="row mt-5">
-                <div className="col-md-6 col-12">
-                  <div className="row mb-2">
-                    <div className="col-6">
-                      <p className="fw-medium">Department Name</p>
-                    </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">: {data.deptName}</p>
-                    </div>
+                <div className="row mb-2">
+                  <div className="col-3">
+                    <p className="fw-medium">Department Name</p>
                   </div>
-                  <div className="row mb-2">
-                    <div className="col-6">
-                      <p className="fw-medium">Department Description</p>
-                    </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">: {data.deptDesc}</p>
-                    </div>
+                  <div className="col-9">
+                    <p className="text-muted text-sm">: {data.deptName}</p>
+                  </div>
+                </div>
+                <div className="row mb-2">
+                  <div className="col-3">
+                    <p className="fw-medium">Department Description</p>
+                  </div>
+                  <div className="col-9">
+                    <p className="text-muted text-sm">: {data.deptDesc}</p>
                   </div>
                 </div>
               </div>

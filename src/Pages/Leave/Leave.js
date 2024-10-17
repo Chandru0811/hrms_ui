@@ -17,7 +17,7 @@ const Leave = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllLeaveRequests");
+        const response = await api.get("leave-request");
         setDatas(response.data);
 
         setLoading(false);
@@ -56,7 +56,7 @@ const Leave = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllLeaveRequests");
+      const response = await api.get("leave-request");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {

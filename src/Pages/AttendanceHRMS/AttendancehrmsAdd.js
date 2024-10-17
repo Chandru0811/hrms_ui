@@ -98,7 +98,7 @@ function AttendancehrmsAdd() {
 
       try {
         setLoading(true);
-        const response = await api.post(`/addDailyAttendance`, payload, {
+        const response = await api.post(`/daily-attendance`, payload, {
           headers: { "Content-Type": "application/json" },
         });
         if (response.status === 201) {

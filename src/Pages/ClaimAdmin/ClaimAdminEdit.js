@@ -103,7 +103,7 @@ function ClaimAdminEdit() {
       formData.append("claimsApproverLv2Id",values.claimsApprovalLv2Id)
       setLoading(true);
       try {
-        const response = await api.put(`/updateClaimsById/${id}`, formData, {
+        const response = await api.put(`/claims/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -125,7 +125,7 @@ function ClaimAdminEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getClaimsById/${id}`);
+        const response = await api.get(`/claims/${id}`);
         const formattedData = {
           ...response.data,
           claimsDate: response.data.claimsDate

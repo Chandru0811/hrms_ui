@@ -104,7 +104,7 @@ function EmployeeAdminEdit() {
         // formData.append("reportingManagerID", values.reportingManagerID);
 
         const response = await api.put(
-          `updateEmployeeRegDetailsById/${id}`,
+          `emp-reg-details/${id}`,
           values,
           {
             headers: {
@@ -155,7 +155,7 @@ function EmployeeAdminEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getEmployeeRegDetailsById/${id}`);
+        const response = await api.get(`emp-reg-details/${id}`);
         formik.setValues(response.data);
         setLoading(false);
       } catch (error) {

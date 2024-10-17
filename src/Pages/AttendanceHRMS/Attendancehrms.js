@@ -37,7 +37,7 @@ const Attendancehrms = () => {
 
   const fetchData = async () => {
     try {
-      const response = await api.get(`dailyAttendanceWithIds`, {
+      const response = await api.get(`daily-attendance`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -67,7 +67,7 @@ const Attendancehrms = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("dailyAttendanceWithIds");
+      const response = await api.get("daily-attendance");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -170,7 +170,7 @@ const Attendancehrms = () => {
                           </Link>
                           <Delete
                             onSuccess={refreshData}
-                            path={`/deleteDailyAttendanceById/${data.attendanceId}`}
+                            path={`/daily-attendance/${data.attendanceId}`}
                           />
                         </span>
                       )}

@@ -13,7 +13,7 @@ function LeaveView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getLeaveRequestsById/${id}`);
+        const response = await api.get(`leave-request/${id}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {

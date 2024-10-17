@@ -81,7 +81,7 @@ function ClaimAdminAdd() {
       formData.append("claimsType",values.claimsType)
       setLoading(true);
       try {
-        const response = await api.post("/addClaims", formData, {
+        const response = await api.post("/claims", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

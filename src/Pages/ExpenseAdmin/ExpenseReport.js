@@ -16,7 +16,7 @@ const Payroll = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllExpenses");
+        const response = await api.get("expenses");
         setDatas(response.data);
 
         setLoading(false);
@@ -55,7 +55,7 @@ const Payroll = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllExpenses");
+      const response = await api.get("expenses");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -65,70 +65,76 @@ const Payroll = () => {
   };
 
   return (
-    <div className="container">
+    <section>
       {loading && (
         <div className="loader-container">
           <div className="loader"></div>
         </div>
       )}
-
-      <div className="col-12 text-end my-3">
-        <Link to="/expenseadmin/add">
-          <button type="button" className="btn btn-button btn-sm">
-            Add <i class="bx bx-plus"></i>
-          </button>
-        </Link>
-      </div>
-      <table ref={tableRef} className="display">
-        <thead>
-          <tr>
-            <th scope="col">S No</th>
-            <th scope="col">Expense ID</th>
-            <th scope="col">Employee ID</th>
-            <th scope="col">Date</th>
-            <th scope="col">Type</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {datas?.map((data, index) => (
-            <tr key={index}>
-              <th scope="row">{index + 1}</th>
-              <td>{data.expenseId}</td>
-              <td>{data.expensesEmpId}</td>
-              <td>{new Date(data.expenseDate).toLocaleDateString()}</td>
-              <td>{data.expenseType}</td>
-              <td>{data.expenseAmt}</td>
-              <td>
-                {data.status === "Approved" ? (
-                  <span className="badge badges-Green">Approved</span>
-                ) : data.status === "Pending" ? (
-                  <span className="badge badges-Yellow">Pending</span>
-                ) : (
-                  <span className="badge badges-Red">Rejected</span>
-                )}
-              </td>
-              <td>
-                <Link to={`/expenseadmin/view/${data.expenseId}`}>
-                  <button className="btn btn-sm">
-                    <FaEye />
-                  </button>
-                </Link>
-                <Link to={`/expenseadmin/edit/${data.expenseId}`}>
-                  <button className="btn btn-sm">
-                    <FaEdit />
-                  </button>
-                </Link>
-                {/* <ExpenseStatus /> */}
-                <Delete onSuccess={refreshData} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      {!loading && (
+        <div className="container">
+          <div className="col-12 text-end my-3">
+            <Link to="/expenseadmin/add">
+              <button type="button" className="btn btn-button btn-sm">
+                Add <i class="bx bx-plus"></i>
+              </button>
+            </Link>
+          </div>
+          <table ref={tableRef} className="display">
+            <thead>
+              <tr>
+                <th scope="col">S No</th>
+                {/* <th scope="col">Expense ID</th> */}
+                <th scope="col">Employee ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Type</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {datas?.map((data, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  {/* <td>{data.expenseId}</td> */}
+                  <td>{data.expensesEmpId}</td>
+                  <td>{new Date(data.expenseDate).toLocaleDateString()}</td>
+                  <td>{data.expenseType}</td>
+                  <td>{data.expenseAmt}</td>
+                  <td>
+                    {data.status === "Approved" ? (
+                      <span className="badge badges-Green">Approved</span>
+                    ) : data.status === "Pending" ? (
+                      <span className="badge badges-Yellow">Pending</span>
+                    ) : (
+                      <span className="badge badges-Red">Rejected</span>
+                    )}
+                  </td>
+                  <td>
+                    <Link to={`/expenseadmin/view/${data.expenseId}`}>
+                      <button className="btn btn-sm">
+                        <FaEye />
+                      </button>
+                    </Link>
+                    <Link to={`/expenseadmin/edit/${data.expenseId}`}>
+                      <button className="btn btn-sm">
+                        <FaEdit />
+                      </button>
+                    </Link>
+                    {/* <ExpenseStatus /> */}
+                    <Delete
+                      onSuccess={refreshData}
+                      path={`/expenses/${data.expenseId}`}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
   );
 };
 

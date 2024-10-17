@@ -14,7 +14,7 @@ function PolicyView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getHRPolicyById/${id}`);
+        const response = await api.get(`hR-policy/${id}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {

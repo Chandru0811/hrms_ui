@@ -35,7 +35,7 @@ function RolesEdit() {
       try {
         setLoading(true);
         const response = await api.put(
-          `updateRolesById/${id}`,
+          `roles/${id}`,values,
           
           {
             headers: {
@@ -61,7 +61,7 @@ function RolesEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getRolesById/${id}`);
+        const response = await api.get(`/roles/${id}`);
        
         formik.setValues(response.data);
       } catch (error) {

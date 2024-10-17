@@ -21,7 +21,7 @@ const Roles = () => {
 
   const fetchData = async () => {
     try {
-      const response = await api.get(`getAllRoles`, {
+      const response = await api.get(`roles`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -51,7 +51,7 @@ const Roles = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllRoles");
+      const response = await api.get("roles");
       setDatas(response.data);
       // initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -154,7 +154,7 @@ const Roles = () => {
                           </Link>
                           <Delete
                             onSuccess={refreshData}
-                            path={`/deleteRolesById/${data.roleId}`}
+                            path={`/roles/${data.roleId}`}
                           />
                         </span>
                       )}

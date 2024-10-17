@@ -15,7 +15,7 @@ const EmployeeAdmin = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("getAllEmployeeRegDetails");
+        const response = await api.get("emp-reg-details");
         setData(response.data);
         setLoading(false);
       } catch (error) {
@@ -54,7 +54,7 @@ const EmployeeAdmin = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllCompanyReg");
+      const response = await api.get("emp-reg-details");
       setData(response.data);
     } catch (error) {
       console.error("Error refreshing data:", error);
@@ -112,7 +112,10 @@ const EmployeeAdmin = () => {
                           <FaEdit />
                         </button>
                       </Link>
-                      <Delete onSuccess={refreshData} />
+                      <Delete
+                        onSuccess={refreshData}
+                        path={`/emp-reg-details/${data.id}`}
+                      />
                     </div>
                   </td>
                 </tr>

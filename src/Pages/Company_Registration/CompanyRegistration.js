@@ -14,7 +14,7 @@ const CompanyRegistration = () => {
 
   const getData = async () => {
     try {
-      const response = await api.get("getAllCompanyReg");
+      const response = await api.get("company-reg");
       setDatas(response.data);
       setLoading(false);
     } catch (error) {
@@ -55,7 +55,7 @@ const CompanyRegistration = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("getAllCompanyReg");
+      const response = await api.get("company-reg");
       setDatas(response.data);
     } catch (error) {
       console.error("Error refreshing data:", error);
@@ -111,7 +111,7 @@ const CompanyRegistration = () => {
                         </button>
                       </Link>
                       <Delete
-                        path={`/deleteCompanyRegById/${data.cmpId}`}
+                        path={`/company-reg/${data.cmpId}`}
                         onSuccess={refreshData}
                       />
                     </div>

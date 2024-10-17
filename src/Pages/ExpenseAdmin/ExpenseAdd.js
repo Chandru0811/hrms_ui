@@ -40,9 +40,7 @@ function ExpenseAdd() {
       .required("*Expense amount is required")
       .typeError("*Must be a number"),
     attachment: Yup.string().required("*Attachment is required"),
-    // employeeId: Yup.string().required("*Employe id is required"),
     employeeId: Yup.string().required("*Employee name is required"),
-    // companyId: Yup.string().required("*Company id is required"),
     cmpId: Yup.string().required("*Company name is required"),
   });
 
@@ -52,11 +50,10 @@ function ExpenseAdd() {
       expenseType: "",
       expenseAmount: "",
       attachment: "",
-      // employeeId:"",
       employeeId: "",
-      // companyId:"",
       cmpId: "",
-      remarks: "",
+      expenseDetails: "",
+      deptId:""
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -66,13 +63,15 @@ function ExpenseAdd() {
       formData.append("files", values.attachment);
       formData.append("expenseType", values.expenseType);
       formData.append("expenseAmt", values.expenseAmount);
-      formData.append("expenseDetails", values.remarks);
-      formData.append("expenseDate", "2024-07-14T14:26:32.665Z");
-      formData.append("expensesEmpId", 34);
+      formData.append("expenseDetails", values.expenseDetails);
+      formData.append("expenseDate", values.expenseDate);
+      formData.append("expensesEmpId", values.employeeId);
       formData.append("cmpId", values.cmpId);
+      formData.append("deptId", " ");
+
       
       try {
-        const response = await api.post("/addExpenses", formData, {
+        const response = await api.post("/expenses", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -122,30 +121,7 @@ function ExpenseAdd() {
             </div>
           </div>
           <div className="row mt-3">
-            {/* <div className="col-md-6 col-12">
-              <div className="text-start mt-2 mb-3">
-                <lable className="form-lable">
-                  Employee ID<span className="text-danger">*</span>
-                </lable>
-                <input
-                  type="text"
-                  className={`form-control  ${
-                    formik.touched.employeeId && formik.errors.employeeId
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("employeeId")}
-                />
-                {formik.touched.employeeId && formik.errors.employeeId && (
-                  <div className="invalid-feedback">
-                    {formik.errors.employeeId}
-                  </div>
-                )}
-              </div>
-            </div> */}
-            <div className="col-md-6 col-12 mb-2">
+            <div className="col-md-6 col-12">
               <lable className="form-lable">
                 Company Name<span className="text-danger">*</span>
               </lable>
@@ -172,7 +148,7 @@ function ExpenseAdd() {
                 )}
               </div>
             </div>
-            <div className="col-md-6 col-12 mb-2">
+            <div className="col-md-6 col-12">
               <lable className="form-lable">
                 Employee Name<span className="text-danger">*</span>
               </lable>
@@ -201,30 +177,6 @@ function ExpenseAdd() {
                 )}
               </div>
             </div>
-            {/* <div className="col-md-6 col-12">
-              <div className="text-start mt-2 mb-3">
-                <lable className="form-lable">
-                  Company ID<span className="text-danger">*</span>
-                </lable>
-                <input
-                  type="text"
-                  className={`form-control  ${
-                    formik.touched.companyId && formik.errors.companyId
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
-                  {...formik.getFieldProps("companyId")}
-                />
-                {formik.touched.companyId && formik.errors.companyId && (
-                  <div className="invalid-feedback">
-                    {formik.errors.companyId}
-                  </div>
-                )}
-              </div>
-            </div> */}
-
             <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">
@@ -329,15 +281,15 @@ function ExpenseAdd() {
                 )}
               </div>
             </div>
-
             <div className="col-md-6 col-12">
               <div className="text-start mt-2 mb-3">
                 <lable className="form-lable">Remarks</lable>
                 <textarea
-                  id="floatingTextarea2"
+                  id="expenseDetails"
+                  name="expenseDetails"
                   style={{ height: "100px" }}
                   className="form-control"
-                  {...formik.getFieldProps("remarks")}
+                  {...formik.getFieldProps("expenseDetails")}
                 ></textarea>
               </div>
             </div>

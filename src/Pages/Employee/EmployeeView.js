@@ -8,11 +8,13 @@ export default function ExpensesView() {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const cmpId = sessionStorage.getItem('cmpId');
+  const empId = sessionStorage.getItem('empId');
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getEmployeeRegDetailsById/66`);
+        const response = await api.get(`emp-reg-details-by-companyId/${empId}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {
@@ -34,7 +36,7 @@ export default function ExpensesView() {
         <div className="container py-4">
           <div className="row">
             <div className="col-12 text-end">
-              <Link to="/employeeadmin">
+              <Link to="/employee">
                 <button className="btn btn-sm btn-border">Back</button>
               </Link>
               &nbsp;&nbsp;

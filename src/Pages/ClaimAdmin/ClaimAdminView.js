@@ -38,7 +38,7 @@ function ClaimView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getClaimsById/${id}`);
+        const response = await api.get(`/claims/${id}`);
         setData(response.data);
       } catch (error) {
         toast.error("Error Fetching Data ", error);

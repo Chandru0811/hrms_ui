@@ -1,6 +1,5 @@
 {
   "name": "hrms_ui",
-  "homepage": "/hrms",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

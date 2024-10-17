@@ -46,7 +46,7 @@ function ComplianceEdit() {
       setLoading(true);
       try {
         const response = await api.put(
-          `updateCompanyComplianceInfoById/${id}`,
+          `company-compliance/${id}`,
           values,
           {
             headers: {
@@ -83,7 +83,7 @@ function ComplianceEdit() {
 
   const getData = async () => {
     try {
-      const response = await api.get(`getCompanyComplianceInfoById/${id}`);
+      const response = await api.get(`company-compliance/${id}`);
       const compComplianceSalaryDay =
         response.data.compComplianceSalaryDay.split("T")[0];
       const compComplianceSalaryCalculationDay =

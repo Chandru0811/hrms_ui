@@ -24,7 +24,7 @@ export default function PolicyEdit() {
       // console.log(values);
       setLoading(true);
       try {
-        const response = await api.put(`updateHRPolicyById/${id}`, values, {
+        const response = await api.put(`hR-policy/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -46,7 +46,7 @@ export default function PolicyEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getHRPolicyById/${id}`);
+        const response = await api.get(`/hR-policy/${id}`);
         formik.setValues(response.data);
         console.log("Test", response.data);
       } catch (error) {

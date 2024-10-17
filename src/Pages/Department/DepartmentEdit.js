@@ -26,7 +26,7 @@ function DepartmentEdit() {
       // console.log(values);
       setLoading(true);
       try {
-        const response = await api.put(`updateDepartmentById/${id}`, values, {
+        const response = await api.put(`department/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -48,7 +48,7 @@ function DepartmentEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getDepartmentById/${id}`);
+        const response = await api.get(`/department/${id}`);
         formik.setValues(response.data);
         setLoading(false);
       } catch (error) {

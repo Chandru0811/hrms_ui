@@ -11,7 +11,7 @@ function ComplianceView() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`getCompanyComplianceInfoById/${id}`);
+        const response = await api.get(`company-compliance/${id}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {

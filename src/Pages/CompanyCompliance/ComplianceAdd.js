@@ -6,28 +6,28 @@ import api from "../../config/URL";
 import fetchAllCompanyNamesWithId from "../List/CompanyNameList";
 import { toast } from "react-toastify";
 
+const validationSchema = Yup.object({
+  cmpId: Yup.string().required("*Company name is required"),
+  compComplianceDesignationName: Yup.string().required(
+    "*Designation name is required"
+  ),
+  compComplianceDesignationCategory: Yup.string().required(
+    "*Designation category is required"
+  ),
+  compComplianceLeaveLimit: Yup.number()
+    .required("*Leave limit is required")
+    .typeError("*Must be a number"),
+  compComplianceSalaryDay: Yup.string().required("*Salary day is required"),
+  compComplianceSalaryCalculationDay: Yup.string().required(
+    "*Salary calculation day is required"
+  ),
+});
+
 function ComplianceAdd() {
   const [loading, setLoading] = useState(false);
   const [companyData, setCompanyData] = useState(null);
   const [calcDate, setCalcDate] = useState('');
   const navigate = useNavigate();
-
-  const validationSchema = Yup.object({
-    cmpId: Yup.string().required("*Company name is required"),
-    compComplianceDesignationName: Yup.string().required(
-      "*Designation name is required"
-    ),
-    compComplianceDesignationCategory: Yup.string().required(
-      "*Designation category is required"
-    ),
-    compComplianceLeaveLimit: Yup.number()
-      .required("*Leave limit is required")
-      .typeError("*Must be a number"),
-    compComplianceSalaryDay: Yup.string().required("*Salary day is required"),
-    compComplianceSalaryCalculationDay: Yup.string().required(
-      "*Salary calculation day is required"
-    ),
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -45,7 +45,7 @@ function ComplianceAdd() {
       setLoading(true);
       values.compComplianceCmpId = values.cmpId;
       try {
-        const response = await api.post("addCompanyComplianceInfo", values);
+        const response = await api.post("company-compliance", values);
         // console.log(response)
         if (response.status === 201) {
           toast.success(response.data.message);

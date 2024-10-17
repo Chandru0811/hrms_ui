@@ -26,7 +26,7 @@ function DepartmentAdd() {
        console.log(values);
        setLoading(true);
       try {
-        const response = await api.post("addDepartment", values);
+        const response = await api.post("department", values);
         // console.log(response)
         if (response.status === 201) {
           toast.success(response.data.message);

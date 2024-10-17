@@ -71,7 +71,7 @@ function LeaveAdminEdit() {
       console.log(values);
       setLoading(true);
       try {
-        const response = await api.put(`/updateLeaveRequestsById/${id}`, values, {
+        const response = await api.put(`/leave-request/${id}`, values, {
           // headers: {
           //   "Content-Type": "multipart/form-data",
           // },
@@ -105,7 +105,7 @@ function LeaveAdminEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getLeaveRequestsById/${id}`);
+        const response = await api.get(`/leave-request/${id}`);
         formik.setValues(response.data);
         
       } catch (error) {

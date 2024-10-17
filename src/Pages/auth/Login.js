@@ -29,15 +29,17 @@ function Login({ onLogin }) {
     onSubmit: async (values) => {
       console.log("Values is ", values);
       try {
-        const response = await api.post(`appLogin`, values);
+        const response = await api.post(`app-login`, values);
         if (response.status === 200) {
           toast.success(response.data.message);
+          console.log("Login Triger" ,response.data);         
           sessionStorage.setItem("roleId", response.data.roleId);
           sessionStorage.setItem("role", response.data.role);
           sessionStorage.setItem("token", response.data.accessToken);
-          sessionStorage.setItem("userName", "Super Admin");
+          sessionStorage.setItem("userName", response.data.role);
           sessionStorage.setItem("loginUserId", response.data.loginUserId);
-          sessionStorage.setItem("empId", response.data.employeeInfo[0].empId);
+          sessionStorage.setItem("empId", response.data.employeeInfo[0].id);
+          sessionStorage.setItem("empName", response.data.employeeInfo[0].empName);
           sessionStorage.setItem("cmpId", response.data.employeeInfo[0].cmpId);
           sessionStorage.setItem(
             "deptId",

@@ -54,7 +54,7 @@ function EditNewBublicHoliday() {
       try {
         setLoadings(true);
         const response = await api.put(
-          `updatePublicHolidaysById/${id}`,
+          `public-holidays/${id}`,
           values,
           {
             headers: {
