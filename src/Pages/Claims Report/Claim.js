@@ -148,14 +148,14 @@ const Claim = () => {
                           <FaEye />
                         </button>
                       </Link>
-                      {(userRole === "Super Admin" || userRole === "Admin") && (
+                      {(userRole === "SUPER_ADMIN" || userRole === "ADMIN") && (
                         <Link to={`/claimadmin/edit/${data.claimsId}`}>
                           <button className="btn btn-sm">
                             <FaEdit />
                           </button>
                         </Link>
                       )}
-                      {(userRole === "Super Admin" || userRole === "Admin") && (
+                      {(userRole === "SUPER_ADMIN" || userRole === "ADMIN") && (
                         <Delete
                           path={`/claims/${data.claimsId}`}
                           onSuccess={refreshData}

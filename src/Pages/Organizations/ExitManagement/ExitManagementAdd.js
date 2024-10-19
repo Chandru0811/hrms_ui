@@ -61,7 +61,7 @@ function ExitManagementAdd() {
       console.log(values);
       setLoading(true);
       try {
-        const response = await api.post("/addExpenses", values, {
+        const response = await api.post("/exit-management", values, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

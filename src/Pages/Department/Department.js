@@ -77,7 +77,7 @@ const Department = () => {
       )}
       {!loading && (
         <div className="container my-3">
-          {(userRole === "Admin" || userRole === "Super Admin") && (
+          {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
             <div className="my-3 d-flex align-items-end justify-content-end">
               <Link to="/departments/add">
                 <button type="button" className="btn btn-button btn-sm">
@@ -105,14 +105,14 @@ const Department = () => {
                         <FaEye />
                       </button>
                     </Link>
-                    {(userRole === "Admin" || userRole === "Super Admin") && (
+                    {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
                       <Link to={`/departments/edit/${data.deptId}`}>
                         <button className="btn btn-sm">
                           <FaEdit />
                         </button>
                       </Link>
                     )}
-                    {(userRole === "Admin" || userRole === "Super Admin") && (
+                    {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
                       <Delete
                         onSuccess={refreshData}
                         path={`/department/${data.deptId}`}

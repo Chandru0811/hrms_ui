@@ -35,7 +35,7 @@ const Roles = () => {
   };
 
   useEffect(() => {
-    if (userName === "Employee") {
+    if (userName === "EMPLOYEE") {
       setViewAction(true);
     }
   }, [userName]);
@@ -99,7 +99,7 @@ const Roles = () => {
               <tr>
                 <th scope="col">S No</th>
                 <th scope="col">Role Name</th>
-                {/* <th scope="col">Employee Name</th> */}
+                {/* <th scope="col">EMPLOYEE Name</th> */}
                 {/* <th scope="col">Company Name</th> */}
                 <th scope="col">Role Owner</th>
                 {/* <th scope="col">Date</th> */}

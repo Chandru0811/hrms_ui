@@ -24,7 +24,7 @@ const Holiday = () => {
   };
 
   useEffect(() => {
-    if (userName === "Employee") {
+    if (userName === "EMPLOYEE") {
       setViewAction(true);
     }
   }, [userName, setViewAction]);

@@ -15,21 +15,21 @@ function Sidebar() {
       icon: "bx bx-buildings",
       isOpen: false,
       subMenus: [
-        userRole === "Super Admin" && {
+        userRole === "SUPER_ADMIN" && {
           title: "Company Registration",
           path: "/companyregisteration",
         },
-        (userRole === "Admin" || userRole === "Super Admin") && {
+        (userRole === "ADMIN" || userRole === "SUPER_ADMIN") && {
           title: "Company Compliance",
           path: "/compliance",
         },
         { title: "HR Policy", path: "/policy" },
         { title: "Departments", path: "/departments" },
-        (userRole === "Super Admin" || userRole === "Admin") && {
+        (userRole === "SUPER_ADMIN" || userRole === "ADMIN") && {
           title: "Exit Management",
           path: "/exitmanagement",
         },
-        userRole === "Employee" && {
+        userRole === "EMPLOYEE" && {
           title: "Exit Management ",
           path: "/exitmanagementadmin",
         },
@@ -43,9 +43,9 @@ function Sidebar() {
       icon: "bx bx-buildings",
       isOpen: false,
       subsMenus: [
-        (userRole === "Admin" ||
-          userRole === "Super Admin" ||
-          userRole === "Employee") && {
+        (userRole === "ADMIN" ||
+          userRole === "SUPER_ADMIN" ||
+          userRole === "EMPLOYEE") && {
           title: "Roles",
           path: "/roles",
         },
@@ -190,11 +190,11 @@ function Sidebar() {
             </Collapse>
           </li>
         ))}
-        {(userRole === "Admin" || userRole === "Super Admin") && (
+        {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
           <li>
             <NavLink to="/employeeadmin" onClick={() => handleMenuClick(null)}>
               <i class="bx bx-male-female"></i>
-              <span className="links_name">Employee Info</span>
+              <span className="links_name">Emplayee Info</span>
             </NavLink>
           </li>
         )}
@@ -204,7 +204,7 @@ function Sidebar() {
             <span className="links_name">Attendance</span>
           </NavLink>
         </li>
-        {(userRole === "Admin" || userRole === "Super Admin") && (
+        {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
           <li>
             <NavLink to="/leaveadmin" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-pie-chart-alt-2"></i>
@@ -212,7 +212,7 @@ function Sidebar() {
             </NavLink>
           </li>
         )}
-        {userRole === "Employee" && (
+        {userRole === "EMPLOYEE" && (
           <li>
             <NavLink to="/leave" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-pie-chart-alt-2"></i>
@@ -226,7 +226,7 @@ function Sidebar() {
             <span className="links_name">Holiday</span>
           </NavLink>
         </li>
-        {userRole === "Employee" && (
+        {userRole === "EMPLOYEE" && (
           <li>
             <NavLink to="/expensesreport" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-food-menu"></i>
@@ -234,7 +234,7 @@ function Sidebar() {
             </NavLink>
           </li>
         )}
-        {(userRole === "Admin" || userRole === "Super Admin") && (
+        {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
           <li>
             <NavLink to="/expenseadmin" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-food-menu"></i>
@@ -242,7 +242,7 @@ function Sidebar() {
             </NavLink>
           </li>
         )}
-        {userRole === "Employee" && (
+        {userRole === "EMPLOYEE" && (
           <li>
             <NavLink to="/claim" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-book-open"></i>
@@ -250,7 +250,7 @@ function Sidebar() {
             </NavLink>
           </li>
         )}
-        {(userRole === "Admin" || userRole === "Super Admin") && (
+        {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
           <li>
             <NavLink to="/claimadmin" onClick={() => handleMenuClick(null)}>
               <i className="bx bx-book-open"></i>

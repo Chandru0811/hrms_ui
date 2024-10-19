@@ -75,7 +75,7 @@ const Policy = () => {
       )}
       {!loading && (
         <div className="container my-3">
-          {(userRole === "Super Admin" || userRole === "Admin") && (
+          {(userRole === "SUPER_ADMIN" || userRole === "ADMIN") && (
             <div className="my-3 d-flex align-items-end justify-content-end">
               <Link to="/policy/add">
                 <button type="button" className="btn btn-button btn-sm">
@@ -106,14 +106,14 @@ const Policy = () => {
                           <FaEye />
                         </button>
                       </Link>
-                      {(userRole === "Admin" || userRole === "Super Admin") && (
+                      {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
                         <Link to={`/policy/edit/${data.hrPolicyId}`}>
                           <button className="btn btn-sm">
                             <FaEdit />
                           </button>
                         </Link>
                       )}
-                      {(userRole === "Admin" || userRole === "Super Admin") && (
+                      {(userRole === "ADMIN" || userRole === "SUPER_ADMIN") && (
                         <Delete
                           onSuccess={refreshData}
                           path={`/hR-policy/${data.hrPolicyId}`}

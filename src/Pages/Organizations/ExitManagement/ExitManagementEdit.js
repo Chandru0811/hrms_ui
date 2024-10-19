@@ -89,7 +89,7 @@ function ExitManagementEdit() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/getExitManagementById/${id}`);
+        const response = await api.get(`/exit-management/${id}`);
         const formattedData = {
           ...response.data,
           exitMgmtDateOfApply: response.data.exitMgmtDateOfApply
