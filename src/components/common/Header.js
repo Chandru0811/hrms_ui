@@ -28,7 +28,7 @@ function Header({ onLogout }) {
               {userName}
             </button>
             <ul class="dropdown-menu px-2">
-              {(userName === "Admin" || userName === "Employee") && (
+              {(userName === "ADMIN" || userName === "EMPLOYEE") && (
                 <div>
                   <li style={{ cursor: "pointer" }} className="text-center">
                     <Link

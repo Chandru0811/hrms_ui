@@ -69,6 +69,7 @@ const ClaimAdmin = () => {
     }
     $(tableRef.current).DataTable({
       responsive: true,
+      columnDefs: [{ orderable: false, targets: -1 }],
     });
   };
 
@@ -112,12 +113,8 @@ const ClaimAdmin = () => {
             <thead>
               <tr>
                 <th scope="col">S No</th>
-                {/* <th scope="col">Employee ID</th> */}
                 <th scope="col">Employee Id</th>
                 <th scope="col">Employee Name</th>
-                {/* <th scope="col">Applied Date</th> */}
-                {/* <th scope="col">Claim Date</th>
-            <th scope="col">Claim Type</th> */}
                 <th scope="col">Claim Amount</th>
                 <th scope="col">App-Lvl 1</th>
                 <th scope="col">App-Lvl 2</th>
@@ -128,12 +125,8 @@ const ClaimAdmin = () => {
               {datas.map((data, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  {/* <td>{data.employeeID}</td> */}
                   <td> {data.claimsId}</td>
                   <td> {data.firstName}</td>
-                  {/* <td>{data.AppliedDate}</td> */}
-                  {/* <td>{data.ClaimDate}</td>
-              <td>{data.ClaimType}</td> */}
                   <td>{data.claimsAmt}</td>
                   <td>
                     {data.approvalStatusLv1 === "APPROVED" ? (

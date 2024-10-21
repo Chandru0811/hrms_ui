@@ -41,6 +41,7 @@ const CompanyRegistration = () => {
     }
     $(tableRef.current).DataTable({
       responsive: true,
+      columnDefs: [{ orderable: false, targets: -1 }],
     });
   };
 
@@ -87,7 +88,7 @@ const CompanyRegistration = () => {
                 <th scope="col">Company Name</th>
                 <th scope="col">Company City</th>
                 <th scope="col">Company Email</th>
-                <th scope="col">Action</th>
+                <th scope="col" className="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
